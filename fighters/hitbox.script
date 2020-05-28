@@ -1,0 +1,35 @@
+function init(self)
+	
+end
+
+function final(self)
+	
+end
+
+function update(self, dt)
+	if self.move.hitbox == "#hitbox_simple" then
+		go.delete()
+	elseif self.move.hitbox == "#hitbox_spit" then
+		local pos = go.get_position()
+		if pos.x < 0 or pos.x > 1300 then
+			go.delete()
+		else
+			go.set_position(vmath.vector3(pos.x + (self.move.speed * self.facing), pos.y, pos.z))
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") and message.enter and message.other_id == self.enemy then
+		msg.post(self.enemy, hash("attack_landed"), {move = self.move, pos = go.get_world_position()})
+		go.delete()
+	elseif message_id == hash("setup") then
+		self.go = message.myself
+		self.enemy = message.enemy
+		self.move = message.move
+		self.facing = message.facing
+		if self.move.hitbox == "#hitbox_spit" then
+			sprite.set_hflip("#sprite", self.facing == -1)
+		end
+	end
+end
