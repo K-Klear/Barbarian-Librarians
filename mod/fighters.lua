@@ -65,7 +65,7 @@ local FIGHTER = {
 		moves = {
 			[hash("punch")] = {
 				{
-					keys_held = {"backward"},
+					keys_held = {hash("duck")},
 					keys_sequence = {},
 					anim = "uppercut",
 					hitbox = "#hitbox_simple",
@@ -76,7 +76,7 @@ local FIGHTER = {
 					recovery = 90
 				},
 				{
-					keys_held = {"forward"},
+					keys_held = {"backward"},
 					keys_sequence = {},
 					anim = "spit",
 					hitbox = "#hitbox_spit",

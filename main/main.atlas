@@ -1,11 +1,6 @@
 images {
-  image: "/assets/images/background.png"
-}
-images {
-  image: "/assets/images/logo.png"
-}
-images {
-  image: "/builtins/graphics/particle_blob.png"
+  image: "/assets/images/background/corridor.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0
 extrude_borders: 2

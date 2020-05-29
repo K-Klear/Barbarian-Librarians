@@ -1,0 +1,75 @@
+local btn, dialog
+local COL = {
+	default = vmath.vector4(1, 1, 1, 1),
+	highlight = vmath.vector4(1, 0.2, 0.0, 1)
+}
+local focus = "intro"
+
+function init(self)
+	sound.play("#music_theme")
+	msg.post(".", "acquire_input_focus")
+	btn = {
+		intro = {},
+		menu = {
+			fight = gui.get_node("btn_fight"),
+			settings = gui.get_node("btn_settings"),
+			exit = gui.get_node("btn_exit"),
+			credits = gui.get_node("btn_credits")
+		},
+		credits = {
+			close_credits = gui.get_node("btn_close_credits")
+		}
+	}
+	dialog = {
+		credits = gui.get_node("dialog_credits")
+	}
+	for key, val in pairs(dialog) do
+		gui.set_enabled(val, false)
+	end
+	gui.animate(gui.get_node("title_lib"), "position.x", 640, gui.EASING_OUTCUBIC, 1, 1.5, function()
+		gui.animate(gui.get_node("title_barb"), "position.x", 640, gui.EASING_OUTELASTIC, 2, 0.5, function()
+			for key, val in pairs(btn.menu) do
+				gui.animate(val, "color.w", 1, gui.EASING_LINEAR, 1, 0, function() focus = "menu" end)
+			end
+		end)
+	end)
+end
+
+
+function on_message(self, message_id, message, sender)
+	
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("click") and action.pressed then
+		for key, val in pairs(btn[focus]) do
+			if gui.pick_node(val, action.x, action.y) then
+				if key == "fight" then
+					msg.post("bootstrap:/go", hash("start_game"))
+				elseif key == "settings" then
+					
+				elseif key == "exit" then
+					os.exit()
+				elseif key == "credits" then
+					gui.set_enabled(dialog.credits, true)
+					focus = "credits"
+					gui.set_color(btn.menu.credits, COL.default)
+
+
+				elseif key == "close_credits" then
+					gui.set_enabled(dialog.credits, false)
+					focus = "menu"
+					gui.set_color(btn.credits.close_credits, COL.default)
+				end
+			end
+		end
+	elseif not action_id then
+		for key, val in pairs(btn[focus]) do
+			if gui.pick_node(val, action.x, action.y) then
+				gui.set_color(val, COL.highlight)
+			else
+				gui.set_color(val, COL.default)
+			end
+		end
+	end
+end
