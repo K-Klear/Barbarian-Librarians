@@ -34,6 +34,14 @@ key_trigger {
   input: KEY_S
   action: "p2_down"
 }
+key_trigger {
+  input: KEY_W
+  action: "p2_up"
+}
+key_trigger {
+  input: KEY_UP
+  action: "p1_up"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT
   action: "click"

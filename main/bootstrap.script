@@ -11,9 +11,16 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("proxy_loaded") then
 		msg.post(sender, "init")
 		msg.post(sender, "enable")
-	elseif message_id == hash("start_game") then
+	elseif message_id == hash("selection_screen") then
 		msg.post("#proxy_menu", "unload")
+		--msg.post("#proxy_main", "load")
+		msg.post("#proxy_selection", "load")
+	elseif message_id == hash("start_match") then
+		msg.post("#proxy_selection", "unload")
 		msg.post("#proxy_main", "load")
+	elseif message_id == hash("game_end") then
+		msg.post("#proxy_main", "unload")
+		msg.post("#proxy_menu", "load")
 	end
 end
 

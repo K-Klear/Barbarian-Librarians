@@ -5,6 +5,10 @@ local COL = {
 }
 local focus = "intro"
 
+local STATE = require("mod.state")
+local SET = require("mod.settings")
+local FIGHTER = require("mod.fighters")
+
 local function play_music()
 	sound.play("#music_theme", nil, play_music)
 end
@@ -65,7 +69,8 @@ function on_input(self, action_id, action)
 			for key, val in pairs(btn[focus]) do
 				if gui.pick_node(val, action.x, action.y) then
 					if key == "fight" then
-						msg.post("bootstrap:/go", hash("start_game"))
+						STATE.fighter = {hash("vojta_beta"), hash("vojta_beta")}
+						msg.post("bootstrap:/go", hash("selection_screen"))
 					elseif key == "settings" then
 						
 					elseif key == "exit" then
@@ -74,8 +79,6 @@ function on_input(self, action_id, action)
 						gui.set_enabled(dialog.credits, true)
 						focus = "credits"
 						gui.set_color(btn.menu.credits, COL.default)
-
-
 					elseif key == "close_credits" then
 						gui.set_enabled(dialog.credits, false)
 						focus = "menu"

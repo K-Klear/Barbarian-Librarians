@@ -18,7 +18,7 @@ local movement_direction = {
 
 function init(self)
 	msg.post(".", hash("acquire_input_focus"))
-	local gfx = {[hash("stick")] = self.gfx_stick, [hash("red")] = self.gfx_red, [hash("vojta_beta")] = self.gfx_vojta_beta}
+	local gfx = {[hash("vojta_beta")] = self.gfx_vojta_beta}
 	go.set("#sprite", "image", gfx[self.fighter])
 	if self.facing < 0 then sprite.set_hflip("#sprite", true) end
 	msg.post("#co_physics", "disable")
@@ -44,13 +44,24 @@ function update(self, dt)
 	if self.frame_actions[STATE.frame] then
 		for key, val in ipairs(self.frame_actions[STATE.frame]) do
 			if val == hash("attack_recovery") then
-				self.state = hash("ready")
-				self.anim = hash("ready")
+				if self.state == hash("victor") then
+					sprite.play_flipbook("#sprite", "stand")
+				else
+					self.state = hash("ready")
+					self.anim = hash("ready")
+				end
 			elseif val == hash("damage_point") then
 				local hitbox = factory.create(self.move.hitbox, vmath.vector3(self.move.damage_pos.x * self.facing, self.move.damage_pos.y, 0), nil, nil, 1)
 				msg.post(hitbox, hash("setup"), {myself = self.go, enemy = self.enemy, move = self.move, facing = self.facing})
 				local pos = go.get_position()
 				go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
+			elseif val == hash("victory_pose") then
+				sprite.play_flipbook("#sprite", "victory")
+				msg.post("#co_physics", "disable")
+				msg.post("#co", "enable")
+				go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.3)
+				go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_LINEAR, 0.3)
+				self.frame_actions = {}
 			end
 		end
 	end
@@ -64,7 +75,10 @@ function update(self, dt)
 			end
 		elseif self.actions[movement_direction[self.facing].forward] then
 			if not self.blocked then
-				go.set_position(go.get_position() + vmath.vector3(FIGHTER[self.fighter].speed_forwards * self.facing, 0, 0))
+				local new_pos = go.get_position() + vmath.vector3(FIGHTER[self.fighter].speed_forwards * self.facing, 0, 0)
+				new_pos.x = math.max(new_pos.x, SET.min_x)
+				new_pos.x = math.min(new_pos.x, SET.max_x)
+				go.set_position(new_pos)
 			end
 			if self.anim ~= hash("walk") then
 				sprite.play_flipbook("#sprite", "walk")
@@ -73,7 +87,10 @@ function update(self, dt)
 				msg.post("#co_duck", "disable")
 			end
 		elseif self.actions[movement_direction[self.facing].backward] then
-			go.set_position(go.get_position() - vmath.vector3(FIGHTER[self.fighter].speed_backwards * self.facing, 0, 0))
+			local new_pos = go.get_position() - vmath.vector3(FIGHTER[self.fighter].speed_backwards * self.facing, 0, 0)
+			new_pos.x = math.max(new_pos.x, SET.min_x)
+			new_pos.x = math.min(new_pos.x, SET.max_x)
+			go.set_position(new_pos)
 			if self.anim ~= hash("walk") then
 				sprite.play_flipbook("#sprite", "walk")
 				self.anim = hash("walk")
@@ -123,15 +140,17 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("start") then
 		self.state = hash("ready")
 	elseif message_id == hash("defeat") then
-		print(self.controls, "is defeated")
 		self.state = hash("dead")
 		self.frame_actions = {}
 		msg.post(self.enemy, hash("victory"))
 	elseif message_id == hash("victory") then
-		print(self.controls, "is victorious")
-		self.state = hash("victor")
-		--self.frame_actions = {}
-		timer.delay(3, false, function() print(self.state) end)
+		if not (self.state == hash("dead")) then
+			self.state = hash("victor")
+			add_action(self, hash("victory_pose"), 60)
+			STATE.victor = self.controls
+		end
+	elseif message_id == hash("delete_self") then
+		go.delete(".", true)
 	end
 end
 
@@ -140,6 +159,8 @@ local function execute_move(self, move)
 	self.move = move
 	self.anim = hash("attack")
 	sprite.play_flipbook("#sprite", move.anim)
+	msg.post("#co", "enable")
+	msg.post("#co_duck", "disable")
 	add_action(self, hash("damage_point"), move.damage_point)
 	add_action(self, hash("attack_recovery"), move.recovery)
 end
@@ -162,4 +183,8 @@ function on_input(self, action_id, action)
 			end
 		end
 	end
+end
+
+function final(self)
+	go.delete()
 end

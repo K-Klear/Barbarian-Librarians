@@ -3,7 +3,7 @@ function init(self)
 end
 
 function final(self)
-	
+	go.delete()
 end
 
 function update(self, dt)

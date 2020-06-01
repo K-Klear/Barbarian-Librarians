@@ -78,7 +78,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_ONCE_FORWARD
-  fps: 2
+  fps: 3
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -131,6 +131,21 @@ animations {
   }
   playback: PLAYBACK_LOOP_FORWARD
   fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "victory"
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_spit_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_spit_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 2
   flip_horizontal: 0
   flip_vertical: 0
 }
