@@ -1,0 +1,84 @@
+local STATE = require("mod.state")
+local SET = require("mod.settings")
+local FIGHTER = require("mod.fighters")
+local node
+
+local other_player = {2, 1}
+
+local function play_music()
+	sound.play("/sound#music", nil, play_music)
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	node = {
+		{
+			health_bar = gui.get_node("health_p1"),
+			name_label = gui.get_node("name_p1"),
+			hurt_bar = gui.get_node("hurt_p1")
+		},
+		{
+			health_bar = gui.get_node("health_p2"),
+			name_label = gui.get_node("name_p2"),
+			hurt_bar = gui.get_node("hurt_p2")
+		},
+		round = gui.get_node("round"),
+		fight = gui.get_node("fight"),
+	}
+	local p1, p2
+	local props = {[hash("/body")] = {fighter = hash("vojta_beta"), controls = 2}}
+	local tab = collectionfactory.create("#spawn_fighter", vmath.vector3(SET.starting_x[2], SET.base_y, 0), nil, props)
+	p2 = tab[hash("/body")]
+	gui.set_text(node[1].name_label, FIGHTER[props[hash("/body")].fighter].name)
+	local props = {[hash("/body")] = {fighter = hash("vojta_beta"), controls = 1, facing = -1}}
+	local tab = collectionfactory.create("#spawn_fighter", vmath.vector3(SET.starting_x[1], SET.base_y, 0), nil, props)
+	p1 = tab[hash("/body")]
+	gui.set_text(node[2].name_label, FIGHTER[props[hash("/body")].fighter].name)
+
+	msg.post(p1, hash("setup_gos"), {myself = p1, enemy = p2})
+	msg.post(p2, hash("setup_gos"), {myself = p2, enemy = p1})
+
+	gui.set_enabled(node.fight, false)
+	local round = (STATE.score[1] + STATE.score[2] + 1)
+	gui.set_text(node.round, "Round "..round)
+	
+	play_music()
+	timer.delay(0.5, false, function()
+		sound.play("/sound#round_"..round, nil, function()
+			gui.set_enabled(node.round, false)
+			gui.set_enabled(node.fight, true)
+			msg.post(p1, hash("start"))
+			msg.post(p2, hash("start"))
+			sound.play("sound#fight", nil, function()
+				gui.set_enabled(node.fight, false)
+			end)
+		end)
+	end)
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("debug") and action.pressed then
+		msg.post("@system:", "toggle_physics_debug")
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("damage_dealt") then
+		local new_health = math.max(STATE.health[message.player] - message.amount, 0)
+		STATE.health[message.player] = new_health
+		gui.set_scale(node[message.player].health_bar, vmath.vector3(new_health / 100, 1, 1))
+		gui.animate(node[message.player].hurt_bar, "scale.x", new_health / 100, gui.EASING_INOUTCUBIC, SET.hurt_bar_speed, SET.hurt_bar_delay)
+		if not (new_health > 0) then
+			msg.post(sender, hash("defeat"))
+			if STATE.score[other_player[message.player]] > 1 then
+
+			else
+
+			end
+		end
+	end
+end
+
+function update(self, dt)
+	STATE.frame = STATE.frame + 1
+end

@@ -28,7 +28,7 @@ function init(self)
 		self.actions[val] = false
 	end
 	self.blocked = false
-	self.state = hash("ready")
+	self.state = hash("intro")
 	self.frame_actions = {}
 	self.previous_position = go.get_position()
 	self.anim = hash("stand")
@@ -116,9 +116,22 @@ function on_message(self, message_id, message, sender)
 		self.state = hash("pain")
 		sprite.play_flipbook("#sprite", "pain")
 		self.frame_actions = {}
+		msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 	elseif message_id == hash("setup_gos") then
 		self.go = message.myself
 		self.enemy = message.enemy
+	elseif message_id == hash("start") then
+		self.state = hash("ready")
+	elseif message_id == hash("defeat") then
+		print(self.controls, "is defeated")
+		self.state = hash("dead")
+		self.frame_actions = {}
+		msg.post(self.enemy, hash("victory"))
+	elseif message_id == hash("victory") then
+		print(self.controls, "is victorious")
+		self.state = hash("victor")
+		--self.frame_actions = {}
+		timer.delay(3, false, function() print(self.state) end)
 	end
 end
 
@@ -135,7 +148,6 @@ function on_input(self, action_id, action)
 	if INPUT[self.controls][action_id] then
 		self.actions[INPUT[self.controls][action_id]] = action.pressed or not action.released
 	end
-	
 	if INPUT[self.controls][action_id] == hash("punch") and self.state == hash("ready") and action.pressed then
 		for _, move in ipairs(FIGHTER[self.fighter].moves[hash("punch")]) do
 			local correct_input = true

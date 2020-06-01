@@ -22,7 +22,7 @@ embedded_instances {
   "  type: \"sound\"\n"
   "  data: \"sound: \\\"/assets/sound/music/welcome-to-the-show-by-kevin-macleod-from-filmmusic-io (1).ogg\\\"\\n"
   "looping: 0\\n"
-  "group: \\\"master\\\"\\n"
+  "group: \\\"music\\\"\\n"
   "gain: 1.0\\n"
   "pan: 0.0\\n"
   "speed: 1.0\\n"

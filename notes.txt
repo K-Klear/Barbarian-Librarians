@@ -16,3 +16,8 @@ Music:
 Welcome to the Show by Kevin MacLeod
 Link: https://incompetech.filmmusic.io/song/4614-welcome-to-the-show
 License: http://creativecommons.org/licenses/by/4.0/
+
+
+EDM Detection Mode by Kevin MacLeod
+Link: https://incompetech.filmmusic.io/song/3687-edm-detection-mode
+License: http://creativecommons.org/licenses/by/4.0/

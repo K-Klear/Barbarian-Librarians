@@ -1,12 +1,18 @@
 local btn, dialog
 local COL = {
-	default = vmath.vector4(1, 1, 1, 1),
-	highlight = vmath.vector4(1, 0.2, 0.0, 1)
+	default = vmath.vector4(0, 0, 0, 1),
+	highlight = vmath.vector4(1, 0.1, 0.15, 1)
 }
 local focus = "intro"
 
+local function play_music()
+	sound.play("#music_theme", nil, play_music)
+end
+
+
 function init(self)
-	sound.play("#music_theme")
+	sound.set_group_gain("music", 0.3)
+	play_music()
 	msg.post(".", "acquire_input_focus")
 	btn = {
 		intro = {},
@@ -27,11 +33,15 @@ function init(self)
 		gui.set_enabled(val, false)
 	end
 	gui.animate(gui.get_node("title_lib"), "position.x", 640, gui.EASING_OUTCUBIC, 1, 1.5, function()
-		gui.animate(gui.get_node("title_barb"), "position.x", 640, gui.EASING_OUTELASTIC, 2, 0.5, function()
-			for key, val in pairs(btn.menu) do
-				gui.animate(val, "color.w", 1, gui.EASING_LINEAR, 1, 0, function() focus = "menu" end)
-			end
-		end)
+		if focus == "intro" then
+			gui.animate(gui.get_node("title_barb"), "position.x", 640, gui.EASING_OUTELASTIC, 2, 0.5, function()
+				if focus == "intro" then
+					for key, val in pairs(btn.menu) do
+						gui.animate(val, "color.w", 1, gui.EASING_LINEAR, 1, 0, function() focus = "menu" end)
+					end
+				end
+			end)
+		end
 	end)
 end
 
@@ -42,24 +52,35 @@ end
 
 function on_input(self, action_id, action)
 	if action_id == hash("click") and action.pressed then
-		for key, val in pairs(btn[focus]) do
-			if gui.pick_node(val, action.x, action.y) then
-				if key == "fight" then
-					msg.post("bootstrap:/go", hash("start_game"))
-				elseif key == "settings" then
-					
-				elseif key == "exit" then
-					os.exit()
-				elseif key == "credits" then
-					gui.set_enabled(dialog.credits, true)
-					focus = "credits"
-					gui.set_color(btn.menu.credits, COL.default)
+		if focus == "intro" then
+			local pos = gui.get_position(gui.get_node("title_lib"))
+			gui.set_position(gui.get_node("title_lib"), vmath.vector3(640, pos.y, pos.z))
+			pos = gui.get_position(gui.get_node("title_barb"))
+			gui.set_position(gui.get_node("title_barb"), vmath.vector3(640, pos.y, pos.z))
+			for key, val in pairs(btn.menu) do
+				gui.set_color(val, COL.default)
+			end
+			focus = "menu"
+		else
+			for key, val in pairs(btn[focus]) do
+				if gui.pick_node(val, action.x, action.y) then
+					if key == "fight" then
+						msg.post("bootstrap:/go", hash("start_game"))
+					elseif key == "settings" then
+						
+					elseif key == "exit" then
+						os.exit()
+					elseif key == "credits" then
+						gui.set_enabled(dialog.credits, true)
+						focus = "credits"
+						gui.set_color(btn.menu.credits, COL.default)
 
 
-				elseif key == "close_credits" then
-					gui.set_enabled(dialog.credits, false)
-					focus = "menu"
-					gui.set_color(btn.credits.close_credits, COL.default)
+					elseif key == "close_credits" then
+						gui.set_enabled(dialog.credits, false)
+						focus = "menu"
+						gui.set_color(btn.credits.close_credits, COL.default)
+					end
 				end
 			end
 		end
