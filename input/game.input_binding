@@ -15,11 +15,11 @@ key_trigger {
   action: "p2_right"
 }
 key_trigger {
-  input: KEY_SPACE
+  input: KEY_ENTER
   action: "p1_punch"
 }
 key_trigger {
-  input: KEY_E
+  input: KEY_LSHIFT
   action: "p2_punch"
 }
 key_trigger {
@@ -45,6 +45,14 @@ key_trigger {
 key_trigger {
   input: KEY_ESC
   action: "escape"
+}
+key_trigger {
+  input: KEY_SPACE
+  action: "p1_punch"
+}
+key_trigger {
+  input: KEY_E
+  action: "p2_punch"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT

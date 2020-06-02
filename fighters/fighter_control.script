@@ -160,10 +160,12 @@ function on_message(self, message_id, message, sender)
 		set_collision(hash("stand"))
 		set_collision(hash("fly"))
 		msg.post("#co_physics", "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing, message.move.force.y, 0), position = message.pos})
-		self.state = hash("pain")
-		sprite.play_flipbook("#sprite", "pain")
-		self.frame_actions = {}
-		msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
+		if not (self.state == hash("dead")) then
+			self.state = hash("pain")
+			sprite.play_flipbook("#sprite", "pain")
+			self.frame_actions = {}
+			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
+		end
 	elseif message_id == hash("setup_gos") then
 		self.go = message.myself
 		self.enemy = message.enemy
@@ -212,6 +214,7 @@ function on_input(self, action_id, action)
 		end
 	end
 	if INPUT[self.controls][action_id] == hash("jump") and self.state == hash("ready") and action.pressed then
+		--[[
 		set_collision(hash("fly"))
 		local force_y, force_x = 150000, 0
 		if self.actions[movement_direction[self.facing].forward] then
@@ -222,6 +225,7 @@ function on_input(self, action_id, action)
 		msg.post("#co_physics", "apply_force", {force = vmath.vector3(force_x, force_y, 0), position = go.get_position()})
 		self.state = hash("jump")
 		sprite.play_flipbook("#sprite", "jump")
+		--]]
 	end
 	if INPUT[self.controls][action_id] == hash("punch") and self.state == hash("ready") and action.pressed then
 		for _, move in ipairs(FIGHTER[self.fighter].moves[hash("punch")]) do

@@ -7,6 +7,18 @@ fonts {
   name: "librarian"
   font: "/assets/fonts/librarian.font"
 }
+fonts {
+  name: "barbarians_smaller"
+  font: "/assets/fonts/barbarians_smaller.font"
+}
+fonts {
+  name: "librarian_smaller"
+  font: "/assets/fonts/librarian_smaller.font"
+}
+textures {
+  name: "main"
+  texture: "/main/main.atlas"
+}
 background_color {
   x: 0.0
   y: 0.0
@@ -388,7 +400,7 @@ nodes {
 nodes {
   position {
     x: 640.0
-    y: 360.0
+    y: 283.0
     z: 0.0
     w: 1.0
   }
@@ -405,8 +417,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 900.0
-    y: 600.0
+    x: 1160.0
+    y: 550.0
     z: 0.0
     w: 1.0
   }
@@ -435,14 +447,14 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.85
+  alpha: 1.0
   template_node_child: false
   size_mode: SIZE_MODE_MANUAL
 }
 nodes {
   position {
-    x: 0.0
-    y: -244.0
+    x: 477.0
+    y: -195.0
     z: 0.0
     w: 1.0
   }
@@ -504,8 +516,8 @@ nodes {
 }
 nodes {
   position {
-    x: 0.0
-    y: 29.0
+    x: -548.0
+    y: 11.0
     z: 0.0
     w: 1.0
   }
@@ -528,33 +540,224 @@ nodes {
     w: 1.0
   }
   color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Game by Vojta Kyncl\n"
+  "\n"
+  "Music by Kevin MacLeod:\n"
+  "\n"
+  "Welcome to the Show by Kevin MacLeod\n"
+  "Link: https://incompetech.filmmusic.io/song/4614-welcome-to-the-show\n"
+  "License: http://creativecommons.org/licenses/by/4.0/\n"
+  "\n"
+  "Beauty Flow by Kevin MacLeod\n"
+  "Link: https://incompetech.filmmusic.io/song/5025-beauty-flow\n"
+  "License: http://creativecommons.org/licenses/by/4.0/\n"
+  "\n"
+  "EDM Detection Mode by Kevin MacLeod\n"
+  "Link: https://incompetech.filmmusic.io/song/3687-edm-detection-mode\n"
+  "License: http://creativecommons.org/licenses/by/4.0/"
+  font: "librarian_smaller"
+  id: "text_credits"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
     x: 0.0
     y: 0.0
     z: 0.0
     w: 1.0
   }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "Made in Defold by Vojta Kyncl\n"
-  "\n"
-  "Fonts: some I found online\n"
-  "Music: Kevin MacLeod\n"
-  "Fighters: Coming soon"
-  font: "librarian"
-  id: "text_credits"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
+  shadow {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "dialog_credits"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 343.0
+    y: 103.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 300.0
+    y: 354.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
     x: 1.0
     y: 1.0
     z: 1.0
     w: 1.0
   }
-  shadow {
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main/defold_logo"
+  id: "made_with_defold_tm"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "dialog_credits"
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 127.0
+    y: -67.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
     x: 1.0
     y: 1.0
     z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Elementary Gothic Bookhand font by Bill Roach"
+  font: "librarian_smaller"
+  id: "text_credits_font_1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  shadow {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "dialog_credits"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 127.0
+    y: -105.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Barbarian NS font by Anthony Robinson"
+  font: "barbarians_smaller"
+  id: "text_credits_font_2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  shadow {
+    x: 0.0
+    y: 0.0
+    z: 0.0
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT

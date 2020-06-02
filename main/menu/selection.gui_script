@@ -15,6 +15,7 @@ local selection = {false, false}
 local locked = {false, false}
 local starting = false
 local btn
+local versus_screen
 
 local function change_preview(self, player, fighter)
 	if FIGHTER[fighter] then
@@ -28,7 +29,12 @@ local function change_preview(self, player, fighter)
 	end
 end
 
+local function play_music()
+	sound.play("#music", nil, play_music)
+end
+
 function init(self)
+	play_music()
 	msg.post(".", "acquire_input_focus")
 	icons = {
 		{hash("vojta_beta"), hash("lukas")},
@@ -38,6 +44,8 @@ function init(self)
 	reticles = {gui.get_node("reticle_p1"), gui.get_node("reticle_p2")}
 	texts = {gui.get_node("text_1"), gui.get_node("text_2")}
 	preview = {gui.get_node("preview_player_1"), gui.get_node("preview_player_2")}
+	versus_screen = gui.get_node("versus_screen")
+	gui.set_enabled(versus_screen, false)
 	change_preview(self, 1, icons[reticle_pos[1].x][reticle_pos[1].y])
 	change_preview(self, 2, icons[reticle_pos[2].x][reticle_pos[2].y])
 end
@@ -49,7 +57,14 @@ end
 local function check_selection(self)
 	if locked[1] and locked[2] and not starting then
 		starting = true
-		msg.post("bootstrap:/go", hash("start_match"))
+		gui.set_enabled(versus_screen, true)
+		sound.play("#Vojta", nil, function()
+			sound.play("#versus", nil, function()
+				sound.play("#Vojta", nil, function()
+					msg.post("bootstrap:/go", hash("start_match"))
+				end)
+			end)
+		end)
 	end
 end
 

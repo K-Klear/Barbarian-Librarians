@@ -19,6 +19,7 @@ function init(self)
 	play_music()
 	msg.post(".", "acquire_input_focus")
 	btn = {
+		none = {},
 		intro = {},
 		menu = {
 			fight = gui.get_node("btn_fight"),
@@ -86,13 +87,20 @@ function on_input(self, action_id, action)
 					elseif key == "exit" then
 						os.exit()
 					elseif key == "credits" then
-						gui.set_enabled(dialog.credits, true)
-						focus = "credits"
 						gui.set_color(btn.menu.credits, COL.default)
+						gui.set_enabled(dialog.credits, true)
+						gui.set_color(dialog.credits, vmath.vector4(0, 0, 0, 0))
+						focus = "none"
+						gui.animate(dialog.credits, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
+							focus = "credits"
+						end)
 					elseif key == "close_credits" then
-						gui.set_enabled(dialog.credits, false)
-						focus = "menu"
+						focus = "none"
 						gui.set_color(btn.credits.close_credits, COL.default)
+						gui.animate(dialog.credits, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 0.3, 0, function()
+							focus = "menu"
+							gui.set_enabled(dialog.credits, false)
+						end)
 					end
 				end
 			end

@@ -83,6 +83,7 @@ function init(self)
 		fight = gui.get_node("fight"),
 		winner = gui.get_node("winner")
 	}
+	
 	play_music()
 	start_round(self)
 end
@@ -115,7 +116,7 @@ local function end_round(self)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("damage_dealt") then
+	if message_id == hash("damage_dealt") and STATE.health[message.player] > 0 then
 		local new_health = math.max(STATE.health[message.player] - message.amount, 0)
 		STATE.health[message.player] = new_health
 		gui.set_scale(node[message.player].health_bar, vmath.vector3(new_health / 100, 1, 1))
