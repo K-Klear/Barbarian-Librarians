@@ -1,3 +1,25 @@
+Animation checklist:
+
+Stand
+Walk
+Walk backwards
+Duck
+Pain
+Lie
+Stand up
+Victory
+Turn
+
+Jump
+Jump kick
+Pump punch
+
+
+
+
+
+
+
 Credits:
 
 

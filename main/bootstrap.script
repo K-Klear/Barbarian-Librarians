@@ -2,9 +2,9 @@ function init(self)
 	msg.post("@render:", "use_fixed_fit_projection", {near = -1, far = 1})
 	msg.post(".", "acquire_input_focus")
 	msg.post("#proxy_menu", "load")
+	math.randomseed(os.time())
+	math.random(); math.random(); math.random(); math.random()
 end
-
-
 
 
 function on_message(self, message_id, message, sender)
@@ -13,14 +13,16 @@ function on_message(self, message_id, message, sender)
 		msg.post(sender, "enable")
 	elseif message_id == hash("selection_screen") then
 		msg.post("#proxy_menu", "unload")
-		--msg.post("#proxy_main", "load")
 		msg.post("#proxy_selection", "load")
+	elseif message_id == hash("back_to_menu") then
+		msg.post("#proxy_selection", "unload")
+		msg.post("#proxy_menu", "load")
 	elseif message_id == hash("start_match") then
 		msg.post("#proxy_selection", "unload")
 		msg.post("#proxy_main", "load")
 	elseif message_id == hash("game_end") then
 		msg.post("#proxy_main", "unload")
-		msg.post("#proxy_menu", "load")
+		msg.post("#proxy_selection", "load")
 	end
 end
 

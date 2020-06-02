@@ -18,8 +18,8 @@ local FIGHTER = {
 					recovery = 90
 				},
 				{
-					keys_held = {"backward"},
-					keys_sequence = {},
+					keys_held = {},
+					keys_sequence = {hash("punch"), hash("forward"), hash("backward")},
 					anim = "spit",
 					hitbox = "#hitbox_spit",
 					speed = 8,

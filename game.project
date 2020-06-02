@@ -33,6 +33,7 @@ input_method = HiddenInputField
 gravity_y = -2500.0
 scale = 0.01
 debug = 0
+debug_alpha = 0.7
 
 [graphics]
 default_texture_min_filter = nearest

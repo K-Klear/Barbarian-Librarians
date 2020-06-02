@@ -60,6 +60,8 @@ local function start_round(self)
 end
 
 function init(self)
+	local background_list = {"corridor", "court_1", "smoke_break"}
+	sprite.play_flipbook("/background#sprite", (background_list[math.random(#background_list)]))
 	self.player_collections = {{}, {}}
 	msg.post(".", "acquire_input_focus")
 	node = {

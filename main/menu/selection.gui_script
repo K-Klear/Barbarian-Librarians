@@ -3,12 +3,18 @@ local FIGHTER = require("mod.fighters")
 local STATE = require("mod.state")
 local SET = require("mod.settings")
 
+local COL = {
+	default = vmath.vector4(0, 0, 0, 1),
+	highlight = vmath.vector4(1, 0.1, 0.15, 1)
+}
+
 local icons, reticles, preview
 local reticle_pos = {{x = 2, y = 1}, {x = 1, y = 1}}
 local reticle_moving = {false, false}
 local selection = {false, false}
 local locked = {false, false}
 local starting = false
+local btn
 
 local function change_preview(self, player, fighter)
 	if FIGHTER[fighter] then
@@ -23,12 +29,12 @@ local function change_preview(self, player, fighter)
 end
 
 function init(self)
-	pprint(locked)
 	msg.post(".", "acquire_input_focus")
 	icons = {
 		{hash("vojta_beta"), hash("lukas")},
 		{hash("bohous"), hash("michael")}
 	}
+	btn = {back = gui.get_node("back")}
 	reticles = {gui.get_node("reticle_p1"), gui.get_node("reticle_p2")}
 	texts = {gui.get_node("text_1"), gui.get_node("text_2")}
 	preview = {gui.get_node("preview_player_1"), gui.get_node("preview_player_2")}
@@ -92,6 +98,19 @@ function on_input(self, action_id, action)
 					end
 				end
 			end
+		end
+	end
+	if action_id == hash("click") and action.pressed then
+		if gui.pick_node(btn.back, action.x, action.y) then
+			msg.post("bootstrap:/go", hash("back_to_menu"))
+		end
+	elseif action_id == hash("escape") and action.pressed then
+		msg.post("bootstrap:/go", hash("back_to_menu"))
+	elseif not action_id then
+		if gui.pick_node(btn.back, action.x, action.y) then
+			gui.set_color(btn.back, COL.highlight)
+		else
+			gui.set_color(btn.back, COL.default)
 		end
 	end
 end

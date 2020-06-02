@@ -36,17 +36,27 @@ function init(self)
 	for key, val in pairs(dialog) do
 		gui.set_enabled(val, false)
 	end
-	gui.animate(gui.get_node("title_lib"), "position.x", 640, gui.EASING_OUTCUBIC, 1, 1.5, function()
-		if focus == "intro" then
-			gui.animate(gui.get_node("title_barb"), "position.x", 640, gui.EASING_OUTELASTIC, 2, 0.5, function()
-				if focus == "intro" then
-					for key, val in pairs(btn.menu) do
-						gui.animate(val, "color.w", 1, gui.EASING_LINEAR, 1, 0, function() focus = "menu" end)
+	if STATE.play_intro then
+		STATE.play_intro = false
+		gui.animate(gui.get_node("title_lib"), "position.x", 640, gui.EASING_OUTCUBIC, 1, 1.5, function()
+			if focus == "intro" then
+				gui.animate(gui.get_node("title_barb"), "position.x", 640, gui.EASING_OUTELASTIC, 2, 0.5, function()
+					if focus == "intro" then
+						for key, val in pairs(btn.menu) do
+							gui.animate(val, "color.w", 1, gui.EASING_LINEAR, 1, 0, function() focus = "menu" end)
+						end
 					end
-				end
-			end)
+				end)
+			end
+		end)
+	else
+		gui.set_position(gui.get_node("title_lib"), vmath.vector3(640, 658, 0))
+		gui.set_position(gui.get_node("title_barb"), vmath.vector3(640, 588, 0))
+		for key, val in pairs(btn.menu) do
+			gui.set_color(val, COL.default)
 		end
-	end)
+		focus = "menu"
+	end
 end
 
 
