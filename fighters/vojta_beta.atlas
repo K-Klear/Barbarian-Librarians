@@ -164,6 +164,17 @@ animations {
   flip_horizontal: 0
   flip_vertical: 0
 }
+animations {
+  id: "jump_kick"
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_jump_kick_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
 margin: 0
 extrude_borders: 2
 inner_padding: 0

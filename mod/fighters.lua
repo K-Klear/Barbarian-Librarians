@@ -9,6 +9,7 @@ local FIGHTER = {
 				{
 					keys_held = {hash("duck")},
 					keys_sequence = {},
+					state = hash("ready"),
 					anim = "uppercut",
 					hitbox = "#hitbox_simple",
 					damage_point = 40,
@@ -20,6 +21,7 @@ local FIGHTER = {
 				{
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("forward"), hash("backward")},
+					state = hash("ready"),
 					anim = "spit",
 					hitbox = "#hitbox_spit",
 					speed = 8,
@@ -32,6 +34,7 @@ local FIGHTER = {
 				{
 					keys_held = {},
 					keys_sequence = {},
+					state = hash("ready"),
 					anim = "punch",
 					hitbox = "#hitbox_simple",
 					damage_point = 1,
@@ -40,6 +43,19 @@ local FIGHTER = {
 					force = vmath.vector3(6000, 10000, 0),
 					damage = 7,
 					recovery = 30
+				},
+				{
+					keys_held = {},
+					keys_sequence = {},
+					state = hash("jump"),
+					anim = "jump_kick",
+					hitbox = "#hitbox_jump",
+					damage_point = 1,
+					damage_pos = vmath.vector3(144, -30, 0),
+					--force = vmath.vector3(30000, 10000, 0),
+					force = vmath.vector3(60000, 0.20000, 0),
+					damage = 1,
+					recovery = nil
 				}
 			}
 		}

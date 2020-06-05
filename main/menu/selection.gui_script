@@ -57,6 +57,8 @@ end
 local function check_selection(self)
 	if locked[1] and locked[2] and not starting then
 		starting = true
+		msg.post("bootstrap:/go", hash("start_match"))
+		--[[
 		gui.set_enabled(versus_screen, true)
 		sound.play("#Vojta", nil, function()
 			sound.play("#versus", nil, function()
@@ -65,6 +67,7 @@ local function check_selection(self)
 				end)
 			end)
 		end)
+		--]]
 	end
 end
 
