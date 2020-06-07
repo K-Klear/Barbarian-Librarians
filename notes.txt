@@ -12,25 +12,24 @@ Turn
 
 Jump
 Jump kick
-Pump punch
+Jump punch
 
 
 
 Stuff to do:
 
-- Make "round won" stars appear immediately following a knockout
-
-- Maybe add some rudimentary sounds
 - explain my moveset *somewhere*
 - Basic options screen with volume and... maybe just volume for now. And see if I can make changes stick.
 - Allow keyboard navigation in the main menu
 - "Draw" voiceover
-- "Versus" screen. Even if it means taking a selfie.
 - Check if html5 slow everywhere or just on my work computer. Maybe fiddle some more with VSync settings.
-- Pat myself on the back.
 
+- MORE FIGHTERS!
 
+Known bugs:
 
+- Victory star appears for both players when a round is drawn, though it's fixed as the next round starts
+- There was that one time when my ragdoll ended up standing on its head
 
 
 Credits:

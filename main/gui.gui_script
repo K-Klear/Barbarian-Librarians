@@ -123,7 +123,8 @@ function on_message(self, message_id, message, sender)
 		gui.animate(node[message.player].hurt_bar, "scale.x", new_health / 100, gui.EASING_INOUTCUBIC, SET.hurt_bar_speed, SET.hurt_bar_delay)
 		if not (new_health > 0) then
 			msg.post(sender, hash("defeat"))
-
+			gui.set_enabled(node[other_player[message.player]].win_1, STATE.score[other_player[message.player]] > -1)
+			gui.set_enabled(node[other_player[message.player]].win_2, STATE.score[other_player[message.player]] > 0)
 			timer.delay(SET.round_end_delay, false, end_round)
 
 			

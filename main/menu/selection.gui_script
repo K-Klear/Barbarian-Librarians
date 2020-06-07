@@ -22,10 +22,12 @@ local function change_preview(self, player, fighter)
 		gui.set_texture(preview[player], FIGHTER[fighter].atlas)
 		gui.play_flipbook(preview[player], "stand")
 		selection[player] = fighter
+		gui.set_text(name[player], FIGHTER[fighter].name)
 	else
 		gui.set_texture(preview[player], "main")
 		gui.play_flipbook(preview[player], "unknown_fighter")
 		selection[player] = false
+		gui.set_text(name[player], "")
 	end
 end
 
@@ -44,6 +46,7 @@ function init(self)
 	reticles = {gui.get_node("reticle_p1"), gui.get_node("reticle_p2")}
 	texts = {gui.get_node("text_1"), gui.get_node("text_2")}
 	preview = {gui.get_node("preview_player_1"), gui.get_node("preview_player_2")}
+	name = {gui.get_node("name_player_1"), gui.get_node("name_player_2")}
 	versus_screen = gui.get_node("versus_screen")
 	gui.set_enabled(versus_screen, false)
 	change_preview(self, 1, icons[reticle_pos[1].x][reticle_pos[1].y])
@@ -113,6 +116,7 @@ function on_input(self, action_id, action)
 						gui.set_color(reticles[player], vmath.vector4(0.3, 0.3, 0.3, 1))
 						locked[player] = true
 						gui.play_flipbook(preview[player], "victory", check_selection)
+						sound.play("#"..FIGHTER[selection[player]].name)
 					end
 				end
 			end

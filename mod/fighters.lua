@@ -39,7 +39,6 @@ local FIGHTER = {
 					hitbox = "#hitbox_simple",
 					damage_point = 1,
 					damage_pos = vmath.vector3(150, 150, 0),
-					--force = vmath.vector3(30000, 10000, 0),
 					force = vmath.vector3(6000, 10000, 0),
 					damage = 7,
 					recovery = 30
@@ -51,10 +50,9 @@ local FIGHTER = {
 					anim = "jump_kick",
 					hitbox = "#hitbox_jump",
 					damage_point = 1,
-					damage_pos = vmath.vector3(144, -30, 0),
-					--force = vmath.vector3(30000, 10000, 0),
-					force = vmath.vector3(60000, 0.20000, 0),
-					damage = 1,
+					damage_pos = vmath.vector3(180, -37, 0),
+					force = vmath.vector3(60000, 15000, 0),
+					damage = 12,
 					recovery = nil
 				}
 			}

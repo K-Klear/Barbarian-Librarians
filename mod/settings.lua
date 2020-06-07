@@ -4,6 +4,12 @@ return {
 	min_x = 80,
 	max_x = 1200,
 
+	fighters_min_distance = 100,
+
+	jump_force = vmath.vector3(65000, 170000, 0),
+
+	
+
 	input_history_length = 5,
 	combo_input_delay = 30,
 	

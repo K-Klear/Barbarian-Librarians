@@ -1,6 +1,7 @@
 go.property("fighter", hash("stick"))
 go.property("controls", 1)
 go.property("facing", 1)
+go.property("state", hash("intro"))
 
 go.property("gfx_stick", resource.atlas("/fighters/stick.atlas"))
 go.property("gfx_red", resource.atlas("/fighters/red.atlas"))
@@ -18,10 +19,10 @@ local movement_direction = {
 
 local function set_collision(collision)
 	local collisions = {
-		[hash("stand")] = {co_ragdoll = "disable", co_duck = "disable", co = "enable", co_jump_physics = "disable", co_jump = "disable"},
-		[hash("duck")] = {co_ragdoll = "disable", co_duck = "enable", co = "disable", co_jump_physics = "disable", co_jump = "disable"},
-		[hash("ragdoll")] = {co_ragdoll = "enable", co_duck = "disable", co = "disable", co_jump_physics = "disable", co_jump = "disable"},
-		[hash("jump")] = {co_ragdoll = "disable", co_duck = "disable", co = "disable", co_jump_physics = "enable", co_jump = "enable"},
+		[hash("stand")] = {co_ragdoll = "disable", co_duck = "disable", co = "enable", co_jump_physics = "disable"},
+		[hash("duck")] = {co_ragdoll = "disable", co_duck = "enable", co = "disable", co_jump_physics = "disable"},
+		[hash("ragdoll")] = {co_ragdoll = "enable", co_duck = "disable", co = "disable", co_jump_physics = "disable"},
+		[hash("jump")] = {co_ragdoll = "disable", co_duck = "disable", co = "disable", co_jump_physics = "enable"},
 	}
 	for key, val in pairs(collisions[collision]) do
 		msg.post("#"..key, val)
@@ -29,9 +30,23 @@ local function set_collision(collision)
 end
 
 local function reset_position(time)
-	set_collision(hash("stand"))
-	go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, time)
-	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_LINEAR, time)
+	if time then
+		set_collision(hash("stand"))
+		go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, time)
+		go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_LINEAR, time)
+	else
+		go.cancel_animations(".", "euler.z")
+		go.cancel_animations(".", "position.y")
+		go.set(".", "euler.z", 0)
+		go.set(".", "position.y", SET.base_y)
+	end
+end
+
+local function check_facing(self)
+	if (go.get_position().x - go.get_position(self.enemy).x) * self.facing > 0 then
+		self.facing = -self.facing
+		sprite.set_hflip("#sprite", self.facing < 0)
+	end
 end
 
 local function play_animation(self, anim)
@@ -83,6 +98,9 @@ function update(self, dt)
 				msg.post(hitbox, hash("setup"), {myself = self.go, enemy = self.enemy, move = self.move, facing = self.facing})
 				local pos = go.get_position()
 				go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
+				if self.move.hitbox == "#hitbox_jump" then
+					self.hitbox = hitbox
+				end
 			elseif val == hash("victory_pose") then
 				play_animation(self, "victory")
 				set_collision(hash("stand"))
@@ -93,6 +111,7 @@ function update(self, dt)
 		end
 	end
 	if self.state == hash("ready") then
+		check_facing(self)
 		if self.actions[hash("duck")] then
 			play_animation(self, "duck")
 			set_collision(hash("duck"))
@@ -116,9 +135,7 @@ function update(self, dt)
 			play_animation(self, "stand")
 			set_collision(hash("stand"))
 		end
-	end
-	self.blocked = false
-	if self.state == hash("ragdoll") and vmath.length_sqr(self.previous_position - go.get_position()) < SET.recovery_threshold then
+	elseif self.state == hash("ragdoll") and vmath.length_sqr(self.previous_position - go.get_position()) < SET.recovery_threshold then
 		reset_position(SET.recovery_speed)
 		play_animation(self, "stand")
 		self.state = hash("ready")
@@ -126,9 +143,13 @@ function update(self, dt)
 		self.state = hash("ragdoll")
 	end
 	self.previous_position = go.get_position()
-	if (go.get_position().x - go.get_position(self.enemy).x) * self.facing > 0 then
-		self.facing = -self.facing
-		sprite.set_hflip("#sprite", self.facing < 0)
+	self.blocked = false
+	
+	if math.abs(go.get_position().x - go.get_position(self.enemy).x) < SET.fighters_min_distance then
+		local enemy_state = go.get(msg.url(nil, self.enemy, "fighter_control"), hash("state"))
+		if not (enemy_state == hash("jump") or enemy_state == hash("attack")) then
+			go.set_position(go.get_position() + vmath.vector3(10, 0, 0) * -self.facing)
+		end
 	end
 end
 
@@ -143,6 +164,10 @@ function on_message(self, message_id, message, sender)
 			set_collision(hash("stand"))
 			play_animation(self, "stand")
 			reset_position(0.05)
+			if self.hitbox then
+				msg.post(self.hitbox, hash("die"))
+				self.hitbox = nil
+			end
 		end
 		--[[
 		if true then
@@ -165,6 +190,7 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("attack_landed") then
 		set_collision(hash("stand"))
 		set_collision(hash("ragdoll"))
+
 		msg.post("#co_ragdoll", "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing, message.move.force.y, 0), position = message.pos})
 		if not (self.state == hash("dead")) then
 			self.state = hash("pain")
@@ -172,6 +198,33 @@ function on_message(self, message_id, message, sender)
 			self.frame_actions = {}
 			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 		end
+		if self.hitbox then
+			msg.post(self.hitbox, hash("die"))
+			self.hitbox = nil
+		end
+	elseif message_id == hash("attack_pushback") then
+		local direction = (self.previous_position.x - go.get_position().x) * -self.facing
+		local magic_number = SET.jump_force.x / 14400
+		local multiplier = (direction + magic_number) / magic_number
+		msg.post("#co_jump_physics", "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing * multiplier, 0, 0), position = message.pos})
+		if self.hitbox then
+			msg.post(self.hitbox, hash("die"))
+			self.hitbox = nil
+		end
+	elseif message_id == hash("jump") then
+		set_collision(hash("jump"))
+		local force_x, force_y, anim = SET.jump_force.x, SET.jump_force.y, "jump"
+		if self.actions[movement_direction[self.facing].forward] then
+			force_x = force_x * self.facing
+		elseif self.actions[movement_direction[self.facing].backward] then
+			force_x = force_x * -self.facing
+			anim = "jump_back"
+		else
+			force_x = 0
+		end
+		msg.post("#co_jump_physics", "apply_force", {force = vmath.vector3(force_x, force_y, 0), position = go.get_position()})
+		self.state = hash("jump")
+		play_animation(self, anim)
 	elseif message_id == hash("setup_gos") then
 		self.go = message.myself
 		self.enemy = message.enemy
@@ -193,6 +246,7 @@ function on_message(self, message_id, message, sender)
 end
 
 local function execute_move(self, move)
+	check_facing(self)
 	self.state = hash("attack")
 	self.move = move
 	play_animation(self, move.anim)
@@ -223,16 +277,8 @@ function on_input(self, action_id, action)
 		end
 	end
 	if INPUT[self.controls][action_id] == hash("jump") and self.state == hash("ready") and action.pressed then
-		set_collision(hash("jump"))
-		local force_y, force_x = 150000, 0
-		if self.actions[movement_direction[self.facing].forward] then
-			force_x = (force_y / 2) * self.facing
-		elseif self.actions[movement_direction[self.facing].backward] then
-			force_x = (force_y / 2) * -self.facing
-		end
-		msg.post("#co_jump_physics", "apply_force", {force = vmath.vector3(force_x, force_y, 0), position = go.get_position()})
-		self.state = hash("jump")
-		play_animation(self, "jump")
+		reset_position()
+		msg.post(".", hash("jump"))
 	end
 	if INPUT[self.controls][action_id] == hash("punch") and (self.state == hash("ready") or self.state == hash("jump")) and action.pressed then
 		for _, move in ipairs(FIGHTER[self.fighter].moves[hash("punch")]) do
