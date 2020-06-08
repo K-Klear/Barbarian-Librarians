@@ -8,8 +8,6 @@ return {
 
 	jump_force = vmath.vector3(65000, 170000, 0),
 
-	
-
 	input_history_length = 5,
 	combo_input_delay = 30,
 	
@@ -20,5 +18,10 @@ return {
 	hurt_bar_speed = 0.5,
 
 	round_end_delay = 1.5,
-	next_round_delay = 1
+	next_round_delay = 1,
+
+	lang = 1,
+	language_list = {english = 1, czech = 2},
+
+	volume = {music = 0.3, voice = 0.1, sound = 1}
 }

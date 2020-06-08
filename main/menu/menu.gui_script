@@ -1,21 +1,37 @@
 local btn, dialog
 local COL = {
 	default = vmath.vector4(0, 0, 0, 1),
-	highlight = vmath.vector4(1, 0.1, 0.15, 1)
+	highlight = vmath.vector4(1, 0.1, 0.15, 1),
+	default_img = vmath.vector4(1, 1, 1, 1),
+	highlight_img = vmath.vector4(1, 0.5, 0.6, 1)
 }
 local focus = "intro"
 
 local STATE = require("mod.state")
 local SET = require("mod.settings")
 local FIGHTER = require("mod.fighters")
+local STR = require("mod.string") 
 
 local function play_music()
 	sound.play("#music_theme", nil, play_music)
 end
 
+local function set_texts()
+	gui.set_text(btn.menu.fight, STR[hash("menu_fight")][SET.lang])
+	gui.set_text(btn.menu.settings, STR[hash("menu_settings")][SET.lang])
+	gui.set_text(btn.menu.exit, STR[hash("menu_exit")][SET.lang])
+	gui.set_text(btn.menu.credits, STR[hash("menu_credits")][SET.lang])
+	gui.set_text(btn.settings.close_settings, STR[hash("menu_close")][SET.lang])
+	gui.set_text(btn.credits.close_credits, STR[hash("menu_close")][SET.lang])
+	gui.set_text(gui.get_node("text_credits"), STR[hash("credits_text")][SET.lang])
+	gui.set_text(gui.get_node("text_credits_font_1"), STR[hash("credits_font_1")][SET.lang])
+	gui.set_text(gui.get_node("text_credits_font_2"), STR[hash("credits_font_2")][SET.lang])
+end
 
 function init(self)
-	sound.set_group_gain("music", 0.3)
+	sound.set_group_gain("music", SET.volume.music)
+	sound.set_group_gain("voice", SET.volume.voice)
+	sound.set_group_gain("sound", SET.volume.sound)
 	play_music()
 	msg.post(".", "acquire_input_focus")
 	btn = {
@@ -27,11 +43,17 @@ function init(self)
 			exit = gui.get_node("btn_exit"),
 			credits = gui.get_node("btn_credits")
 		},
+		settings = {
+			czech = gui.get_node("flag_cz"),
+			english = gui.get_node("flag_uk"),
+			close_settings = gui.get_node("btn_close_settings")
+		},
 		credits = {
 			close_credits = gui.get_node("btn_close_credits")
-		}
+		},
 	}
 	dialog = {
+		settings = gui.get_node("dialog_settings"),
 		credits = gui.get_node("dialog_credits")
 	}
 	for key, val in pairs(dialog) do
@@ -58,6 +80,7 @@ function init(self)
 		end
 		focus = "menu"
 	end
+	set_texts()
 end
 
 
@@ -83,7 +106,23 @@ function on_input(self, action_id, action)
 						STATE.fighter = {hash("vojta_beta"), hash("vojta_beta")}
 						msg.post("bootstrap:/go", hash("selection_screen"))
 					elseif key == "settings" then
-						
+						gui.set_color(btn.menu.settings, COL.default)
+						gui.set_enabled(dialog.settings, true)
+						gui.set_color(dialog.settings, vmath.vector4(0, 0, 0, 0))
+						focus = "none"
+						gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
+							focus = "settings"
+						end)
+					elseif key == "czech" or key == "english" then
+						SET.lang = SET.language_list[key]
+						set_texts()
+					elseif key == "close_settings" then
+						focus = "none"
+						gui.set_color(btn.settings.close_settings, COL.default)
+						gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 0.3, 0, function()
+							focus = "menu"
+							gui.set_enabled(dialog.settings, false)
+						end)
 					elseif key == "exit" then
 						os.exit()
 					elseif key == "credits" then
@@ -108,9 +147,17 @@ function on_input(self, action_id, action)
 	elseif not action_id then
 		for key, val in pairs(btn[focus]) do
 			if gui.pick_node(val, action.x, action.y) then
-				gui.set_color(val, COL.highlight)
+				if gui.get_text(val) then
+					gui.set_color(val, COL.highlight)
+				else
+					gui.set_color(val, COL.highlight_img)
+				end
 			else
-				gui.set_color(val, COL.default)
+				if gui.get_text(val) then
+					gui.set_color(val, COL.default)
+				else
+					gui.set_color(val, COL.default_img)
+				end
 			end
 		end
 	end

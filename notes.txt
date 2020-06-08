@@ -18,12 +18,12 @@ Jump punch
 
 Stuff to do:
 
-- explain my moveset *somewhere*
+- Explain the movesets *somewhere*
 - Basic options screen with volume and... maybe just volume for now. And see if I can make changes stick.
 - Allow keyboard navigation in the main menu
 - "Draw" voiceover
-- Check if html5 slow everywhere or just on my work computer. Maybe fiddle some more with VSync settings.
-
+- Decouple framerate from simulation
+- Add diacritics to the fonts
 - MORE FIGHTERS!
 
 Known bugs:
