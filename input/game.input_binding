@@ -47,12 +47,12 @@ key_trigger {
   action: "escape"
 }
 key_trigger {
-  input: KEY_SPACE
-  action: "p1_punch"
+  input: KEY_RSHIFT
+  action: "p1_kick"
 }
 key_trigger {
-  input: KEY_E
-  action: "p2_punch"
+  input: KEY_LCTRL
+  action: "p2_kick"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT

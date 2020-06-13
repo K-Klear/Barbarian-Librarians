@@ -15,6 +15,10 @@ textures {
   name: "main"
   texture: "/main/main.atlas"
 }
+textures {
+  name: "bohous"
+  texture: "/fighters/bohous.atlas"
+}
 background_color {
   x: 0.0
   y: 0.0

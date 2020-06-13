@@ -6,6 +6,8 @@ return {
 
 	fighters_min_distance = 100,
 
+	high_pain_threshold = 120,
+
 	jump_force = vmath.vector3(65000, 170000, 0),
 
 	

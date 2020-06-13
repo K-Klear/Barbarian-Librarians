@@ -2,11 +2,11 @@ animations {
   id: "walk"
   images {
     image: "/assets/images/fighters/stick_red/red_walk.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+    sprite_trim_mode: SPRITE_TRIM_MODE_4
   }
   images {
     image: "/assets/images/fighters/stick_red/red_stand.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+    sprite_trim_mode: SPRITE_TRIM_MODE_4
   }
   playback: PLAYBACK_LOOP_FORWARD
   fps: 4
@@ -17,7 +17,7 @@ animations {
   id: "stand"
   images {
     image: "/assets/images/fighters/stick_red/red_stand.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+    sprite_trim_mode: SPRITE_TRIM_MODE_4
   }
   playback: PLAYBACK_LOOP_FORWARD
   fps: 60
@@ -28,7 +28,7 @@ animations {
   id: "punch"
   images {
     image: "/assets/images/fighters/stick_red/red_punch.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+    sprite_trim_mode: SPRITE_TRIM_MODE_4
   }
   playback: PLAYBACK_LOOP_FORWARD
   fps: 60
@@ -36,5 +36,5 @@ animations {
   flip_vertical: 0
 }
 margin: 0
-extrude_borders: 2
+extrude_borders: 0
 inner_padding: 0

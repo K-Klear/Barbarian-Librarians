@@ -94,7 +94,7 @@ animations {
   flip_vertical: 0
 }
 animations {
-  id: "pain"
+  id: "pain_high"
   images {
     image: "/assets/images/fighters/vojta_beta/vb_pain_01.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
@@ -150,7 +150,7 @@ animations {
   flip_vertical: 0
 }
 animations {
-  id: "jump"
+  id: "jump_front"
   images {
     image: "/assets/images/fighters/vojta_beta/vb_jump_01.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
@@ -203,6 +203,98 @@ animations {
   }
   playback: PLAYBACK_LOOP_BACKWARD
   fps: 8
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "land"
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_ready_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_ready_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_ready_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_ready_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_ready_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_ready_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 3
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "walk_back"
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_walk_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_walk_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_walk_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_walk_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_walk_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_BACKWARD
+  fps: 4
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "turn"
+  images {
+    image: "/assets/images/fighters/bohous/bo_turn_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/bohous/bo_turn_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/bohous/bo_turn_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/bohous/bo_turn_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 4
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "pain_low"
+  images {
+    image: "/assets/images/fighters/vojta_beta/vb_pain_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
   flip_horizontal: 0
   flip_vertical: 0
 }
