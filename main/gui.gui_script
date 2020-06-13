@@ -1,6 +1,7 @@
 local STATE = require("mod.state")
 local SET = require("mod.settings")
 local FIGHTER = require("mod.fighters")
+local STR = require("mod.string")
 local node
 
 local other_player = {2, 1}
@@ -42,8 +43,9 @@ local function start_round(self)
 		gui.set_enabled(node.fight, false)
 		gui.set_enabled(node.winner, false)
 		gui.set_enabled(node.round, true)
+		gui.set_text(node.fight, STR[hash("main_fight")][SET.lang])
 		local round = (STATE.score[1] + STATE.score[2] + 1)
-		gui.set_text(node.round, "Round "..round)
+		gui.set_text(node.round, STR[hash("main_round")][SET.lang](round))
 
 		timer.delay(0.5, false, function()
 			sound.play("/sound#round_"..round, nil, function()
@@ -97,7 +99,7 @@ end
 local function end_round(self)
 	if STATE.victor then
 		STATE.score[STATE.victor] = STATE.score[STATE.victor] + 1
-		gui.set_text(node.winner, FIGHTER[STATE.fighter[STATE.victor]].name.." wins")
+		gui.set_text(node.winner, STR[hash("main_winner")][SET.lang](FIGHTER[STATE.fighter[STATE.victor]].name))
 		gui.set_enabled(node.winner, true)
 		sound.play("/sound#"..FIGHTER[STATE.fighter[STATE.victor]].name, nil, function()
 			sound.play("sound#wins", nil, function()
@@ -106,7 +108,7 @@ local function end_round(self)
 			end)
 		end)
 	else
-		gui.set_text(node.winner, "Draw")
+		gui.set_text(node.winner, STR[hash("main_draw")][SET.lang])
 		gui.set_enabled(node.winner, true)
 		sound.play("sound#wins", nil, function()
 			gui.set_enabled(node.winner, false)

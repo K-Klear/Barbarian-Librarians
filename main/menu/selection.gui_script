@@ -2,6 +2,7 @@ local INPUT = require("mod.input")
 local FIGHTER = require("mod.fighters")
 local STATE = require("mod.state")
 local SET = require("mod.settings")
+local STR = require("mod.string")
 
 local COL = {
 	default = vmath.vector4(0, 0, 0, 1),
@@ -51,6 +52,11 @@ function init(self)
 	gui.set_enabled(versus_screen, false)
 	change_preview(self, 1, icons[reticle_pos[1].x][reticle_pos[1].y])
 	change_preview(self, 2, icons[reticle_pos[2].x][reticle_pos[2].y])
+	gui.set_text(texts[1], STR[hash("selection_player_1")][SET.lang])
+	gui.set_text(texts[2], STR[hash("selection_player_2")][SET.lang])
+	gui.set_text(gui.get_node("choose_fighter"), STR[hash("selection_choose_fighter")][SET.lang])
+	gui.set_text(gui.get_node("back"), STR[hash("selection_exit")][SET.lang])
+	gui.set_text(gui.get_node("versus"), STR[hash("selection_versus")][SET.lang])
 end
 
 function on_message(self, message_id, message, sender)

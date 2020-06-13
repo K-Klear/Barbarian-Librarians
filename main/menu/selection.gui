@@ -618,7 +618,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "Choose your fighter"
   font: "barbarians"
-  id: "text"
+  id: "choose_fighter"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
