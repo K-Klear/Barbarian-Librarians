@@ -2,6 +2,10 @@ local SET = require("mod.settings")
 
 function init(self)
 	msg.post("@render:", "use_fixed_fit_projection", {near = -1, far = 1})
+	local data = sys.load(sys.get_save_file("Librarian_Barbarians", "settings"))
+	for key, val in pairs(data) do
+		SET[key] = val
+	end
 	msg.post(".", "acquire_input_focus")
 	msg.post("#proxy_menu", "load")
 	math.randomseed(os.time())

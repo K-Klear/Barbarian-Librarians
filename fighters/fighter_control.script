@@ -42,7 +42,7 @@ local function reset_position(time)
 	end
 end
 
-local function play_animation(self, anim, wait_until_finished)
+local function play_animation(self, anim, wait_until_finished, rate)
 	if not (self.anim == anim) and not (anim == "stand" and self.anim == "wait") then
 		self.anim = anim
 		if not (anim == "duck_fast") then
@@ -55,7 +55,7 @@ local function play_animation(self, anim, wait_until_finished)
 			self.anim = "wait"
 			complete_function = function() self.anim = "jump" end
 		end
-		sprite.play_flipbook("#sprite", anim, complete_function)
+		sprite.play_flipbook("#sprite", anim, complete_function, {playback_rate = rate or 1})
 	end
 end
 
@@ -263,7 +263,7 @@ local function execute_move(self, move)
 	check_facing(self)
 	self.state = hash("attack")
 	self.move = move
-	play_animation(self, move.anim)
+	play_animation(self, move.anim, false, move.playback_rate)
 	if move.anim == "uppercut" then	-- WIP
 		set_collision(hash("stand"))
 	end
