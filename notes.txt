@@ -24,7 +24,8 @@ Stuff to do:
 - "Draw" voiceover
 - Decouple framerate from simulation
 - Add diacritics to the fonts
-- MORE FIGHTERS!
+- Fix jump attack hitboxes for each fighter
+- Add sounds
 
 Known bugs:
 

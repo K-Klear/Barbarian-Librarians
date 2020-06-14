@@ -34,6 +34,7 @@ gravity_y = -2500.0
 scale = 0.01
 debug = 0
 debug_alpha = 0.7
+allow_dynamic_transforms = 0
 
 [graphics]
 default_texture_min_filter = nearest

@@ -10,8 +10,13 @@ return {
 
 	jump_force = vmath.vector3(65000, 170000, 0),
 
+	hook_delay = 60,
+	hook_stun = 180,
+
+	bike_speed = 13,
+
 	input_history_length = 5,
-	combo_input_delay = 30,
+	combo_input_delay = 35,
 	
 	recovery_threshold = 0.1,
 	recovery_speed = 0.3,

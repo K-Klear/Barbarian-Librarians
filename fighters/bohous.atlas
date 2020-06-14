@@ -491,10 +491,6 @@ animations {
     image: "/assets/images/fighters/bohous/bo_hook_03.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
-  images {
-    image: "/assets/images/fighters/bohous/bo_hook_04.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
   playback: PLAYBACK_ONCE_FORWARD
   fps: 60
   flip_horizontal: 0
@@ -546,6 +542,28 @@ animations {
   id: "kick_duck_2"
   images {
     image: "/assets/images/fighters/bohous/bo_kick_duck_a_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "projectile_book"
+  images {
+    image: "/assets/images/fighters/bohous/projectile.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "hook_pull"
+  images {
+    image: "/assets/images/fighters/bohous/bo_hook_04.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_ONCE_FORWARD

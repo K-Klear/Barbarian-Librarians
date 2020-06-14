@@ -19,6 +19,10 @@ textures {
   name: "bohous"
   texture: "/fighters/bohous.atlas"
 }
+textures {
+  name: "lukas"
+  texture: "/fighters/lukas.atlas"
+}
 background_color {
   x: 0.0
   y: 0.0
@@ -471,7 +475,7 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.25
+  alpha: 1.0
   template_node_child: false
   size_mode: SIZE_MODE_AUTO
 }
@@ -525,7 +529,7 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.25
+  alpha: 1.0
   template_node_child: false
   size_mode: SIZE_MODE_AUTO
 }

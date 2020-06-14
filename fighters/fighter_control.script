@@ -3,8 +3,9 @@ go.property("controls", 1)
 go.property("facing", 1)
 go.property("state", hash("intro"))
 
-go.property("gfx_stick", resource.atlas("/fighters/stick.atlas"))
 go.property("gfx_bohous", resource.atlas("/fighters/bohous.atlas"))
+go.property("gfx_lukas", resource.atlas("/fighters/lukas.atlas"))
+
 go.property("gfx_vojta_beta", resource.atlas("/fighters/vojta_beta.atlas"))
 
 local INPUT = require("mod.input")
@@ -72,7 +73,8 @@ function init(self)
 	msg.post(".", hash("acquire_input_focus"))
 	local gfx = {
 		[hash("vojta_beta")] = self.gfx_vojta_beta,
-		[hash("bohous")] = self.gfx_bohous
+		[hash("bohous")] = self.gfx_bohous,
+		[hash("lukas")] = self.gfx_lukas
 	}
 	go.set("#sprite", "image", gfx[self.fighter])
 	sprite.set_hflip("#sprite", self.facing < 0)
@@ -118,7 +120,9 @@ function update(self, dt)
 					self.state = hash("ready")
 				end
 			elseif val == hash("damage_point") then
-				local hitbox = factory.create(self.move.hitbox, vmath.vector3(self.move.damage_pos.x * self.facing, self.move.damage_pos.y, 0), nil, nil, 1)
+				local rot = vmath.quat_rotation_z(math.rad(self.move.hitbox_rotation or 0) * self.facing)
+				local scale = vmath.vector3(1, 1, 1) * (self.move.hitbox_scale or 1)
+				local hitbox = factory.create(self.move.hitbox, vmath.vector3(self.move.damage_pos.x * self.facing, self.move.damage_pos.y, 0), rot, nil, scale)
 				msg.post(hitbox, hash("setup"), {myself = self.go, enemy = self.enemy, move = self.move, facing = self.facing})
 				local pos = go.get_position()
 				go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
@@ -131,6 +135,21 @@ function update(self, dt)
 				go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.3)
 				go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_LINEAR, 0.3)
 				self.frame_actions = {}
+			elseif val == hash("pull_hook") then
+				play_animation(self, "hook_pull")
+				add_action(self, hash("attack_recovery"), 30)
+			elseif val == hash("be_hooked") then
+				play_animation(self, "pain_high")
+				go.set_position(go.get_world_position(self.enemy) + vmath.vector3(90 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 0, 0))
+			elseif val == hash("remove_stun") then
+				self.state = hash("ready")
+			elseif val == hash("bike_ride") then
+				self.state = hash("bike")
+				set_collision(hash("duck"))
+				local hitbox = factory.create("#hitbox_bike", go.get_position())
+				msg.post(hitbox, hash("setup"), {myself = self.go, enemy = self.enemy, move = self.move, facing = self.facing})
+				go.set_parent(hitbox, go.get_id(), true)
+				self.hitbox = hitbox
 			end
 		end
 	end
@@ -168,6 +187,17 @@ function update(self, dt)
 		self.state = hash("ready")
 	elseif self.state == hash("pain") then
 		self.state = hash("ragdoll")
+	elseif self.state == hash("bike") then
+		local new_pos = go.get_position() + vmath.vector3(SET.bike_speed * self.facing, 0, 0)
+		if new_pos.x < SET.min_x or new_pos.x > SET.max_x then
+			self.state = hash("pain")
+			if self.hitbox then
+				msg.post(self.hitbox, hash("die"))
+				self.hitbox = nil
+			end
+		else
+			go.set_position(new_pos)
+		end
 	end
 	self.previous_position = go.get_position()
 	self.blocked = false
@@ -198,23 +228,40 @@ function on_message(self, message_id, message, sender)
 		end
 	elseif message_id == hash("attack_landed") then
 		set_collision(hash("stand"))
-		set_collision(hash("ragdoll"))
-
-		msg.post("#co_ragdoll", "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing, message.move.force.y, 0), position = message.pos})
-		if not (self.state == hash("dead")) then
-			self.state = hash("pain")
-			if message.pos.y - go.get_world_position().y > SET.high_pain_threshold then
-				play_animation(self, "pain_high")
-			else
-				play_animation(self, "pain_low")
-			end
+		if message.move.anim == "hook" then
+			self.state = hash("stun")
+			play_animation(self, "pain_low")
+			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(400 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 100, 0))
+			msg.post(self.enemy, hash("hook_landed"))
 			self.frame_actions = {}
+			add_action(self, hash("be_hooked"), SET.hook_delay)
+			add_action(self, hash("remove_stun"), SET.hook_delay + SET.hook_stun)
 			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
+		--elseif message.move.anim == "bike" then
+			--self.hitbox = nil
+			
+		else
+			set_collision(hash("ragdoll"))
+			msg.post("#co_ragdoll", "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing, message.move.force.y, 0), position = message.pos})
+			if not (self.state == hash("dead")) then
+				self.state = hash("pain")
+				if message.pos.y - go.get_world_position().y > SET.high_pain_threshold then
+					play_animation(self, "pain_high")
+				else
+					play_animation(self, "pain_low")
+				end
+				self.frame_actions = {}
+				msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
+			end
+			if self.hitbox then
+				msg.post(self.hitbox, hash("die"))
+				self.hitbox = nil
+			end
 		end
-		if self.hitbox then
-			msg.post(self.hitbox, hash("die"))
-			self.hitbox = nil
-		end
+	elseif message_id == hash("hook_landed") then
+		self.frame_actions = {}
+		self.state = hash("hooking")
+		add_action(self, hash("pull_hook"), SET.hook_delay)
 	elseif message_id == hash("attack_pushback") then
 		local direction = (self.previous_position.x - go.get_position().x) * -self.facing
 		local magic_number = SET.jump_force.x / 14400
@@ -266,8 +313,12 @@ local function execute_move(self, move)
 	play_animation(self, move.anim, false, move.playback_rate)
 	if move.anim == "uppercut" then	-- WIP
 		set_collision(hash("stand"))
+	elseif move.anim == "bike" then
+		add_action(self, hash("bike_ride"), move.bike_ready)
 	end
-	add_action(self, hash("damage_point"), move.damage_point)
+	if move.damage_point then
+		add_action(self, hash("damage_point"), move.damage_point)
+	end
 	if move.recovery then
 		add_action(self, move.recovery_type, move.recovery)
 	end
