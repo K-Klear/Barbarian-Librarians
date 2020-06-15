@@ -36,7 +36,3 @@ debug = 0
 debug_alpha = 0.7
 allow_dynamic_transforms = 0
 
-[graphics]
-default_texture_min_filter = nearest
-default_texture_mag_filter = nearest
-

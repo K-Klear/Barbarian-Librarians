@@ -1,4 +1,4 @@
-Animation checklist:
+Animation checklist (OLD - REWRITE!):
 
 Stand
 Walk
@@ -19,13 +19,14 @@ Jump punch
 Stuff to do:
 
 - Explain the movesets *somewhere*
-- Basic options screen with volume and... maybe just volume for now. And see if I can make changes stick.
 - Allow keyboard navigation in the main menu
 - "Draw" voiceover
 - Decouple framerate from simulation
 - Add diacritics to the fonts
 - Fix jump attack hitboxes for each fighter
 - Add sounds
+- let sliders in settings control other stuff than just volume
+- tint one player in a mirror match
 
 Known bugs:
 

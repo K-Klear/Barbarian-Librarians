@@ -3,6 +3,20 @@ return {
 	starting_x = {980, 300},
 	min_x = 80,
 	max_x = 1200,
+	shadow_y = 31,
+	shadow_alpha = function(y) return (y - 800) / -1000 end,
+	shadow_x_scale = function(rot)
+		local rotation = math.abs(rot)
+		if rotation > 270 then
+			rotation = 360 - rotation
+		elseif rotation > 180 then
+			rotation = rotation - 180
+		elseif rotation > 90 then
+			rotation = rotation - 2 * (rotation - 90)
+		end
+		return ((18 * rotation) / 90) + 12
+	end,
+	shadow_y_scale = 4.8,
 
 	fighters_min_distance = 100,
 
@@ -30,5 +44,7 @@ return {
 	lang = 1,
 	language_list = {english = 1, czech = 2},
 
-	volume = {music = 0.0, voice = 1, sound = 1}
+	volume = {music = 0.3, voice = 0.9, sound = 1},
+
+	slider_sensitivity = 10,
 }

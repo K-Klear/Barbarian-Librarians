@@ -3,9 +3,12 @@ local COL = {
 	default = vmath.vector4(0, 0, 0, 1),
 	highlight = vmath.vector4(1, 0.1, 0.15, 1),
 	default_img = vmath.vector4(1, 1, 1, 1),
-	highlight_img = vmath.vector4(1, 0.5, 0.6, 1)
+	highlight_img = vmath.vector4(1, 0.5, 0.6, 1),
+	default_slider = vmath.vector4(1, 1, 1, 1),
+	highlight_slider = vmath.vector4(0.5, 0.8, 0.1, 1)
 }
 local focus = "intro"
+local focus_slider = nil
 
 local STATE = require("mod.state")
 local SET = require("mod.settings")
@@ -52,6 +55,26 @@ function init(self)
 			close_credits = gui.get_node("btn_close_credits")
 		},
 	}
+	slider = {
+		settings = {
+			music = {
+				marker = gui.get_node("music_marker"),
+				slider = gui.get_node("music_slider"),
+				label = gui.get_node("volume_music_label")
+			},
+			voice = {
+				marker = gui.get_node("voice_marker"),
+				slider = gui.get_node("voice_slider"),
+				label = gui.get_node("volume_voice_label")
+			},
+			sound = {
+				marker = gui.get_node("sfx_marker"),
+				slider = gui.get_node("sfx_slider"),
+				label = gui.get_node("volume_sfx_label")
+			}
+		}
+	}
+	
 	dialog = {
 		settings = gui.get_node("dialog_settings"),
 		credits = gui.get_node("dialog_credits")
@@ -84,6 +107,19 @@ function init(self)
 end
 
 function on_input(self, action_id, action)
+	if focus_slider and action_id == hash("click") and focus == "settings" then
+		local slider = slider[focus][focus_slider]
+		local pos_x = action.x - gui.get_position(slider.slider).x - gui.get_position(dialog.settings).x
+		pos_x = pos_x / 2
+		local volume = pos_x + 50
+		volume = math.floor((volume + (SET.slider_sensitivity / 2)) / SET.slider_sensitivity) * SET.slider_sensitivity
+		volume = math.max(volume, 0)
+		volume = math.min(volume, 100)
+		gui.set_position(slider.marker, vmath.vector3(volume - 50, gui.get_position(slider.marker).y, 0))
+		gui.set_text(slider.label, volume.."%")
+		SET.volume[focus_slider] = volume / 100
+		sound.set_group_gain(focus_slider, SET.volume[focus_slider])
+	end
 	if action_id == hash("click") and action.pressed then
 		if focus == "intro" then
 			local pos = gui.get_position(gui.get_node("title_lib"))
@@ -107,6 +143,10 @@ function on_input(self, action_id, action)
 						gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
 							focus = "settings"
 						end)
+						for key, slider in pairs(slider.settings) do
+							gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
+							gui.set_text(slider.label, (SET.volume[key] * 100).."%")
+						end
 					elseif key == "czech" or key == "english" then
 						SET.lang = SET.language_list[key]
 						set_texts()
@@ -154,6 +194,19 @@ function on_input(self, action_id, action)
 					gui.set_color(val, COL.default)
 				else
 					gui.set_color(val, COL.default_img)
+				end
+			end
+		end
+		if slider[focus] then
+			for key, val in pairs(slider[focus]) do
+				if gui.pick_node(val.slider, action.x, action.y) then
+					gui.set_color(val.slider, COL.highlight_slider)
+					focus_slider = key
+				else
+					gui.set_color(val.slider, COL.default_slider)
+					if focus_slider == key then
+						focus_slider = nil
+					end
 				end
 			end
 		end

@@ -11,7 +11,7 @@ return {
 
 	[hash("selection_player_1")] = {"Player 1", "Hráč 1"},
 	[hash("selection_player_2")] = {"Player 2", "Hráč 2"},
-	[hash("selection_choose_fighter")] = {"Choose your fighter", "Vyber si postavu"},
+	[hash("selection_choose_fighter")] = {"Choose your librarian", "Vyber si knihovníka"},
 	[hash("selection_exit")] = {"Exit (esc)", "Zpět (esc)"},
 	[hash("selection_versus")] = {"VERSUS", "VERSUS"},
 

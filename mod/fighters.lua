@@ -550,7 +550,8 @@ local FIGHTER = {
 					damage_pos = vmath.vector3(100, 140, 0),
 					force = vmath.vector3(14000, 120000, 0),
 					damage = 20,
-					recovery = 90
+					recovery = 90,
+					recovery_type = hash("attack_recovery")
 				},
 				{
 					keys_held = {},
@@ -563,7 +564,8 @@ local FIGHTER = {
 					damage_pos = vmath.vector3(85, 125, 0),
 					force = vmath.vector3(50000, 11000, 0),
 					damage = 10,
-					recovery = 90
+					recovery = 90,
+					recovery_type = hash("attack_recovery")
 				},
 				{
 					keys_held = {},
@@ -575,8 +577,11 @@ local FIGHTER = {
 					damage_pos = vmath.vector3(150, 150, 0),
 					force = vmath.vector3(6000, 10000, 0),
 					damage = 7,
-					recovery = 30
+					recovery = 30,
+					recovery_type = hash("attack_recovery")
 				},
+			},
+			[hash("kick")] = {
 				{
 					keys_held = {},
 					keys_sequence = {},
