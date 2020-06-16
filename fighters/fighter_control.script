@@ -91,7 +91,7 @@ function init(self)
 	self.frame_actions = {}
 	self.previous_position = go.get_position()
 	self.shadow = factory.create("#shadow", vmath.vector3(go.get_world_position().x, SET.shadow_y, -0.5), nil, nil, vmath.vector3(SET.shadow_x_scale(go.get(go.get_id(), "euler.z")), SET.shadow_y_scale, 1))
-	sprite.set_constant(msg.url(nil, self.shadow, "sprite"), "tint", vmath.vector4(0, 0, 0, 0.5))
+	sprite.set_constant(msg.url(nil, self.shadow, "sprite"), "tint", vmath.vector4(0, 0, 0, SET.shadow_alpha(go.get_world_position().y)))
 	play_animation(self, "stand")
 end
 

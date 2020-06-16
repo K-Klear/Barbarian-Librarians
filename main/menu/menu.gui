@@ -891,8 +891,71 @@ nodes {
 }
 nodes {
   position {
-    x: -33.0
-    y: 6.0
+    x: 329.0
+    y: 215.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Language"
+  font: "librarian"
+  id: "language_label"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_STRETCH
+  line_break: false
+  parent: "dialog_settings"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 281.0
+    y: 121.0
     z: 0.0
     w: 1.0
   }
@@ -946,8 +1009,8 @@ nodes {
 }
 nodes {
   position {
-    x: 48.0
-    y: 6.0
+    x: 362.0
+    y: 121.0
     z: 0.0
     w: 1.0
   }
@@ -1065,7 +1128,7 @@ nodes {
 nodes {
   position {
     x: -400.0
-    y: 97.0
+    y: 38.0
     z: 0.0
     w: 1.0
   }
@@ -1082,7 +1145,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
+    x: 109.0
     y: 9.0
     z: 0.0
     w: 1.0
@@ -1175,7 +1238,7 @@ nodes {
 nodes {
   position {
     x: -451.0
-    y: 136.0
+    y: 77.0
     z: 0.0
     w: 1.0
   }
@@ -1238,7 +1301,7 @@ nodes {
 nodes {
   position {
     x: -400.0
-    y: -4.0
+    y: -34.0
     z: 0.0
     w: 1.0
   }
@@ -1255,7 +1318,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
+    x: 109.0
     y: 9.0
     z: 0.0
     w: 1.0
@@ -1348,7 +1411,7 @@ nodes {
 nodes {
   position {
     x: -451.0
-    y: 35.0
+    y: 5.0
     z: 0.0
     w: 1.0
   }
@@ -1411,7 +1474,7 @@ nodes {
 nodes {
   position {
     x: -400.0
-    y: -96.0
+    y: 111.0
     z: 0.0
     w: 1.0
   }
@@ -1428,7 +1491,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 100.0
+    x: 109.0
     y: 9.0
     z: 0.0
     w: 1.0
@@ -1521,7 +1584,7 @@ nodes {
 nodes {
   position {
     x: -451.0
-    y: -57.0
+    y: 150.0
     z: 0.0
     w: 1.0
   }

@@ -18,6 +18,8 @@ return {
 	end,
 	shadow_y_scale = 4.8,
 
+	mirror_tint = vmath.vector4(0.7, 0.3, 0.1, 1),
+
 	fighters_min_distance = 100,
 
 	high_pain_threshold = 120,

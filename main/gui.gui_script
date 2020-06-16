@@ -40,6 +40,10 @@ local function start_round(self)
 		msg.post(self.player_go[1], hash("setup_gos"), {myself = self.player_go[1], enemy = self.player_go[2]})
 		msg.post(self.player_go[2], hash("setup_gos"), {myself = self.player_go[2], enemy = self.player_go[1]})
 
+		if STATE.fighter[1] == STATE.fighter[2] then
+			sprite.set_constant(msg.url(nil, self.player_go[2], "sprite"), "tint", SET.mirror_tint)
+		end
+
 		gui.set_enabled(node.fight, false)
 		gui.set_enabled(node.winner, false)
 		gui.set_enabled(node.round, true)

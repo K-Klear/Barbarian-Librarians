@@ -9,6 +9,7 @@ local COL = {
 }
 local focus = "intro"
 local focus_slider = nil
+local focus_button = nil
 
 local STATE = require("mod.state")
 local SET = require("mod.settings")
@@ -29,6 +30,11 @@ local function set_texts()
 	gui.set_text(gui.get_node("text_credits"), STR[hash("credits_text")][SET.lang])
 	gui.set_text(gui.get_node("text_credits_font_1"), STR[hash("credits_font_1")][SET.lang])
 	gui.set_text(gui.get_node("text_credits_font_2"), STR[hash("credits_font_2")][SET.lang])
+	gui.set_text(gui.get_node("volume_label"), STR[hash("settings_volume")][SET.lang])
+	for key, slider in pairs(slider.settings) do
+		gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
+	end
+	gui.set_text(gui.get_node("language_label"), STR[hash("language_label")][SET.lang])
 end
 
 function init(self)
@@ -37,6 +43,10 @@ function init(self)
 	sound.set_group_gain("sound", SET.volume.sound)
 	play_music()
 	msg.post(".", "acquire_input_focus")
+	btn_sequence = {
+		menu = {"fight", "settings", "exit", "credits"}
+	}
+	
 	btn = {
 		none = {},
 		intro = {},
@@ -106,6 +116,59 @@ function init(self)
 	set_texts()
 end
 
+local function button_pressed(key)
+	if key == "fight" then
+		msg.post("bootstrap:/go", hash("selection_screen"))
+	elseif key == "settings" then
+		gui.set_color(btn.menu.settings, COL.default)
+		gui.set_enabled(dialog.settings, true)
+		gui.set_color(dialog.settings, vmath.vector4(0, 0, 0, 0))
+		focus = "none"
+		focus_button = nil
+		gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
+			focus = "settings"
+		end)
+		for key, slider in pairs(slider.settings) do
+			gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
+		end
+	elseif key == "czech" or key == "english" then
+		SET.lang = SET.language_list[key]
+		set_texts()
+	elseif key == "close_settings" then
+		sys.save(sys.get_save_file("Librarian_Barbarians", "settings"), {
+			lang = SET.lang, volume = SET.volume
+		}) 
+		focus = "none"
+		focus_button = nil
+		gui.set_color(btn.settings.close_settings, COL.default)
+		gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 0.3, 0, function()
+			focus = "menu"
+			gui.set_enabled(dialog.settings, false)
+		end)
+	elseif key == "exit" then
+		os.exit()
+	elseif key == "credits" then
+		gui.set_color(btn.menu.credits, COL.default)
+		gui.set_enabled(dialog.credits, true)
+		gui.set_color(dialog.credits, vmath.vector4(0, 0, 0, 0))
+		focus = "none"
+		focus_button = nil
+		gui.animate(dialog.credits, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
+			focus = "credits"
+		end)
+	elseif key == "close_credits" then
+		focus = "none"
+		focus_button = nil
+		gui.set_color(btn.credits.close_credits, COL.default)
+		gui.animate(dialog.credits, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 0.3, 0, function()
+			focus = "menu"
+			gui.set_enabled(dialog.credits, false)
+		end)
+	end
+end
+
+
 function on_input(self, action_id, action)
 	if focus_slider and action_id == hash("click") and focus == "settings" then
 		local slider = slider[focus][focus_slider]
@@ -116,9 +179,16 @@ function on_input(self, action_id, action)
 		volume = math.max(volume, 0)
 		volume = math.min(volume, 100)
 		gui.set_position(slider.marker, vmath.vector3(volume - 50, gui.get_position(slider.marker).y, 0))
-		gui.set_text(slider.label, volume.."%")
+		gui.set_text(slider.label, STR[hash("settings_volume_labels")][focus_slider][SET.lang](volume))
 		SET.volume[focus_slider] = volume / 100
 		sound.set_group_gain(focus_slider, SET.volume[focus_slider])
+		if action.released then
+			if focus_slider == "voice" then
+				sound.play("#voice_test")
+			elseif focus_slider == "sound" then
+				sound.play("#sound_test")
+			end
+		end
 	end
 	if action_id == hash("click") and action.pressed then
 		if focus == "intro" then
@@ -133,57 +203,53 @@ function on_input(self, action_id, action)
 		else
 			for key, val in pairs(btn[focus]) do
 				if gui.pick_node(val, action.x, action.y) then
-					if key == "fight" then
-						msg.post("bootstrap:/go", hash("selection_screen"))
-					elseif key == "settings" then
-						gui.set_color(btn.menu.settings, COL.default)
-						gui.set_enabled(dialog.settings, true)
-						gui.set_color(dialog.settings, vmath.vector4(0, 0, 0, 0))
-						focus = "none"
-						gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
-							focus = "settings"
-						end)
-						for key, slider in pairs(slider.settings) do
-							gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
-							gui.set_text(slider.label, (SET.volume[key] * 100).."%")
-						end
-					elseif key == "czech" or key == "english" then
-						SET.lang = SET.language_list[key]
-						set_texts()
-					elseif key == "close_settings" then
-						sys.save(sys.get_save_file("Librarian_Barbarians", "settings"), {
-							lang = SET.lang, volume = SET.volume
-						}) 
-						focus = "none"
-						gui.set_color(btn.settings.close_settings, COL.default)
-						gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 0.3, 0, function()
-							focus = "menu"
-							gui.set_enabled(dialog.settings, false)
-						end)
-					elseif key == "exit" then
-						os.exit()
-					elseif key == "credits" then
-						gui.set_color(btn.menu.credits, COL.default)
-						gui.set_enabled(dialog.credits, true)
-						gui.set_color(dialog.credits, vmath.vector4(0, 0, 0, 0))
-						focus = "none"
-						gui.animate(dialog.credits, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
-							focus = "credits"
-						end)
-					elseif key == "close_credits" then
-						focus = "none"
-						gui.set_color(btn.credits.close_credits, COL.default)
-						gui.animate(dialog.credits, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 0.3, 0, function()
-							focus = "menu"
-							gui.set_enabled(dialog.credits, false)
-						end)
-					end
+					button_pressed(key)
 				end
 			end
+		end
+	elseif action.pressed and (action_id == hash("p1_punch") or action_id == hash("p2_punch") or action_id == hash("p1_kick") or action_id == hash("p2_kick")) then
+		if focus == "intro" then
+			local pos = gui.get_position(gui.get_node("title_lib"))
+			gui.set_position(gui.get_node("title_lib"), vmath.vector3(640, pos.y, pos.z))
+			pos = gui.get_position(gui.get_node("title_barb"))
+			gui.set_position(gui.get_node("title_barb"), vmath.vector3(640, pos.y, pos.z))
+			for key, val in pairs(btn.menu) do
+				gui.set_color(val, COL.default)
+			end
+			focus = "menu"
+		else
+			button_pressed(focus_button)
+		end
+	elseif action.pressed and (action_id == hash("p1_up") or action_id == hash("p2_up")) then
+		if btn_sequence[focus] then
+			local key
+			for k, v in ipairs(btn_sequence[focus]) do
+				if v == focus_button then
+					key = k; break
+				end
+			end
+			if not key or not btn_sequence[focus][key - 1] then key = #btn_sequence[focus] + 1 end
+			gui.set_color(btn[focus][btn_sequence[focus][key - 1]], COL.highlight)
+			if focus_button then gui.set_color(btn[focus][focus_button], COL.default) end
+			focus_button = btn_sequence[focus][key - 1]
+		end
+	elseif action.pressed and (action_id == hash("p1_down") or action_id == hash("p2_down")) then
+		if btn_sequence[focus] then
+			local key
+			for k, v in ipairs(btn_sequence[focus]) do
+				if v == focus_button then
+					key = k; break
+				end
+			end
+			if not key or not btn_sequence[focus][key + 1] then key = 0 end
+			gui.set_color(btn[focus][btn_sequence[focus][key + 1]], COL.highlight)
+			if focus_button then gui.set_color(btn[focus][focus_button], COL.default) end
+			focus_button = btn_sequence[focus][key + 1]
 		end
 	elseif not action_id then
 		for key, val in pairs(btn[focus]) do
 			if gui.pick_node(val, action.x, action.y) then
+				focus_button = key
 				if gui.get_text(val) then
 					gui.set_color(val, COL.highlight)
 				else
@@ -194,6 +260,9 @@ function on_input(self, action_id, action)
 					gui.set_color(val, COL.default)
 				else
 					gui.set_color(val, COL.default_img)
+				end
+				if focus_button == key then
+					focus_button = nil
 				end
 			end
 		end
