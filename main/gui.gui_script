@@ -30,7 +30,7 @@ local function start_round(self)
 			gui.set_enabled(node[x].win_1, STATE.score[x] > 0)
 			gui.set_enabled(node[x].win_2, STATE.score[x] > 1)
 			local props = {[hash("/body")] = {fighter = STATE.fighter[x], controls = x, facing = facing[x]}}
-			self.player_collections[x] = collectionfactory.create("#spawn_fighter", vmath.vector3(SET.starting_x[x], SET.base_y, 0), nil, props)
+			self.player_collections[x] = collectionfactory.create("#"..FIGHTER[STATE.fighter[x]].atlas, vmath.vector3(SET.starting_x[x], SET.base_y, 0), nil, props)
 			self.player_go[x] = self.player_collections[x][hash("/body")]
 			gui.set_text(node[x].name_label, FIGHTER[STATE.fighter[x]].name)
 			gui.set_scale(node[x].hurt_bar, vmath.vector3(0 / 100, 1, 1))

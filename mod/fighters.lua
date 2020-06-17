@@ -2,6 +2,7 @@ local FIGHTER = {
 
 	[hash("lukas")] = {
 		atlas = "lukas",
+		hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate"},
 		name = "Lukas",
 		speed_forwards = 5,
 		speed_backwards = 3,
@@ -46,56 +47,8 @@ local FIGHTER = {
 
 				-- SPECIAL ATTACKS
 
-				{
-					keys_held = {},
-					keys_sequence = {hash("punch"), hash("backward"), hash("backward")},
-					state = hash("ready"),
-					anim = "throw",
-					playback_rate = 7/60,
-					hitbox = "#hitbox_book",
-					hitbox_scale = 2,
-					damage_point = 35,
-					damage_pos = vmath.vector3(100, 128, 0),
-					force = vmath.vector3(75000, 10000, 0),
-					damage = 9,
-					recovery = 90,
-					recovery_type = hash("attack_recovery")
-				},
-				{
-					keys_held = {},
-					keys_sequence = {hash("punch"), hash("forward"), hash("duck"), hash("backward")},
-					state = hash("ready"),
-					anim = "smash",
-					playback_rate = 3.5/60,
-					hitbox = "#hitbox_simple",
-					hitbox_rotation = 35,
-					hitbox_scale = 6,
-					damage_point = 110,
-					damage_pos = vmath.vector3(220, 160, 0),
-					force = vmath.vector3(100000, 70000, 0),
-					damage = 22,
-					recovery = 140,
-					recovery_type = hash("attack_recovery")
-				},
-				{
-					keys_held = {},
-					keys_sequence = {hash("punch"), hash("backward"), hash("duck")},
-					state = hash("ready"),
-					anim = "hook",
-					playback_rate = 5/60,
-					hitbox = "#hitbox_long",
-					damage_point = 50,
-					damage_pos = vmath.vector3(300, 100, 0),
-					hitbox_rotation = 90,
-					hitbox_scale = 4,
-					force = vmath.vector3(1, 1, 0),
-					damage = 4,
-					recovery = 80,
-					recovery_type = hash("attack_recovery")
-				},
 
-
-				-- NOMRAL ATTACKS
+				-- NORMAL ATTACKS
 				{
 					keys_held = {"backward"},
 					keys_sequence = {},

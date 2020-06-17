@@ -18,6 +18,8 @@ Jump punch
 
 Stuff to do:
 
+- Check if "self.go" is necessary
+- Move the fighter_control script over to the hitbox go
 - Explain the movesets *somewhere*
 - Allow keyboard navigation in the main menu submenus
 - "Draw" voiceover
@@ -26,6 +28,7 @@ Stuff to do:
 - Fix jump attack hitboxes for each fighter
 - Add sounds
 - let sliders in settings control other stuff than just volume
+- optimize sprites
 
 Known bugs:
 
@@ -33,6 +36,7 @@ Known bugs:
 - There was that one time when my ragdoll ended up standing on its head
 - Hooking a ragdolled opponent causes him to be stuck at an angle until radolled again or jumping.
 - Lukáš uses Bohouš's special moves, minus the animations
+- bad pixel in lukas punch 2 frame
 
 Credits:
 

@@ -1,0 +1,7 @@
+function on_message(self, message_id, message, sender)
+	if message_id == hash("init") then
+		self.go = sender
+	else
+		msg.post(self.go, message_id, message)
+	end
+end
