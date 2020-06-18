@@ -64,7 +64,7 @@ end
 local function update_shadow()
 	go.set_position(vmath.vector3(go.get_world_position().x, SET.shadow_y, -0.5), "shadow")
 	sprite.set_constant("shadow#sprite", "tint", vmath.vector4(0, 0, 0, SET.shadow_alpha(go.get_world_position().y)))
-	go.set_scale(vmath.vector3(SET.shadow_x_scale(go.get(".", "euler.z")), SET.shadow_y_scale, 1) / 2, "shadow")
+	go.set_scale(vmath.vector3(SET.shadow_x_scale(go.get(".", "euler.z")), SET.shadow_y_scale, 1), "shadow")
 end
 
 function init(self)
@@ -83,6 +83,7 @@ function init(self)
 	self.last_input = STATE.frame
 	self.frame_actions = {}
 	self.previous_position = go.get_world_position()
+	go.set_parent("shadow", nil, true)
 	update_shadow()
 	play_animation(self, "stand")
 end
@@ -118,7 +119,7 @@ function update(self, dt)
 				local rot = vmath.quat_rotation_z(math.rad(self.move.hitbox_rotation or 0) * self.facing)
 				local scale = vmath.vector3(1, 1, 1) * (self.move.hitbox_scale or 1)
 				local hitbox = factory.create(self.move.hitbox, vmath.vector3(self.move.damage_pos.x * self.facing, self.move.damage_pos.y, 0), rot, nil, scale)
-				msg.post(hitbox, hash("setup"), {myself = self.go, enemy = self.enemy, move = self.move, facing = self.facing})
+				msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
 				local pos = go.get_world_position()
 				go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
 				if self.move.hitbox == "#hitbox_jump" then
@@ -142,7 +143,7 @@ function update(self, dt)
 				self.state = hash("bike")
 				set_collision(self, "duck")
 				local hitbox = factory.create("#hitbox_bike", go.get_world_position())
-				msg.post(hitbox, hash("setup"), {myself = self.go, enemy = self.enemy, move = self.move, facing = self.facing})
+				msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
 				go.set_parent(hitbox, ".", true)
 				self.hitbox = hitbox
 			end
@@ -290,7 +291,6 @@ function on_message(self, message_id, message, sender)
 		self.state = hash("jump")
 		play_animation(self, anim)
 	elseif message_id == hash("setup_gos") then
-		self.go = message.myself
 		self.enemy = message.enemy
 	elseif message_id == hash("start") then
 		self.state = hash("ready")

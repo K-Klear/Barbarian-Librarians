@@ -43,10 +43,6 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/images/vb_portrait_big.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
   image: "/assets/images/icons/flag_cz.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
@@ -60,6 +56,18 @@ images {
 }
 images {
   image: "/assets/images/ui/slider_marker_small.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/images/background/hall.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/images/portrait_random.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/images/empty_img.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

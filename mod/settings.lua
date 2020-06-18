@@ -3,7 +3,7 @@ return {
 	starting_x = {980, 300},
 	min_x = 80,
 	max_x = 1200,
-	shadow_y = 31,
+	shadow_y = 40,
 	shadow_alpha = function(y) return (y - 800) / -1000 end,
 	shadow_x_scale = function(rot)
 		local rotation = math.abs(rot)
@@ -43,9 +43,10 @@ return {
 	round_end_delay = 1.5,
 	next_round_delay = 1,
 
+	damage_multiplier = {1, 1},
+
 	lang = 1,
 	language_list = {english = 1, czech = 2},
-
 	volume = {music = 0.3, voice = 0.9, sound = 1},
 
 	slider_sensitivity = 10,

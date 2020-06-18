@@ -17,12 +17,17 @@ return {
 		voice = {function(volume) return "Voice: "..volume.."%" end, function(volume) return "Hlas: "..volume.." %" end}
 	},
 	[hash("language_label")] = {"Language", "Jazyk"},
+
+	[hash("settings_damage_multiplier")] = {"Damage\nmultiplier", "Síla útoků"},
+	[hash("settings_damage_labels")] = {function(damage, player) return "Player "..player..": "..damage.."%" end, function(damage, player) return "Hráč "..player..": "..damage.." %" end},
+		
 	
 	[hash("selection_player_1")] = {"Player 1", "Hráč 1"},
 	[hash("selection_player_2")] = {"Player 2", "Hráč 2"},
 	[hash("selection_choose_fighter")] = {"Choose your librarian", "Vyber si knihovníka"},
 	[hash("selection_exit")] = {"Exit (esc)", "Zpět (esc)"},
 	[hash("selection_versus")] = {"VERSUS", "VERSUS"},
+	[hash("selection_random")] = {"Random", "Náhodný"},
 
 	[hash("main_fight")] = {"FIGHT", "FIGHT"},
 	[hash("main_round")] = {function(x) return "Round "..x end, function(x) return x..". kolo" end},

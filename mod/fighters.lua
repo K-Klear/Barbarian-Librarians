@@ -216,6 +216,7 @@ local FIGHTER = {
 	
 	[hash("bohous")] = {
 		atlas = "bohous",
+		hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate"},
 		name = "Bohous",
 		speed_forwards = 5,
 		speed_backwards = 3,
@@ -488,6 +489,7 @@ local FIGHTER = {
 	
 	[hash("vojta_beta")] = {
 		atlas = "vojta_beta",
+		hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate"},
 		name = "Vojta",
 		speed_forwards = 5,
 		speed_backwards = 3,

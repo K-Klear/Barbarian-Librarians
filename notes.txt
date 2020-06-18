@@ -18,25 +18,22 @@ Jump punch
 
 Stuff to do:
 
-- Check if "self.go" is necessary
-- Move the fighter_control script over to the hitbox go
 - Explain the movesets *somewhere*
 - Allow keyboard navigation in the main menu submenus
 - "Draw" voiceover
 - Decouple framerate from simulation
 - Add diacritics to the fonts
-- Fix jump attack hitboxes for each fighter
 - Add sounds
-- let sliders in settings control other stuff than just volume
 - optimize sprites
 
-Known bugs:
+Known bugs and stuff to fix:
 
 - Victory star appears for both players when a round is drawn, though it's fixed as the next round starts
 - There was that one time when my ragdoll ended up standing on its head
-- Hooking a ragdolled opponent causes him to be stuck at an angle until radolled again or jumping.
-- Lukáš uses Bohouš's special moves, minus the animations
 - bad pixel in lukas punch 2 frame
+- Bohouš's jump frames needs to be better centred
+- empty_img not actually empty
+- clean-up the bike frames (redraw the wires, among other)
 
 Credits:
 

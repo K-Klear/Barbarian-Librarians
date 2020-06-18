@@ -37,8 +37,8 @@ local function start_round(self)
 			gui.animate(node[x].health_bar, "scale.x", 1, gui.EASING_INOUTCUBIC, SET.hurt_bar_speed, 0, function() gui.set_scale(node[x].hurt_bar, vmath.vector3(1, 1, 1)) end)
 		end
 
-		msg.post(self.player_go[1], hash("setup_gos"), {myself = self.player_go[1], enemy = self.player_go[2]})
-		msg.post(self.player_go[2], hash("setup_gos"), {myself = self.player_go[2], enemy = self.player_go[1]})
+		msg.post(self.player_go[1], hash("setup_gos"), {enemy = self.player_go[2]})
+		msg.post(self.player_go[2], hash("setup_gos"), {enemy = self.player_go[1]})
 
 		if STATE.fighter[1] == STATE.fighter[2] then
 			sprite.set_constant(msg.url(nil, self.player_go[2], "sprite"), "tint", SET.mirror_tint)
@@ -66,7 +66,7 @@ local function start_round(self)
 end
 
 function init(self)
-	local background_list = {"corridor", "court_1", "smoke_break"}
+	local background_list = {"corridor", "court_1", "smoke_break", "hall"}
 	sprite.play_flipbook("/background#sprite", (background_list[math.random(#background_list)]))
 	self.player_collections = {{}, {}}
 	msg.post(".", "acquire_input_focus")
@@ -123,7 +123,7 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("damage_dealt") and STATE.health[message.player] > 0 then
-		local new_health = math.max(STATE.health[message.player] - message.amount, 0)
+		local new_health = math.max(STATE.health[message.player] - (message.amount * SET.damage_multiplier[message.player]), 0)
 		STATE.health[message.player] = new_health
 		gui.set_scale(node[message.player].health_bar, vmath.vector3(new_health / 100, 1, 1))
 		gui.animate(node[message.player].hurt_bar, "scale.x", new_health / 100, gui.EASING_INOUTCUBIC, SET.hurt_bar_speed, SET.hurt_bar_delay)

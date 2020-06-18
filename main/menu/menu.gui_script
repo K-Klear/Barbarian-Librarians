@@ -31,10 +31,11 @@ local function set_texts()
 	gui.set_text(gui.get_node("text_credits_font_1"), STR[hash("credits_font_1")][SET.lang])
 	gui.set_text(gui.get_node("text_credits_font_2"), STR[hash("credits_font_2")][SET.lang])
 	gui.set_text(gui.get_node("volume_label"), STR[hash("settings_volume")][SET.lang])
-	for key, slider in pairs(slider.settings) do
+	for key, slider in pairs(sliders.volume) do
 		gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
 	end
 	gui.set_text(gui.get_node("language_label"), STR[hash("language_label")][SET.lang])
+	gui.set_text(gui.get_node("damage_label"), STR[hash("settings_volume")][SET.lang])
 end
 
 function init(self)
@@ -65,8 +66,8 @@ function init(self)
 			close_credits = gui.get_node("btn_close_credits")
 		},
 	}
-	slider = {
-		settings = {
+	sliders = {
+		volume = {
 			music = {
 				marker = gui.get_node("music_marker"),
 				slider = gui.get_node("music_slider"),
@@ -82,6 +83,18 @@ function init(self)
 				slider = gui.get_node("sfx_slider"),
 				label = gui.get_node("volume_sfx_label")
 			}
+		},
+		damage = {
+			{
+				marker = gui.get_node("damage_marker_1"),
+				slider = gui.get_node("damage_slider_1"),
+				label = gui.get_node("damage_label_1")
+			},
+			{
+				marker = gui.get_node("damage_marker_2"),
+				slider = gui.get_node("damage_slider_2"),
+				label = gui.get_node("damage_label_2")
+			},
 		}
 	}
 	
@@ -128,9 +141,13 @@ local function button_pressed(key)
 		gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
 			focus = "settings"
 		end)
-		for key, slider in pairs(slider.settings) do
+		for key, slider in pairs(sliders.volume) do
 			gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
 			gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
+		end
+		for key, slider in pairs(sliders.damage) do
+			gui.set_position(slider.marker, vmath.vector3((SET.damage_multiplier[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
 		end
 	elseif key == "czech" or key == "english" then
 		SET.lang = SET.language_list[key]
@@ -171,23 +188,40 @@ end
 
 function on_input(self, action_id, action)
 	if focus_slider and action_id == hash("click") and focus == "settings" then
-		local slider = slider[focus][focus_slider]
+		local slider, type
+		for key, val in pairs(sliders) do
+			if val[focus_slider] then
+				slider = val[focus_slider]
+				type = key
+				break
+			end
+		end
 		local pos_x = action.x - gui.get_position(slider.slider).x - gui.get_position(dialog.settings).x
 		pos_x = pos_x / 2
-		local volume = pos_x + 50
-		volume = math.floor((volume + (SET.slider_sensitivity / 2)) / SET.slider_sensitivity) * SET.slider_sensitivity
-		volume = math.max(volume, 0)
-		volume = math.min(volume, 100)
-		gui.set_position(slider.marker, vmath.vector3(volume - 50, gui.get_position(slider.marker).y, 0))
-		gui.set_text(slider.label, STR[hash("settings_volume_labels")][focus_slider][SET.lang](volume))
-		SET.volume[focus_slider] = volume / 100
-		sound.set_group_gain(focus_slider, SET.volume[focus_slider])
-		if action.released then
-			if focus_slider == "voice" then
-				sound.play("#voice_test")
-			elseif focus_slider == "sound" then
-				sound.play("#sound_test")
+		if type == "volume" then
+			local volume = pos_x + 50
+			volume = math.floor((volume + (SET.slider_sensitivity / 2)) / SET.slider_sensitivity) * SET.slider_sensitivity
+			volume = math.max(volume, 0)
+			volume = math.min(volume, 100)
+			gui.set_position(slider.marker, vmath.vector3(volume - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_volume_labels")][focus_slider][SET.lang](volume))
+			SET.volume[focus_slider] = volume / 100
+			sound.set_group_gain(focus_slider, SET.volume[focus_slider])
+			if action.released then
+				if focus_slider == "voice" then
+					sound.play("#voice_test")
+				elseif focus_slider == "sound" then
+					sound.play("#sound_test")
+				end
 			end
+		elseif type == "damage" then
+			local damage = pos_x + 50
+			damage = math.floor((damage + (SET.slider_sensitivity / 2)) / SET.slider_sensitivity) * SET.slider_sensitivity
+			damage = math.max(damage, 0)
+			damage = math.min(damage, 100)
+			gui.set_position(slider.marker, vmath.vector3(damage - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](damage, focus_slider))
+			SET.damage_multiplier[focus_slider] = damage / 100
 		end
 	end
 	if action_id == hash("click") and action.pressed then
@@ -266,15 +300,17 @@ function on_input(self, action_id, action)
 				end
 			end
 		end
-		if slider[focus] then
-			for key, val in pairs(slider[focus]) do
-				if gui.pick_node(val.slider, action.x, action.y) then
-					gui.set_color(val.slider, COL.highlight_slider)
-					focus_slider = key
-				else
-					gui.set_color(val.slider, COL.default_slider)
-					if focus_slider == key then
-						focus_slider = nil
+		if focus == "settings" then
+			for k, v in pairs(sliders) do
+				for key, val in pairs(v) do
+					if gui.pick_node(val.slider, action.x, action.y) then
+						gui.set_color(val.slider, COL.highlight_slider)
+						focus_slider = key
+					else
+						gui.set_color(val.slider, COL.default_slider)
+						if focus_slider == key then
+							focus_slider = nil
+						end
 					end
 				end
 			end
