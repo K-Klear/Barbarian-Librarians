@@ -46,6 +46,39 @@ local FIGHTER = {
 
 
 				-- SPECIAL ATTACKS
+				{
+					keys_held = {},
+					keys_sequence = {hash("punch"), hash("backward"), hash("duck")},
+					state = hash("ready"),
+					anim = "throw",
+					playback_rate = 7/60,
+					hitbox = "#hitbox_helmet",
+					hitbox_scale = 2,
+					damage_point = 35,
+					damage_pos = vmath.vector3(225, 150, 0),
+					force = vmath.vector3(79500, 6000, 0),
+					damage = 11,
+					recovery = 90,
+					recovery_type = hash("attack_recovery")
+				},
+				
+				{
+					keys_held = {},
+					keys_sequence = {hash("punch"), hash("backward"), hash("backward"), hash("backward")},
+					state = hash("ready"),
+					anim = "smash",
+					playback_rate = 4/60,
+					hitbox = "#hitbox_long",
+					hitbox_rotation = -45,
+					hitbox_scale = 6.4,
+					damage_point = 68,
+					damage_pos = vmath.vector3(104, 156, 0),
+					force = vmath.vector3(20000, 140000, 0),
+					damage = 20,
+					recovery = 112,
+					recovery_type = hash("attack_recovery")
+				},
+
 
 
 				-- NORMAL ATTACKS

@@ -14,7 +14,7 @@ function update(self, dt)
 		else
 			go.set_position(vmath.vector3(pos.x + (self.move.speed * self.facing), pos.y, pos.z))
 		end
-	elseif self.move.hitbox == "#hitbox_book" then
+	elseif self.move.hitbox == "#hitbox_book" or self.move.hitbox == "#hitbox_helmet" then
 		local pos = go.get_position()
 		if pos.x < 0 or pos.x > 1300 then
 			go.delete()
@@ -39,6 +39,10 @@ function on_message(self, message_id, message, sender)
 		elseif self.move.hitbox == "#hitbox_book" then
 			sprite.set_hflip("#sprite", self.facing == -1)
 			local force = vmath.vector3(4500 * self.facing, 5500, 0)
+			msg.post("#co_physics", hash("apply_force"), {force = force, position = go.get_world_position()})
+		elseif self.move.hitbox == "#hitbox_helmet" then
+			sprite.set_hflip("#sprite", self.facing == -1)
+			local force = vmath.vector3(36000 * self.facing, 15300, 0)
 			msg.post("#co_physics", hash("apply_force"), {force = force, position = go.get_world_position()})
 		elseif self.move.hitbox == "#hitbox_jump" then
 			go.set_parent(go.get_id(), self.go, true)
