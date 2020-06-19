@@ -27,12 +27,12 @@ return {
 	jump_force = vmath.vector3(65000, 170000, 0),
 
 	hook_delay = 60,
-	hook_stun = 180,
+	hook_stun = 108,
 
 	bike_speed = 13,
 
 	input_history_length = 5,
-	combo_input_delay = 35,
+	combo_input_delay = 85,
 	
 	recovery_threshold = 0.1,
 	recovery_speed = 0.3,
@@ -49,5 +49,5 @@ return {
 	language_list = {english = 1, czech = 2},
 	volume = {music = 0.3, voice = 0.9, sound = 1},
 
-	slider_sensitivity = 10,
+	slider_sensitivity = 5,
 }

@@ -226,8 +226,8 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 	elseif message_id == hash("attack_landed") then
-		set_collision(self, "stand")
 		if message.move.anim == "hook" then
+			set_collision(self, "stand")
 			self.state = hash("stun")
 			play_animation(self, "pain_low")
 			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(400 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 100, 0))
@@ -241,7 +241,7 @@ function on_message(self, message_id, message, sender)
 				msg.post(self.enemy, hash("bike_landed"))
 			end
 			set_collision(self, "ragdoll")
-			msg.post("#ragdoll", "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing, message.move.force.y, 0), position = message.pos})
+			msg.post("#ragdoll", "apply_force", {force = vmath.vector3(message.move.force.x * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), message.move.force.y, 0), position = message.pos})
 			if not (self.state == hash("dead")) then
 				self.state = hash("pain")
 				if message.pos.y - go.get_world_position().y > SET.high_pain_threshold then

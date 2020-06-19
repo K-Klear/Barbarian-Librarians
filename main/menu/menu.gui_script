@@ -35,7 +35,10 @@ local function set_texts()
 		gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
 	end
 	gui.set_text(gui.get_node("language_label"), STR[hash("language_label")][SET.lang])
-	gui.set_text(gui.get_node("damage_label"), STR[hash("settings_volume")][SET.lang])
+	gui.set_text(gui.get_node("damage_label"), STR[hash("settings_damage_multiplier")][SET.lang])
+	for key, slider in pairs(sliders.damage) do
+		gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
+	end
 end
 
 function init(self)
@@ -146,7 +149,7 @@ local function button_pressed(key)
 			gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
 		end
 		for key, slider in pairs(sliders.damage) do
-			gui.set_position(slider.marker, vmath.vector3((SET.damage_multiplier[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_position(slider.marker, vmath.vector3((SET.damage_multiplier[key] * 50) - 50, gui.get_position(slider.marker).y, 0))
 			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
 		end
 	elseif key == "czech" or key == "english" then
@@ -220,8 +223,8 @@ function on_input(self, action_id, action)
 			damage = math.max(damage, 0)
 			damage = math.min(damage, 100)
 			gui.set_position(slider.marker, vmath.vector3(damage - 50, gui.get_position(slider.marker).y, 0))
-			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](damage, focus_slider))
-			SET.damage_multiplier[focus_slider] = damage / 100
+			SET.damage_multiplier[focus_slider] = damage / 50
+			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[focus_slider] * 100, focus_slider))
 		end
 	end
 	if action_id == hash("click") and action.pressed then

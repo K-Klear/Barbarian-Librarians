@@ -25,6 +25,8 @@ Stuff to do:
 - Add diacritics to the fonts
 - Add sounds
 - optimize sprites
+- Pause menu
+- Escape in main menu submenus
 
 Known bugs and stuff to fix:
 
@@ -33,6 +35,9 @@ Known bugs and stuff to fix:
 - Bohouš's jump frames needs to be better centred
 - empty_img not actually empty
 - clean-up the bike frames (redraw the wires, among other)
+- Lukáš mirror bike ride attack resolves without physics
+- Lukáš punches while ducked have hitboxes in wrong position
+- Bike attacks can get erratic if spammed.
 
 Credits:
 

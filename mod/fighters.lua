@@ -37,7 +37,7 @@ local FIGHTER = {
 					hitbox = "#hitbox_long",
 					hitbox_rotation = -80,
 					damage_point = 2,
-					damage_pos = vmath.vector3(150, 34, 0),
+					damage_pos = vmath.vector3(150, -70, 0),
 					force = vmath.vector3(8500, 8200, 0),
 					damage = 2,
 					recovery = 17,
@@ -58,7 +58,7 @@ local FIGHTER = {
 					damage_pos = vmath.vector3(225, 150, 0),
 					force = vmath.vector3(79500, 6000, 0),
 					damage = 11,
-					recovery = 90,
+					recovery = 120,
 					recovery_type = hash("attack_recovery")
 				},
 				
@@ -171,10 +171,10 @@ local FIGHTER = {
 					anim = "kick_duck_1",
 					playback_rate = 3/60,
 					hitbox = "#hitbox_simple",
-					damage_point = 19,
+					damage_point = 14,
 					damage_pos = vmath.vector3(170, -90, 0),
 					force = vmath.vector3(11000, 8000, 0),
-					damage = 7,
+					damage = 6,
 					recovery = 37,
 					recovery_type = hash("attack_recovery_duck")
 				},
@@ -336,7 +336,7 @@ local FIGHTER = {
 					damage_pos = vmath.vector3(100, 128, 0),
 					force = vmath.vector3(75000, 10000, 0),
 					damage = 9,
-					recovery = 90,
+					recovery = 100,
 					recovery_type = hash("attack_recovery")
 				},
 				{

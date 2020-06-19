@@ -18,7 +18,7 @@ return {
 	},
 	[hash("language_label")] = {"Language", "Jazyk"},
 
-	[hash("settings_damage_multiplier")] = {"Damage\nmultiplier", "Síla útoků"},
+	[hash("settings_damage_multiplier")] = {"Damage\nmultiplier", "Síla\nútoků"},
 	[hash("settings_damage_labels")] = {function(damage, player) return "Player "..player..": "..damage.."%" end, function(damage, player) return "Hráč "..player..": "..damage.." %" end},
 		
 	
