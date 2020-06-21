@@ -23,6 +23,7 @@ return {
 	fighters_min_distance = 100,
 
 	high_pain_threshold = 120,
+	sound_pain_threshold = 9,
 
 	jump_force = vmath.vector3(65000, 170000, 0),
 
@@ -32,7 +33,7 @@ return {
 	bike_speed = 13,
 
 	input_history_length = 5,
-	combo_input_delay = 85,
+	combo_input_delay = 60,
 	
 	recovery_threshold = 0.1,
 	recovery_speed = 0.3,

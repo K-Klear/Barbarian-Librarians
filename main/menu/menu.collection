@@ -64,7 +64,7 @@ embedded_instances {
   "embedded_components {\n"
   "  id: \"sound_test\"\n"
   "  type: \"sound\"\n"
-  "  data: \"sound: \\\"/assets/sound/voice/versus.ogg\\\"\\n"
+  "  data: \"sound: \\\"/assets/sound/sfx/hit_01.ogg\\\"\\n"
   "looping: 0\\n"
   "group: \\\"sound\\\"\\n"
   "gain: 1.0\\n"

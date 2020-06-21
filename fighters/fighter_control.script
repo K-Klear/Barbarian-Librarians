@@ -7,6 +7,7 @@ local INPUT = require("mod.input")
 local FIGHTER = require("mod.fighters")
 local STATE = require("mod.state")
 local SET = require("mod.settings")
+local SFX = require("mod.sound")
 
 local movement_direction = {
 	[-1] = {forward = hash("left"), backward = hash("right")},
@@ -146,6 +147,23 @@ function update(self, dt)
 				msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
 				go.set_parent(hitbox, ".", true)
 				self.hitbox = hitbox
+			elseif val == hash("teleport_start") then
+				set_collision(self)
+				go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, self.move.duration / 120)
+			elseif val == hash("teleport") then
+				play_animation(self, "teleport_exit", true)
+				go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, self.move.duration / 120)
+				local x = go.get_world_position(self.enemy).x - go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")) * self.move.distance
+				if x < SET.min_x or x > SET.max_x then
+					x = go.get_world_position(self.enemy).x + go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")) * self.move.distance
+				else
+					self.facing = -self.facing
+					sprite.set_hflip("#sprite", self.facing < 0)
+				end
+				go.set_position(vmath.vector3(x, SET.base_y, go.get_world_position().z))
+			elseif val == hash("teleport_end") then
+				self.state = hash("ready")
+				set_collision(self, "stand")
 			end
 		end
 	end
@@ -209,6 +227,13 @@ function update(self, dt)
 	update_shadow()
 end
 
+local function play_voice_line(sound_set, self)
+	if not self.talking then
+		self.talking = true
+		sound.play("/sound#"..FIGHTER[self.fighter].sounds[sound_set][math.random(#FIGHTER[self.fighter].sounds[sound_set])], nil, function() self.talking = false end)
+	end
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		if message.other_group == hash("fighter") then
@@ -226,6 +251,14 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 	elseif message_id == hash("attack_landed") then
+		if not message.move.sound then
+			sound.play("/sound#"..SFX.hit[math.random(#SFX.hit)])
+		end
+		if message.move.damage > SET.sound_pain_threshold then
+			play_voice_line("pain_high", self)
+		else
+			play_voice_line("pain_low", self)
+		end
 		if message.move.anim == "hook" then
 			set_collision(self, "stand")
 			self.state = hash("stun")
@@ -261,6 +294,7 @@ function on_message(self, message_id, message, sender)
 		self.frame_actions = {}
 		self.state = hash("hooking")
 		add_action(self, hash("pull_hook"), SET.hook_delay)
+		play_voice_line("get_over_here", self)
 	elseif message_id == hash("bike_landed") then
 		set_collision(self)
 		self.hitbox = nil
@@ -318,6 +352,10 @@ local function execute_move(self, move)
 		set_collision(self, "stand")
 	elseif move.anim == "bike" then
 		add_action(self, hash("bike_ride"), move.bike_ready)
+	elseif move.anim == "teleport" then
+		add_action(self, hash("teleport_start"), move.start)
+		add_action(self, hash("teleport"), move.start + move.duration)
+		add_action(self, hash("teleport_end"), 2 * move.start + move.duration)
 	end
 	if move.damage_point then
 		add_action(self, hash("damage_point"), move.damage_point)
@@ -345,27 +383,36 @@ function on_input(self, action_id, action)
 			self.last_input = STATE.frame
 		end
 	end
-	if (key_press == hash("punch") or key_press == hash("kick")) and (self.state == hash("ready") or self.state == hash("jump")) and action.pressed then
-		for _, move in ipairs(FIGHTER[self.fighter].moves[key_press]) do
-			if self.state == move.state then
-				local correct_input = true
-				for __, val in ipairs(move.keys_held) do
-					if not (type(val) == "string" and self.actions[movement_direction[self.facing][val]]) and not (type(val) == "userdata" and self.actions[val]) then
-						correct_input = false
+	if (self.state == hash("ready") or self.state == hash("jump")) and action.pressed then
+		for trigger, moves in pairs(FIGHTER[self.fighter].moves) do
+			if trigger == key_press then
+				for _, move in ipairs(moves) do
+					if self.state == move.state then
+						local correct_input = true
+						for __, val in ipairs(move.keys_held) do
+							if not (type(val) == "string" and self.actions[movement_direction[self.facing][val]]) and not (type(val) == "userdata" and self.actions[val]) then
+								correct_input = false
+							end
+						end
+						for key, val in ipairs(move.keys_sequence) do
+							if not (self.input_history[key] == val) then
+								correct_input = false
+							end
+						end
+						if correct_input then
+							execute_move(self, move)
+							break
+						end
 					end
 				end
-				for key, val in ipairs(move.keys_sequence) do
-					if not (self.input_history[key] == val) then
-						correct_input = false
-					end
-				end
-				if correct_input then
-					execute_move(self, move)
-					break
-				end
+				break
 			end
 		end
 	end
+end
+
+function on_reload(self)
+	
 end
 
 function final(self)

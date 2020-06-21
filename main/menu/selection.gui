@@ -8,8 +8,8 @@ fonts {
   font: "/assets/fonts/librarian.font"
 }
 textures {
-  name: "vojta_beta"
-  texture: "/fighters/vojta_beta.atlas"
+  name: "vojta"
+  texture: "/fighters/vojta.atlas"
 }
 textures {
   name: "main"
@@ -49,7 +49,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 220.0
+    x: 110.0
     y: 220.0
     z: 0.0
     w: 1.0
@@ -62,7 +62,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "vojta_beta/stand"
+  texture: "vojta/stand"
   id: "preview_player_2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -103,7 +103,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 220.0
+    x: 110.0
     y: 220.0
     z: 0.0
     w: 1.0
@@ -116,7 +116,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "vojta_beta/stand"
+  texture: "vojta/stand"
   id: "preview_player_1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

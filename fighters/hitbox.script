@@ -3,9 +3,7 @@ function final(self)
 end
 
 function update(self, dt)
-	if self.move.hitbox == "#hitbox_simple" then
-		go.delete()
-	elseif self.move.hitbox == "#hitbox_long" then
+	if self.move.hitbox == "#hitbox_simple" or self.move.hitbox == "#hitbox_long" then
 		go.delete()
 	elseif self.move.hitbox == "#hitbox_spit" then
 		local pos = go.get_position()
@@ -19,6 +17,11 @@ function update(self, dt)
 		if pos.x < 0 or pos.x > 1300 then
 			go.delete()
 		end
+	elseif self.move.hitbox == "#hitbox_coffee" then
+		self.life = (self.life or 0) + 1
+		if self.life > self.move.hitbox_life then
+			go.delete()
+		end
 	end
 end
 
@@ -28,14 +31,27 @@ function on_message(self, message_id, message, sender)
 		if self.move.hitbox  == "#hitbox_jump" then
 			msg.post(self.go, hash("attack_pushback"), {move = self.move, pos = go.get_world_position()})
 		end
-		go.delete()
+		if self.move.hitbox == "#hitbox_coffee" then
+			msg.post("#co", "disable")
+		else
+			go.delete()
+		end
 	elseif message_id == hash("setup") then
 		self.go = message.myself
 		self.enemy = message.enemy
 		self.move = message.move
 		self.facing = message.facing
 		if self.move.hitbox == "#hitbox_spit" then
+			sprite.set_hflip("#sprite", self.facing == 1)
+			sprite.set_constant("#sprite", "tint", vmath.vector4(1, 1, 1, 0.8))
+			go.set("#sprite", "scale.y", 0.5)
+			go.set("#sprite", "scale.x", 1.5)
+		elseif self.move.hitbox == "#hitbox_coffee" then
 			sprite.set_hflip("#sprite", self.facing == -1)
+			sprite.set_constant("#sprite", "tint", vmath.vector4(1, 1, 1, 0))
+			go.set("#sprite", "scale", vmath.vector3(0.1, 0.1, 0.1))
+			go.animate("#sprite", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(1.7, 1.7, 1.7), go.EASING_OUTSINE, self.move.hitbox_anim)
+			go.animate("#sprite", "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(1, 1, 1, 1), go.EASING_OUTSINE, self.move.hitbox_anim)
 		elseif self.move.hitbox == "#hitbox_book" then
 			sprite.set_hflip("#sprite", self.facing == -1)
 			local force = vmath.vector3(4500 * self.facing, 5500, 0)

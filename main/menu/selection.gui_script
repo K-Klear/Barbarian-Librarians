@@ -46,7 +46,7 @@ function init(self)
 	play_music()
 	msg.post(".", "acquire_input_focus")
 	icons = {
-		{hash("bohous"), hash("vojta_beta")},
+		{hash("bohous"), hash("vojta")},
 		{hash("random"), hash("empty")},
 		{hash("lukas"), hash("michael")}
 	}

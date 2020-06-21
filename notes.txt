@@ -1,20 +1,5 @@
 Animation checklist (OLD - REWRITE!):
 
-Stand
-Walk
-Walk backwards
-Duck
-Pain
-Lie
-Stand up
-Victory
-Turn
-
-Jump
-Jump kick
-Jump punch
-
-
 
 Stuff to do:
 
@@ -65,5 +50,7 @@ https://www.dafont.com/elementary-gothic-bookhand.font?text=LIBRARIAN
 Barbarian
 https://www.dafont.com/barbarian-ns.font?text=BARBARIANS
 
+Sounds:
+https://freesound.org/people/florianreichelt/sounds/460509/
 
 

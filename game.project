@@ -36,3 +36,7 @@ debug = 0
 debug_alpha = 0.7
 allow_dynamic_transforms = 0
 
+[sound]
+max_sound_buffers = 128
+max_component_count = 128
+
