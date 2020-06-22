@@ -1,4 +1,5 @@
 local SET = require("mod.settings")
+local STATE = require("mod.state")
 
 function init(self)
 	msg.post("@render:", "use_fixed_fit_projection", {near = -1, far = 1})
@@ -29,6 +30,12 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("game_end") then
 		msg.post("#proxy_main", "unload")
 		msg.post("#proxy_selection", "load")
+	elseif message_id == hash("pause") then
+		msg.post("#proxy_main", "set_time_step", {factor = 0, mode = 0})
+		STATE.unpaused = false
+	elseif message_id == hash("unpause") then
+		msg.post("#proxy_main", "set_time_step", {factor = 1, mode = 0})
+		STATE.unpaused = true
 	end
 end
 

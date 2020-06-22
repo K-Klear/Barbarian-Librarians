@@ -1,20 +1,12 @@
-local btn, dialog
-local COL = {
-	default = vmath.vector4(0, 0, 0, 1),
-	highlight = vmath.vector4(1, 0.1, 0.15, 1),
-	default_img = vmath.vector4(1, 1, 1, 1),
-	highlight_img = vmath.vector4(1, 0.5, 0.6, 1),
-	default_slider = vmath.vector4(1, 1, 1, 1),
-	highlight_slider = vmath.vector4(0.5, 0.8, 0.1, 1)
-}
+local btn, dialog, sliders
 local focus = "intro"
-local focus_slider = nil
-local focus_button = nil
+local focus_slider, focus_button
 
 local STATE = require("mod.state")
 local SET = require("mod.settings")
 local FIGHTER = require("mod.fighters")
-local STR = require("mod.string") 
+local STR = require("mod.string")
+local COL = require("mod.colours")
 
 local function play_music()
 	sound.play("#music_theme", nil, play_music)

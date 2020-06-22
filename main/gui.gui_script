@@ -2,9 +2,12 @@ local STATE = require("mod.state")
 local SET = require("mod.settings")
 local FIGHTER = require("mod.fighters")
 local STR = require("mod.string")
-local node
+local COL = require("mod.colours")
+local node, btn, sliders
+local focus_slider, focus_button
 
 local other_player = {2, 1}
+
 
 local function play_music()
 	sound.play("/sound#music", nil, play_music)
@@ -87,16 +90,158 @@ function init(self)
 		},
 		round = gui.get_node("round"),
 		fight = gui.get_node("fight"),
-		winner = gui.get_node("winner")
+		winner = gui.get_node("winner"),
+
+		pause_menu = gui.get_node("pause_menu"),
+		pause_label = gui.get_node("pause_label")
 	}
+
+	btn = {
+		czech = gui.get_node("flag_cz"),
+		english = gui.get_node("flag_uk"),
+		pause = gui.get_node("btn_resume")
+	}
+
+	sliders = {
+		volume = {
+			music = {
+				marker = gui.get_node("music_marker"),
+				slider = gui.get_node("music_slider"),
+				label = gui.get_node("volume_music_label")
+			},
+			voice = {
+				marker = gui.get_node("voice_marker"),
+				slider = gui.get_node("voice_slider"),
+				label = gui.get_node("volume_voice_label")
+			},
+			sound = {
+				marker = gui.get_node("sfx_marker"),
+				slider = gui.get_node("sfx_slider"),
+				label = gui.get_node("volume_sfx_label")
+			}
+		},
+		damage = {
+			{
+				marker = gui.get_node("damage_marker_1"),
+				slider = gui.get_node("damage_slider_1"),
+				label = gui.get_node("damage_label_1")
+			},
+			{
+				marker = gui.get_node("damage_marker_2"),
+				slider = gui.get_node("damage_slider_2"),
+				label = gui.get_node("damage_label_2")
+			}
+		}
+	}
+
+	gui.set_enabled(node.pause_menu, false)
 	
 	play_music()
 	start_round(self)
 end
 
+local function set_texts()
+	gui.set_text(node.pause_label, STR[hash("pause_title")][SET.lang])
+	gui.set_text(btn.pause, STR[hash("pause_resume")][SET.lang])
+	gui.set_text(gui.get_node("volume_label"), STR[hash("settings_volume")][SET.lang])
+	for key, slider in pairs(sliders.volume) do
+		gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
+	end
+	gui.set_text(gui.get_node("language_label"), STR[hash("language_label")][SET.lang])
+	gui.set_text(gui.get_node("damage_label"), STR[hash("settings_damage_multiplier")][SET.lang])
+	for key, slider in pairs(sliders.damage) do
+		gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
+	end
+end
+
+local function button_pressed(key)
+	if key == "settings" then
+		--[[
+		gui.set_color(btn.menu.settings, COL.default)
+		gui.set_enabled(dialog.settings, true)
+		gui.set_color(dialog.settings, vmath.vector4(0, 0, 0, 0))
+		focus = "none"
+		focus_button = nil
+		gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
+			focus = "settings"
+		end)
+		for key, slider in pairs(sliders.volume) do
+			gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
+		end
+		for key, slider in pairs(sliders.damage) do
+			gui.set_position(slider.marker, vmath.vector3((SET.damage_multiplier[key] * 50) - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
+		end
+		--]]
+	elseif key == "czech" or key == "english" then
+		SET.lang = SET.language_list[key]
+		set_texts()
+	elseif key == "pause" then
+		if STATE.unpaused then
+			msg.post("bootstrap:/go", hash("pause"))
+			set_texts()
+			gui.set_enabled(node.pause_menu, true)
+		else
+			sys.save(sys.get_save_file("Librarian_Barbarians", "settings"), {
+				lang = SET.lang, volume = SET.volume
+			}) 
+			focus_button = nil; focus_slider = nil
+			gui.set_color(btn.pause, COL.default)
+			msg.post("bootstrap:/go", hash("unpause"))
+			gui.set_enabled(node.pause_menu, false)
+		end
+	end
+end
+
 function on_input(self, action_id, action)
+	if focus_slider and action_id == hash("click") then
+		local slider, type
+		for key, val in pairs(sliders) do
+			if val[focus_slider] then
+				slider = val[focus_slider]
+				type = key
+				break
+			end
+		end
+		local pos_x = action.x - gui.get_position(slider.slider).x - gui.get_position(dialog.settings).x
+		pos_x = pos_x / 2
+		if type == "volume" then
+			local volume = pos_x + 50
+			volume = math.floor((volume + (SET.slider_sensitivity / 2)) / SET.slider_sensitivity) * SET.slider_sensitivity
+			volume = math.max(volume, 0)
+			volume = math.min(volume, 100)
+			gui.set_position(slider.marker, vmath.vector3(volume - 50, gui.get_position(slider.marker).y, 0))
+			gui.set_text(slider.label, STR[hash("settings_volume_labels")][focus_slider][SET.lang](volume))
+			SET.volume[focus_slider] = volume / 100
+			sound.set_group_gain(focus_slider, SET.volume[focus_slider])
+			if action.released then
+				if focus_slider == "voice" then
+					sound.play("#voice_test")
+				elseif focus_slider == "sound" then
+					sound.play("#sound_test")
+				end
+			end
+		elseif type == "damage" then
+			local damage = pos_x + 50
+			damage = math.floor((damage + (SET.slider_sensitivity / 2)) / SET.slider_sensitivity) * SET.slider_sensitivity
+			damage = math.max(damage, 0)
+			damage = math.min(damage, 100)
+			gui.set_position(slider.marker, vmath.vector3(damage - 50, gui.get_position(slider.marker).y, 0))
+			SET.damage_multiplier[focus_slider] = damage / 50
+			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[focus_slider] * 100, focus_slider))
+		end
+	end
 	if action_id == hash("debug") and action.pressed then
 		msg.post("@system:", "toggle_physics_debug")
+	elseif action_id == hash("escape") and action.pressed then
+		button_pressed("pause")
+	elseif action_id == hash("click") and action.pressed then
+		for key, val in pairs(btn) do
+			if gui.pick_node(val, action.x, action.y) then
+				button_pressed(key)
+			end
+		end
 	end
 end
 
@@ -144,9 +289,7 @@ function on_message(self, message_id, message, sender)
 end
 
 function update(self, dt)
-	STATE.frame = STATE.frame + 1
-end
-
-function final(self)
-
+	if STATE.unpaused then
+		STATE.frame = STATE.frame + 1
+	end
 end

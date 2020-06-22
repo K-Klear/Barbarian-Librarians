@@ -95,136 +95,149 @@ local function add_action(self, action, frame)
 end
 
 function update(self, dt)
-	if self.last_input + SET.combo_input_delay < STATE.frame then
-		self.input_history = {}
-	end
-	if self.frame_actions[STATE.frame] then
-		for key, val in ipairs(self.frame_actions[STATE.frame]) do
-			if val == hash("attack_recovery") then
-				if self.state == hash("victor") then
-					play_animation(self, "victory")
-				else
-					self.state = hash("ready")
-				end
-			elseif val == hash("attack_recovery_duck") then
-				if self.state == hash("victor") then
-					play_animation(self, "victory")
-				else
-					if self.actions[hash("duck")] then
-						play_animation(self, "duck_fast")
-						set_collision(self, "duck")
+	if STATE.unpaused then
+		if self.last_input + SET.combo_input_delay < STATE.frame then
+			self.input_history = {}
+		end
+		if self.frame_actions[STATE.frame] then
+			for key, val in ipairs(self.frame_actions[STATE.frame]) do
+				if val == hash("attack_recovery") then
+					if self.state == hash("victor") then
+						play_animation(self, "victory")
+					else
+						self.state = hash("ready")
 					end
+				elseif val == hash("attack_recovery_duck") then
+					if self.state == hash("victor") then
+						play_animation(self, "victory")
+					else
+						if self.actions[hash("duck")] then
+							play_animation(self, "duck_fast")
+							set_collision(self, "duck")
+						end
+						self.state = hash("ready")
+					end
+				elseif val == hash("damage_point") then
+					local rot = vmath.quat_rotation_z(math.rad(self.move.hitbox_rotation or 0) * self.facing)
+					local scale = vmath.vector3(1, 1, 1) * (self.move.hitbox_scale or 1)
+					local hitbox = factory.create(self.move.hitbox, vmath.vector3(self.move.damage_pos.x * self.facing, self.move.damage_pos.y, 0), rot, nil, scale)
+					msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
+					local pos = go.get_world_position()
+					go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
+					if self.move.hitbox == "#hitbox_jump" then
+						self.hitbox = hitbox
+					end
+				elseif val == hash("victory_pose") then
+					play_animation(self, "victory")
+					set_collision(self, "stand")
+					go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.3)
+					go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_LINEAR, 0.3)
+					self.frame_actions = {}
+				elseif val == hash("pull_hook") then
+					play_animation(self, "hook_pull")
+					add_action(self, hash("attack_recovery"), 30)
+				elseif val == hash("be_hooked") then
+					play_animation(self, "pain_high")
+					go.set_position(go.get_world_position(self.enemy) + vmath.vector3(90 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 0, 0))
+				elseif val == hash("remove_stun") then
 					self.state = hash("ready")
-				end
-			elseif val == hash("damage_point") then
-				local rot = vmath.quat_rotation_z(math.rad(self.move.hitbox_rotation or 0) * self.facing)
-				local scale = vmath.vector3(1, 1, 1) * (self.move.hitbox_scale or 1)
-				local hitbox = factory.create(self.move.hitbox, vmath.vector3(self.move.damage_pos.x * self.facing, self.move.damage_pos.y, 0), rot, nil, scale)
-				msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
-				local pos = go.get_world_position()
-				go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
-				if self.move.hitbox == "#hitbox_jump" then
+				elseif val == hash("bike_ride") then
+					self.state = hash("bike")
+					set_collision(self, "duck")
+					local hitbox = factory.create("#hitbox_bike", go.get_world_position())
+					msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
+					go.set_parent(hitbox, ".", true)
 					self.hitbox = hitbox
+				elseif val == hash("teleport_start") then
+					set_collision(self)
+					go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, self.move.duration / 120)
+				elseif val == hash("teleport") then
+					play_animation(self, "teleport_exit", true)
+					go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, self.move.duration / 120)
+					local x = go.get_world_position(self.enemy).x - go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")) * self.move.distance
+					if x < SET.min_x or x > SET.max_x then
+						x = go.get_world_position(self.enemy).x + go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")) * self.move.distance
+					else
+						self.facing = -self.facing
+						sprite.set_hflip("#sprite", self.facing < 0)
+					end
+					go.set_position(vmath.vector3(x, SET.base_y, go.get_world_position().z))
+				elseif val == hash("teleport_end") then
+					self.state = hash("ready")
+					set_collision(self, "stand")
 				end
-			elseif val == hash("victory_pose") then
-				play_animation(self, "victory")
-				set_collision(self, "stand")
-				go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.3)
-				go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_LINEAR, 0.3)
-				self.frame_actions = {}
-			elseif val == hash("pull_hook") then
-				play_animation(self, "hook_pull")
-				add_action(self, hash("attack_recovery"), 30)
-			elseif val == hash("be_hooked") then
-				play_animation(self, "pain_high")
-				go.set_position(go.get_world_position(self.enemy) + vmath.vector3(90 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 0, 0))
-			elseif val == hash("remove_stun") then
-				self.state = hash("ready")
-			elseif val == hash("bike_ride") then
-				self.state = hash("bike")
-				set_collision(self, "duck")
-				local hitbox = factory.create("#hitbox_bike", go.get_world_position())
-				msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
-				go.set_parent(hitbox, ".", true)
-				self.hitbox = hitbox
-			elseif val == hash("teleport_start") then
-				set_collision(self)
-				go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, self.move.duration / 120)
-			elseif val == hash("teleport") then
-				play_animation(self, "teleport_exit", true)
-				go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, self.move.duration / 120)
-				local x = go.get_world_position(self.enemy).x - go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")) * self.move.distance
-				if x < SET.min_x or x > SET.max_x then
-					x = go.get_world_position(self.enemy).x + go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")) * self.move.distance
-				else
-					self.facing = -self.facing
-					sprite.set_hflip("#sprite", self.facing < 0)
-				end
-				go.set_position(vmath.vector3(x, SET.base_y, go.get_world_position().z))
-			elseif val == hash("teleport_end") then
-				self.state = hash("ready")
-				set_collision(self, "stand")
 			end
 		end
-	end
-	if self.state == hash("ready") then
-		check_facing(self)
-		if self.actions[hash("jump")] then
-			reset_position(self)
-			msg.post(".", hash("jump"))
-		elseif self.actions[hash("duck")] then
-			play_animation(self, "duck")
-			set_collision(self, "duck")
-		elseif self.actions[movement_direction[self.facing].forward] then
-			if not self.blocked then
-				local new_pos = go.get_world_position() + vmath.vector3(FIGHTER[self.fighter].speed_forwards * self.facing, 0, 0)
+		if self.state == hash("ready") then
+			check_facing(self)
+			if self.actions[hash("jump")] then
+				reset_position(self)
+				msg.post(".", hash("jump"))
+			elseif self.actions[hash("duck")] then
+				play_animation(self, "duck")
+				set_collision(self, "duck")
+			elseif self.actions[movement_direction[self.facing].forward] then
+				if not self.blocked then
+					local new_pos = go.get_world_position() + vmath.vector3(FIGHTER[self.fighter].speed_forwards * self.facing, 0, 0)
+					new_pos.x = math.max(new_pos.x, SET.min_x)
+					new_pos.x = math.min(new_pos.x, SET.max_x)
+					go.set_position(new_pos)
+				end
+				play_animation(self, "walk")
+				set_collision(self, "stand")
+			elseif self.actions[movement_direction[self.facing].backward] then
+				local new_pos = go.get_world_position() - vmath.vector3(FIGHTER[self.fighter].speed_backwards * self.facing, 0, 0)
 				new_pos.x = math.max(new_pos.x, SET.min_x)
 				new_pos.x = math.min(new_pos.x, SET.max_x)
 				go.set_position(new_pos)
+				play_animation(self, "walk_back")
+				set_collision(self, "stand")
+			else
+				play_animation(self, "stand")
+				set_collision(self, "stand")
 			end
-			play_animation(self, "walk")
-			set_collision(self, "stand")
-		elseif self.actions[movement_direction[self.facing].backward] then
-			local new_pos = go.get_world_position() - vmath.vector3(FIGHTER[self.fighter].speed_backwards * self.facing, 0, 0)
-			new_pos.x = math.max(new_pos.x, SET.min_x)
-			new_pos.x = math.min(new_pos.x, SET.max_x)
-			go.set_position(new_pos)
-			play_animation(self, "walk_back")
-			set_collision(self, "stand")
-		else
+		elseif self.state == hash("ragdoll") and vmath.length_sqr(self.previous_position - go.get_world_position()) < SET.recovery_threshold then
+			reset_position(self, SET.recovery_speed)
 			play_animation(self, "stand")
-			set_collision(self, "stand")
-		end
-	elseif self.state == hash("ragdoll") and vmath.length_sqr(self.previous_position - go.get_world_position()) < SET.recovery_threshold then
-		reset_position(self, SET.recovery_speed)
-		play_animation(self, "stand")
-		self.state = hash("ready")
-	elseif self.state == hash("pain") then
-		self.state = hash("ragdoll")
-	elseif self.state == hash("bike") then
-		local new_pos = go.get_world_position() + vmath.vector3(SET.bike_speed * self.facing, 0, 0)
-		if new_pos.x < SET.min_x or new_pos.x > SET.max_x then
 			self.state = hash("ready")
-			set_collision(self, "stand")
-			if self.hitbox then
-				msg.post(self.hitbox, hash("die"))
-				self.hitbox = nil
+		elseif self.state == hash("pain") then
+			self.state = hash("ragdoll")
+		elseif self.state == hash("bike") then
+			local new_pos = go.get_world_position() + vmath.vector3(SET.bike_speed * self.facing, 0, 0)
+			if new_pos.x < SET.min_x or new_pos.x > SET.max_x then
+				self.state = hash("ready")
+				set_collision(self, "stand")
+				if self.hitbox then
+					msg.post(self.hitbox, hash("die"))
+					self.hitbox = nil
+				end
+			else
+				go.set_position(new_pos)
 			end
+		end
+		if self.paused then
+			self.paused = false
 		else
-			go.set_position(new_pos)
+			self.previous_position = go.get_world_position()
+		end
+		self.blocked = false
+		
+		if math.abs(go.get_world_position().x - go.get_world_position(self.enemy).x) < SET.fighters_min_distance then
+			local enemy_state = go.get(msg.url(nil, self.enemy, "fighter_control"), hash("state"))
+			if not (enemy_state == hash("jump") or enemy_state == hash("attack") or enemy_state == hash("bike")) and
+			not(self.state == hash("jump") or self.state == hash("attack") or self.state == hash("bike")) then
+				go.set_position(go.get_world_position() + vmath.vector3(10, 0, 0) * -self.facing)
+			end
+		end
+		update_shadow()
+	else
+		if not self.paused then
+			for key, val in pairs(INPUT[self.controls]) do
+				self.actions[val] = false
+			end
+			self.paused = true
 		end
 	end
-	self.previous_position = go.get_world_position()
-	self.blocked = false
-	
-	if math.abs(go.get_world_position().x - go.get_world_position(self.enemy).x) < SET.fighters_min_distance then
-		local enemy_state = go.get(msg.url(nil, self.enemy, "fighter_control"), hash("state"))
-		if not (enemy_state == hash("jump") or enemy_state == hash("attack") or enemy_state == hash("bike")) and
-		not(self.state == hash("jump") or self.state == hash("attack") or self.state == hash("bike")) then
-			go.set_position(go.get_world_position() + vmath.vector3(10, 0, 0) * -self.facing)
-		end
-	end
-	update_shadow()
 end
 
 local function play_voice_line(sound_set, self)
@@ -366,46 +379,48 @@ local function execute_move(self, move)
 end
 
 function on_input(self, action_id, action)
-	local key_press = INPUT[self.controls][action_id]
-	if key_press then
-		self.actions[key_press] = action.pressed or not action.released
-		if action.pressed then
-			local input = key_press
-			if input == movement_direction[self.facing].forward then
-				input = hash("forward")
-			elseif input == movement_direction[self.facing].backward then
-				input = hash("backward")
+	if STATE.unpaused then
+		local key_press = INPUT[self.controls][action_id]
+		if key_press then
+			self.actions[key_press] = action.pressed or not action.released
+			if action.pressed then
+				local input = key_press
+				if input == movement_direction[self.facing].forward then
+					input = hash("forward")
+				elseif input == movement_direction[self.facing].backward then
+					input = hash("backward")
+				end
+				table.insert(self.input_history, 1, input)
+				if #self.input_history > SET.input_history_length then
+					table.remove(self.input_history)
+				end
+				self.last_input = STATE.frame
 			end
-			table.insert(self.input_history, 1, input)
-			if #self.input_history > SET.input_history_length then
-				table.remove(self.input_history)
-			end
-			self.last_input = STATE.frame
 		end
-	end
-	if (self.state == hash("ready") or self.state == hash("jump")) and action.pressed then
-		for trigger, moves in pairs(FIGHTER[self.fighter].moves) do
-			if trigger == key_press then
-				for _, move in ipairs(moves) do
-					if self.state == move.state then
-						local correct_input = true
-						for __, val in ipairs(move.keys_held) do
-							if not (type(val) == "string" and self.actions[movement_direction[self.facing][val]]) and not (type(val) == "userdata" and self.actions[val]) then
-								correct_input = false
+		if (self.state == hash("ready") or self.state == hash("jump")) and action.pressed then
+			for trigger, moves in pairs(FIGHTER[self.fighter].moves) do
+				if trigger == key_press then
+					for _, move in ipairs(moves) do
+						if self.state == move.state then
+							local correct_input = true
+							for __, val in ipairs(move.keys_held) do
+								if not (type(val) == "string" and self.actions[movement_direction[self.facing][val]]) and not (type(val) == "userdata" and self.actions[val]) then
+									correct_input = false
+								end
 							end
-						end
-						for key, val in ipairs(move.keys_sequence) do
-							if not (self.input_history[key] == val) then
-								correct_input = false
+							for key, val in ipairs(move.keys_sequence) do
+								if not (self.input_history[key] == val) then
+									correct_input = false
+								end
 							end
-						end
-						if correct_input then
-							execute_move(self, move)
-							break
+							if correct_input then
+								execute_move(self, move)
+								break
+							end
 						end
 					end
+					break
 				end
-				break
 			end
 		end
 	end

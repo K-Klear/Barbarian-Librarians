@@ -33,4 +33,7 @@ return {
 	[hash("main_round")] = {function(x) return "Round "..x end, function(x) return x..". kolo" end},
 	[hash("main_winner")] = {function(name) return name.." wins" end, function(name) return name.." zvítězil" end},
 	[hash("main_draw")] = {"Draw", "Nerozhodně"},
+
+	[hash("pause_resume")] = {"Resume", "Pokračovat"},
+	[hash("pause_title")] = {"Paused", "Pozastaveno"},
 }

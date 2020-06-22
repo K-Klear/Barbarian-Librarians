@@ -1,26 +1,30 @@
+local STATE = require("mod.state")
+
 function final(self)
 	go.delete()
 end
 
 function update(self, dt)
-	if self.move.hitbox == "#hitbox_simple" or self.move.hitbox == "#hitbox_long" then
-		go.delete()
-	elseif self.move.hitbox == "#hitbox_spit" then
-		local pos = go.get_position()
-		if pos.x < 0 or pos.x > 1300 then
+	if STATE.unpaused then
+		if self.move.hitbox == "#hitbox_simple" or self.move.hitbox == "#hitbox_long" then
 			go.delete()
-		else
-			go.set_position(vmath.vector3(pos.x + (self.move.speed * self.facing), pos.y, pos.z))
-		end
-	elseif self.move.hitbox == "#hitbox_book" or self.move.hitbox == "#hitbox_helmet" then
-		local pos = go.get_position()
-		if pos.x < 0 or pos.x > 1300 then
-			go.delete()
-		end
-	elseif self.move.hitbox == "#hitbox_coffee" then
-		self.life = (self.life or 0) + 1
-		if self.life > self.move.hitbox_life then
-			go.delete()
+		elseif self.move.hitbox == "#hitbox_spit" then
+			local pos = go.get_position()
+			if pos.x < 0 or pos.x > 1300 then
+				go.delete()
+			else
+				go.set_position(vmath.vector3(pos.x + (self.move.speed * self.facing), pos.y, pos.z))
+			end
+		elseif self.move.hitbox == "#hitbox_book" or self.move.hitbox == "#hitbox_helmet" then
+			local pos = go.get_position()
+			if pos.x < 0 or pos.x > 1300 then
+				go.delete()
+			end
+		elseif self.move.hitbox == "#hitbox_coffee" then
+			self.life = (self.life or 0) + 1
+			if self.life > self.move.hitbox_life then
+				go.delete()
+			end
 		end
 	end
 end

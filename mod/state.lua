@@ -4,5 +4,7 @@ return {
 	score = {0, 0},
 	fighter = {},
 
+	unpaused = true,
+
 	play_intro = true
 }
