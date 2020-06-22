@@ -547,8 +547,8 @@ FIGHTER[hash("vojta")] = {
 					state = hash("ready"),
 					anim = "teleport",
 					start = 30,
-					duration = 50,
-					distance = 120,
+					duration = 45,
+					distance = 122,
 					playback_rate = 10/60,
 					recovery_type = hash("attack_recovery")
 				},
@@ -586,7 +586,7 @@ FIGHTER[hash("vojta")] = {
 					damage_point = 33,
 					damage_pos = vmath.vector3(100, 10, 0),
 					force = vmath.vector3(50000, 7000, 0),
-					damage = 12,
+					damage = 6,
 					recovery = 52,
 					recovery_type = hash("attack_recovery_duck")
 				},
@@ -652,7 +652,7 @@ FIGHTER[hash("vojta")] = {
 					damage_point = 60,
 					damage_pos = vmath.vector3(160, 140, 0),
 					force = vmath.vector3(14700, 5000, 0),
-					damage = 11,
+					damage = 9,
 					recovery = 140,
 					recovery_type = hash("attack_recovery")
 				},
@@ -692,7 +692,7 @@ FIGHTER[hash("vojta")] = {
 					damage_point = 48,
 					damage_pos = vmath.vector3(150, 163, 0),
 					force = vmath.vector3(20000, 11000, 0),
-					damage = 16,
+					damage = 15,
 					recovery = 65,
 					recovery_type = hash("attack_recovery")
 				},

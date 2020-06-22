@@ -294,7 +294,7 @@ function on_message(self, message_id, message, sender)
 		self.frame_actions = {}
 		self.state = hash("hooking")
 		add_action(self, hash("pull_hook"), SET.hook_delay)
-		play_voice_line("get_over_here", self)
+		timer.delay(0.3, false, function() play_voice_line("get_over_here", self) end)
 	elseif message_id == hash("bike_landed") then
 		set_collision(self)
 		self.hitbox = nil

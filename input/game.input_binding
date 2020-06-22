@@ -54,6 +54,14 @@ key_trigger {
   input: KEY_LCTRL
   action: "p2_kick"
 }
+key_trigger {
+  input: KEY_O
+  action: "p1_punch"
+}
+key_trigger {
+  input: KEY_P
+  action: "p1_kick"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_LEFT
   action: "click"

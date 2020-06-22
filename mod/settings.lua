@@ -48,7 +48,7 @@ return {
 
 	lang = 1,
 	language_list = {english = 1, czech = 2},
-	volume = {music = 0.3, voice = 0.9, sound = 1},
+	volume = {music = 0.6, voice = 1, sound = 1},
 
 	slider_sensitivity = 5,
 }
