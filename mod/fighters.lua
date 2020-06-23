@@ -71,7 +71,7 @@ FIGHTER[hash("lukas")] = {
 				
 				{
 					keys_held = {},
-					keys_sequence = {hash("punch"), hash("backward"), hash("backward"), hash("backward")},
+					keys_sequence = {hash("punch"), hash("backward"), hash("backward")},
 					state = hash("ready"),
 					anim = "smash",
 					playback_rate = 4/60,
@@ -190,7 +190,7 @@ FIGHTER[hash("lukas")] = {
 
 				{
 					keys_held = {},
-					keys_sequence = {hash("kick"), hash("forward"), hash("backward"), hash("backward")},
+					keys_sequence = {hash("kick"), hash("backward"), hash("forward"), hash("duck")},
 					state = hash("ready"),
 					anim = "bike",
 					bike_ready = 85,
