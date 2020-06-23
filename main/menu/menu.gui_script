@@ -275,6 +275,12 @@ function on_input(self, action_id, action)
 			if focus_button then gui.set_color(btn[focus][focus_button], COL.default) end
 			focus_button = btn_sequence[focus][key + 1]
 		end
+	elseif action_id == hash("escape") then
+		if focus == "settings" then
+			button_pressed("close_settings") 
+		elseif focus == "credits" then
+			button_pressed("close_credits")
+		end
 	elseif not action_id then
 		for key, val in pairs(btn[focus]) do
 			if gui.pick_node(val, action.x, action.y) then

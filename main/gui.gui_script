@@ -5,6 +5,7 @@ local STR = require("mod.string")
 local COL = require("mod.colours")
 local node, btn, sliders
 local focus_slider, focus_button
+local round_in_progress
 
 local other_player = {2, 1}
 
@@ -60,6 +61,7 @@ local function start_round(self)
 				gui.set_enabled(node.fight, true)
 				msg.post(self.player_go[1], hash("start"))
 				msg.post(self.player_go[2], hash("start"))
+				round_in_progress = true
 				sound.play("sound#fight", nil, function()
 					gui.set_enabled(node.fight, false)
 				end)
@@ -155,33 +157,23 @@ local function set_texts()
 end
 
 local function button_pressed(key)
-	if key == "settings" then
-		--[[
-		gui.set_color(btn.menu.settings, COL.default)
-		gui.set_enabled(dialog.settings, true)
-		gui.set_color(dialog.settings, vmath.vector4(0, 0, 0, 0))
-		focus = "none"
-		focus_button = nil
-		gui.animate(dialog.settings, "color", vmath.vector4(0, 0, 0, 1), gui.EASING_LINEAR, 0.3, 0, function()
-			focus = "settings"
-		end)
-		for key, slider in pairs(sliders.volume) do
-			gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
-			gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
-		end
-		for key, slider in pairs(sliders.damage) do
-			gui.set_position(slider.marker, vmath.vector3((SET.damage_multiplier[key] * 50) - 50, gui.get_position(slider.marker).y, 0))
-			gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
-		end
-		--]]
-	elseif key == "czech" or key == "english" then
+	if key == "czech" or key == "english" then
 		SET.lang = SET.language_list[key]
 		set_texts()
 	elseif key == "pause" then
-		if STATE.unpaused then
+		if STATE.unpaused and round_in_progress then
 			msg.post("bootstrap:/go", hash("pause"))
 			set_texts()
 			gui.set_enabled(node.pause_menu, true)
+			focus_button = nil; focus_slider = nil
+			for key, slider in pairs(sliders.volume) do
+				gui.set_position(slider.marker, vmath.vector3((SET.volume[key] * 100) - 50, gui.get_position(slider.marker).y, 0))
+				gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
+			end
+			for key, slider in pairs(sliders.damage) do
+				gui.set_position(slider.marker, vmath.vector3((SET.damage_multiplier[key] * 50) - 50, gui.get_position(slider.marker).y, 0))
+				gui.set_text(slider.label, STR[hash("settings_damage_labels")][SET.lang](SET.damage_multiplier[key] * 100, key))
+			end
 		else
 			sys.save(sys.get_save_file("Librarian_Barbarians", "settings"), {
 				lang = SET.lang, volume = SET.volume
@@ -204,7 +196,7 @@ function on_input(self, action_id, action)
 				break
 			end
 		end
-		local pos_x = action.x - gui.get_position(slider.slider).x - gui.get_position(dialog.settings).x
+		local pos_x = action.x - gui.get_position(slider.slider).x - gui.get_position(node.pause_menu).x
 		pos_x = pos_x / 2
 		if type == "volume" then
 			local volume = pos_x + 50
@@ -217,9 +209,9 @@ function on_input(self, action_id, action)
 			sound.set_group_gain(focus_slider, SET.volume[focus_slider])
 			if action.released then
 				if focus_slider == "voice" then
-					sound.play("#voice_test")
+					--sound.play("/sound#voice_test")
 				elseif focus_slider == "sound" then
-					sound.play("#sound_test")
+					--sound.play("/sound#sound_test")
 				end
 			end
 		elseif type == "damage" then
@@ -242,10 +234,44 @@ function on_input(self, action_id, action)
 				button_pressed(key)
 			end
 		end
+	elseif not action_id then
+		for key, val in pairs(btn) do
+			if gui.pick_node(val, action.x, action.y) then
+				focus_button = key
+				if gui.get_text(val) then
+					gui.set_color(val, COL.highlight)
+				else
+					gui.set_color(val, COL.highlight_img)
+				end
+			else
+				if gui.get_text(val) then
+					gui.set_color(val, COL.default)
+				else
+					gui.set_color(val, COL.default_img)
+				end
+				if focus_button == key then
+					focus_button = nil
+				end
+			end
+		end
+		for k, v in pairs(sliders) do
+			for key, val in pairs(v) do
+				if gui.pick_node(val.slider, action.x, action.y) then
+					gui.set_color(val.slider, COL.highlight_slider)
+					focus_slider = key
+				else
+					gui.set_color(val.slider, COL.default_slider)
+					if focus_slider == key then
+						focus_slider = nil
+					end
+				end
+			end
+		end
 	end
 end
 
 local function end_round(self)
+	round_in_progress = false
 	if STATE.victor then
 		STATE.score[STATE.victor] = STATE.score[STATE.victor] + 1
 		gui.set_text(node.winner, STR[hash("main_winner")][SET.lang](FIGHTER[STATE.fighter[STATE.victor]].name))

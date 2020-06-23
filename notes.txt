@@ -4,14 +4,11 @@ Animation checklist (OLD - REWRITE!):
 Stuff to do:
 
 - Explain the movesets *somewhere*
-- Allow keyboard navigation in the main menu submenus
+- Allow keyboard navigation in the settings submenu
 - "Draw" voiceover
 - Decouple framerate from simulation
 - Add diacritics to the fonts
-- Add sounds
 - optimize sprites
-- Pause menu
-- Escape in main menu submenus
 
 Known bugs and stuff to fix:
 
@@ -52,5 +49,6 @@ https://www.dafont.com/barbarian-ns.font?text=BARBARIANS
 
 Sounds:
 https://freesound.org/people/florianreichelt/sounds/460509/
-
+https://freesound.org/people/wormer2/sounds/415669/
+https://freesound.org/people/bottles/sounds/382313/
 

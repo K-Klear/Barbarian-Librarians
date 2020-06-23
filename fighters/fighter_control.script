@@ -94,6 +94,13 @@ local function add_action(self, action, frame)
 	table.insert(self.frame_actions[STATE.frame + frame], action)
 end
 
+local function play_voice_line(sound_set, self, anytime)
+	if anytime or not self.talking then
+		self.talking = true
+		sound.play("/sound#"..FIGHTER[self.fighter].sounds[sound_set][math.random(#FIGHTER[self.fighter].sounds[sound_set])], nil, function() self.talking = false end)
+	end
+end
+
 function update(self, dt)
 	if STATE.unpaused then
 		if self.last_input + SET.combo_input_delay < STATE.frame then
@@ -126,6 +133,9 @@ function update(self, dt)
 					go.set_position(vmath.vector3(pos.x + (self.move.damage_pos.x * self.facing), pos.y + self.move.damage_pos.y, pos.z), hitbox)
 					if self.move.hitbox == "#hitbox_jump" then
 						self.hitbox = hitbox
+					end
+					if self.move.damage_sound then
+						play_voice_line(self.move.damage_sound, self, true)
 					end
 				elseif val == hash("victory_pose") then
 					play_animation(self, "victory")
@@ -240,13 +250,6 @@ function update(self, dt)
 	end
 end
 
-local function play_voice_line(sound_set, self)
-	if not self.talking then
-		self.talking = true
-		sound.play("/sound#"..FIGHTER[self.fighter].sounds[sound_set][math.random(#FIGHTER[self.fighter].sounds[sound_set])], nil, function() self.talking = false end)
-	end
-end
-
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		if message.other_group == hash("fighter") then
@@ -264,8 +267,10 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 	elseif message_id == hash("attack_landed") then
-		if not message.move.sound then
+		if not message.move.hit_sound then
 			sound.play("/sound#"..SFX.hit[math.random(#SFX.hit)])
+		else
+			sound.play("/sound#"..message.move.hit_sound)
 		end
 		if message.move.damage > SET.sound_pain_threshold then
 			play_voice_line("pain_high", self)
@@ -276,6 +281,7 @@ function on_message(self, message_id, message, sender)
 			set_collision(self, "stand")
 			self.state = hash("stun")
 			play_animation(self, "pain_low")
+			reset_position(self)
 			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(400 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 100, 0))
 			msg.post(self.enemy, hash("hook_landed"))
 			self.frame_actions = {}
