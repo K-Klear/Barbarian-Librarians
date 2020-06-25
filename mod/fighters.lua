@@ -54,6 +54,7 @@ FIGHTER[hash("lukas")] = {
 
 				-- SPECIAL ATTACKS
 				{
+					name = hash("lu_throw"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("backward"), hash("duck")},
 					state = hash("ready"),
@@ -70,6 +71,7 @@ FIGHTER[hash("lukas")] = {
 				},
 				
 				{
+					name = hash("lu_smash"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("backward"), hash("backward")},
 					state = hash("ready"),
@@ -189,6 +191,7 @@ FIGHTER[hash("lukas")] = {
 				-- SPECIAL KICKS
 
 				{
+					name = hash("lu_ride"),
 					keys_held = {},
 					keys_sequence = {hash("kick"), hash("backward"), hash("forward"), hash("duck")},
 					state = hash("ready"),
@@ -336,6 +339,7 @@ FIGHTER[hash("bohous")] = {
 				-- SPECIAL ATTACKS
 
 				{
+					name = hash("bo_throw"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("backward"), hash("backward")},
 					state = hash("ready"),
@@ -351,6 +355,7 @@ FIGHTER[hash("bohous")] = {
 					recovery_type = hash("attack_recovery")
 				},
 				{
+					name = hash("bo_smash"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("forward"), hash("duck"), hash("backward")},
 					state = hash("ready"),
@@ -367,6 +372,7 @@ FIGHTER[hash("bohous")] = {
 					recovery_type = hash("attack_recovery")
 				},
 				{
+					name = hash("bo_hook"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("backward"), hash("duck")},
 					state = hash("ready"),
@@ -543,6 +549,7 @@ FIGHTER[hash("vojta")] = {
 		moves = {
 			[hash("jump")] = {
 				{
+					name = hash("vo_teleport"),
 					keys_held = {},
 					keys_sequence = {hash("jump"), hash("duck")},
 					state = hash("ready"),
@@ -642,6 +649,7 @@ FIGHTER[hash("vojta")] = {
 
 				-- SPECIAL ATTACKS
 				{
+					name = hash("vo_spit"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("forward"), hash("backward")},
 					state = hash("ready"),
@@ -660,6 +668,7 @@ FIGHTER[hash("vojta")] = {
 				},
 
 				{
+					name = hash("vo_smash"),
 					keys_held = {},
 					keys_sequence = {hash("punch"), hash("backward"), hash("duck"), hash("forward")},
 					state = hash("ready"),

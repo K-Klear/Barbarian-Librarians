@@ -21,13 +21,24 @@ return {
 	[hash("settings_damage_multiplier")] = {"Damage\nmultiplier", "Síla\nútoků"},
 	[hash("settings_damage_labels")] = {function(damage, player) return "Player "..player..": "..damage.."%" end, function(damage, player) return "Hráč "..player..": "..damage.." %" end},
 		
-	
 	[hash("selection_player_1")] = {"Player 1", "Hráč 1"},
 	[hash("selection_player_2")] = {"Player 2", "Hráč 2"},
 	[hash("selection_choose_fighter")] = {"Choose your librarian", "Vyber si knihovníka"},
 	[hash("selection_exit")] = {"Exit (esc)", "Zpět (esc)"},
 	[hash("selection_versus")] = {"VERSUS", "VERSUS"},
 	[hash("selection_random")] = {"Random", "Náhodný"},
+
+	[hash("lu_throw")] = {"Helmet Heave", "Hod helmou"},
+	[hash("lu_smash")] = {"Scooter Smash", "Rána koloběžkou"},
+	[hash("lu_ride")] = {"Scooter Ride", "Koloběžka"},
+
+	[hash("bo_throw")] = {"Throw the Book at Them", "Čtení je radost"},
+	[hash("bo_smash")] = {"Analytical Psychology", "Analytická psychologie"},
+	[hash("bo_hook")] = {"Hook", "Hák"},
+
+	[hash("vo_spit")] = {"Coffee Spit", "Plivnutí kafe"},
+	[hash("vo_smash")] = {"Smell the Coffee", "Ranní káva"},
+	[hash("vo_teleport")] = {"Defold Hack", "Hacknutí hry"},
 
 	[hash("main_fight")] = {"FIGHT", "FIGHT"},
 	[hash("main_round")] = {function(x) return "Round "..x end, function(x) return x..". kolo" end},

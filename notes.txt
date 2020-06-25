@@ -1,4 +1,27 @@
-Animation checklist (OLD - REWRITE!):
+Animation checklist:
+
+Stand
+Pain high / low
+Victory
+Jump / land
+Turn
+
+Punch / Punch / Punch
+Kick / Kick / Kick
+
+Walk fwd
+Walk back
+
+Duck
+Jump rotate
+
+Punch / Punch / Punch
+Kick / Kick / Kick
+
+Jump punch
+Jump kick
+
+Special moves
 
 
 Stuff to do:
