@@ -19,17 +19,13 @@ local btn
 
 local function change_preview(self, player, fighter)
 	local key_icons = {
-		[hash("forward")] = {"key_left_arrow", ""
-		[hash("backward")] = {"key_right_arrow",
-		[hash("jump")] = {"key_up_arrow",
-		[hash("duck")] = {"key_down_arrow",
-		[hash("punch")] = {"key_enter",
-		[hash("kick")] = {"key_r_shift"
-		},
-		
-	
-
-	
+		[hash("forward")] = {"key_left_arrow", "key_d"},
+		[hash("backward")] = {"key_right_arrow", "key_a"},
+		[hash("jump")] = {"key_up_arrow", "key_w"},
+		[hash("duck")] = {"key_down_arrow", "key_s"},
+		[hash("punch")] = {"key_enter", "key_l_shift"},
+		[hash("kick")] = {"key_r_shift", "key_l_ctrl"}
+	}
 	if FIGHTER[fighter] then
 		gui.set_texture(preview[player], FIGHTER[fighter].atlas)
 		gui.play_flipbook(preview[player], "stand")
@@ -47,7 +43,12 @@ local function change_preview(self, player, fighter)
 			gui.set_enabled(_moves.name, true)
 			gui.set_text(_moves.name, STR[special_moves[_].name][SET.lang])
 			for __, key in ipairs(_moves) do
-				gui.set_enabled(key, true)
+				if special_moves[_].keys_sequence[#special_moves[_].keys_sequence - (__ - 1)] then
+					gui.set_enabled(key, true)
+					gui.play_flipbook(key, key_icons[special_moves[_].keys_sequence[#special_moves[_].keys_sequence - (__ - 1)]][player])
+				else
+					gui.set_enabled(key, false)
+				end
 			end
 		end
 	else
