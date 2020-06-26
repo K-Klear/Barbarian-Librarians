@@ -30,7 +30,7 @@ return {
 
 	[hash("lu_throw")] = {"Helmet Heave", "Hod helmou"},
 	[hash("lu_smash")] = {"Scooter Smash", "Rána koloběžkou"},
-	[hash("lu_ride")] = {"Scooter Ride", "Koloběžka"},
+	[hash("lu_ride")] = {"Scooter Ride", "Koloběh života"},
 
 	[hash("bo_throw")] = {"Throw the Book at Them", "Čtení je radost"},
 	[hash("bo_smash")] = {"Analytical Psychology", "Analytická psychologie"},

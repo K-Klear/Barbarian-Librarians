@@ -221,6 +221,12 @@ function on_input(self, action_id, action)
 						end
 						sound.play("#"..FIGHTER[selection[player]].name)
 						STATE.fighter[player] = selection[player]
+						for _, _moves in ipairs(moves[player]) do
+							gui.set_enabled(_moves.name, false)
+							for __, key in ipairs(_moves) do
+								gui.set_enabled(key, false)
+							end
+						end
 					end
 				end
 			end
