@@ -1,0 +1,602 @@
+animations {
+  id: "stand"
+  images {
+    image: "/assets/images/fighters/petr/pe_ready_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_ready_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_ready_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_ready_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_ready_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_ready_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_PINGPONG
+  fps: 4
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "victory"
+  images {
+    image: "/assets/images/fighters/petr/pe_victory_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_victory_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_victory_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_victory_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_victory_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_victory_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 3
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "pain_low"
+  images {
+    image: "/assets/images/fighters/petr/pe_pain_low_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_pain_low_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_pain_low_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 8
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "pain_high"
+  images {
+    image: "/assets/images/fighters/petr/pe_pain_high_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_pain_high_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_pain_high_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 8
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "land"
+  images {
+    image: "/assets/images/fighters/petr/pe_land_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_land_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 6
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "jump"
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_up_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_up_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_up_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 6
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "turn"
+  images {
+    image: "/assets/images/fighters/petr/pe_turn_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_turn_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_turn_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_turn_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_turn_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_turn_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 12
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "walk"
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_07.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 6
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "walk_back"
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_walk_back_07.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 4
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "punch_fast"
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_fast_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "punch_medium"
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_medium_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_medium_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "punch_slow"
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_slow_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_slow_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_slow_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "kick_fast"
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_fast_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "kick_medium"
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_medium_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_medium_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "kick_slow"
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_slow_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_slow_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_slow_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "jump_front"
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_07.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_08.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 16
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "duck"
+  images {
+    image: "/assets/images/fighters/petr/pe_duck_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_duck_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_duck_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_duck_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_duck_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 28
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "jump_back"
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_07.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_rotate_08.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_BACKWARD
+  fps: 16
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "duck_fast"
+  images {
+    image: "/assets/images/fighters/petr/pe_duck_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 24
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "kick_jump"
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_kick_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 3
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "punch_jump"
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_punch_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_punch_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_jump_punch_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 6
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "punch_duck_fast"
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_duck_fast_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "punch_duck_medium"
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_duck_medium_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_punch_duck_medium_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "kick_duck_fast"
+  images {
+    image: "/assets/images/fighters/petr/pe_kick_duck_fast_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "stomp"
+  images {
+    image: "/assets/images/fighters/petr/pe_stomp_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_stomp_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_stomp_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_stomp_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_stomp_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+animations {
+  id: "teleport_jump"
+  images {
+    image: "/assets/images/fighters/petr/pe_teleport_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_teleport_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "teleport_fall"
+  images {
+    image: "/assets/images/fighters/petr/pe_teleport_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "teleport_land"
+  images {
+    image: "/assets/images/fighters/petr/pe_teleport_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_teleport_05.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_teleport_06.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 4
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "smash"
+  images {
+    image: "/assets/images/fighters/petr/pe_smash_01.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_smash_02.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/assets/images/fighters/petr/pe_smash_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 6
+  flip_horizontal: 1
+  flip_vertical: 0
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0

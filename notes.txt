@@ -1,3 +1,29 @@
+Stuff to do:
+
+- Allow keyboard navigation in the settings submenu
+- "Draw" voiceover
+- Decouple framerate from simulation
+- Add diacritics to the fonts
+- Optimize sprites
+- Moar sounds
+- Forced fall ragdoll
+	- Do this at the end of a round
+- Proper portraits on the selection screen
+- Find proper Bohouš jump punch
+- Add sounds to the credits
+- Hypertext in credits
+
+Known bugs and stuff to fix:
+
+- Victory star appears for both players when a round is drawn, though it's fixed as the next round starts
+- There was that one time when my ragdoll ended up standing on its head
+- Bohouš's jump frames needs to be better centred
+- empty_img not actually empty
+- clean-up the bike frames (redraw the wires, among other)
+- Lukáš mirror bike ride attack resolves without physics
+- Lukáš punches while ducked have hitboxes in wrong position
+- Bike attacks can get erratic if spammed.
+
 Animation checklist:
 
 Stand
@@ -23,26 +49,6 @@ Jump kick
 
 Special moves
 
-
-Stuff to do:
-
-- Explain the movesets *somewhere*
-- Allow keyboard navigation in the settings submenu
-- "Draw" voiceover
-- Decouple framerate from simulation
-- Add diacritics to the fonts
-- optimize sprites
-
-Known bugs and stuff to fix:
-
-- Victory star appears for both players when a round is drawn, though it's fixed as the next round starts
-- There was that one time when my ragdoll ended up standing on its head
-- Bohouš's jump frames needs to be better centred
-- empty_img not actually empty
-- clean-up the bike frames (redraw the wires, among other)
-- Lukáš mirror bike ride attack resolves without physics
-- Lukáš punches while ducked have hitboxes in wrong position
-- Bike attacks can get erratic if spammed.
 
 Credits:
 

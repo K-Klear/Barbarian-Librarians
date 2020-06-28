@@ -32,7 +32,7 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("trigger_response") and message.enter and message.other_id == self.enemy then
 		msg.post(self.enemy, hash("attack_landed"), {move = self.move, pos = go.get_world_position()})
-		if self.move.hitbox  == "#hitbox_jump" then
+		if self.move.hitbox  == "#hitbox_jump" and not (self.move.name == hash("pe_jump")) then
 			msg.post(self.go, hash("attack_pushback"), {move = self.move, pos = go.get_world_position()})
 		end
 		if self.move.hitbox == "#hitbox_coffee" then

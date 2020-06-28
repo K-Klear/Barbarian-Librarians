@@ -23,6 +23,10 @@ textures {
   name: "lukas"
   texture: "/fighters/lukas.atlas"
 }
+textures {
+  name: "petr"
+  texture: "/fighters/petr.atlas"
+}
 background_color {
   x: 0.0
   y: 0.0
@@ -86,7 +90,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 116.0
+    y: 129.0
     z: 0.0
     w: 1.0
   }
@@ -1337,7 +1341,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 116.0
+    y: 129.0
     z: 0.0
     w: 1.0
   }

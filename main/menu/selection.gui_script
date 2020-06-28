@@ -32,6 +32,7 @@ local function change_preview(self, player, fighter)
 		selection[player] = fighter
 		gui.set_text(name[player], FIGHTER[fighter].name)
 		local special_moves = {}
+		if fighter ~= hash("petr") then
 		for _, v in pairs(FIGHTER[fighter].moves) do
 			for key, val in ipairs(v) do
 				if val.name then
@@ -50,6 +51,7 @@ local function change_preview(self, player, fighter)
 					gui.set_enabled(key, false)
 				end
 			end
+		end
 		end
 	else
 		for _, _moves in ipairs(moves[player]) do
@@ -82,7 +84,7 @@ function init(self)
 	icons = {
 		{hash("bohous"), hash("vojta")},
 		{hash("random"), hash("empty")},
-		{hash("lukas"), hash("michael")}
+		{hash("lukas"), hash("petr")}
 	}
 	btn = {back = gui.get_node("back")}
 	reticles = {gui.get_node("reticle_p1"), gui.get_node("reticle_p2")}

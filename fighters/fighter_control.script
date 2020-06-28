@@ -175,6 +175,26 @@ function update(self, dt)
 				elseif val == hash("teleport_end") then
 					self.state = hash("ready")
 					set_collision(self, "stand")
+				elseif val == hash("quake") then
+					msg.post("/cam#camera_script", hash("shake"), {shake = 35})
+					if go.get_world_position(self.enemy).y == SET.base_y then
+						msg.post(self.enemy, hash("attack_landed"), {move = self.move, pos = go.get_world_position(self.enemy)})
+					end
+				elseif val == hash("teleport_jump_start") then
+					set_collision(self, "jump_up")
+					msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(0, self.move.jump_force, 0), position = go.get_world_position()})
+					self.move.target = go.get_world_position(self.enemy).x
+				elseif val == hash("teleport_jump_mid") then
+					set_collision(self, "stand")
+					local pos = go.get_world_position()
+					go.set_position(vmath.vector3(self.move.target, pos.y, pos.z))
+					play_animation(self, "teleport_fall")
+					set_collision(self, "jump_teleport")
+					msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(0, -self.move.jump_force, 0), position = go.get_world_position()})
+					local scale = vmath.vector3(1, 1, 1) * self.move.hitbox_scale
+					self.hitbox = factory.create(self.move.hitbox, self.move.hitbox_pos, nil, nil, scale)
+					msg.post(self.hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
+					go.set_position(vmath.vector3(self.move.target, pos.y, pos.z) + self.move.hitbox_pos, self.hitbox)
 				end
 			end
 		end
@@ -224,6 +244,13 @@ function update(self, dt)
 			else
 				go.set_position(new_pos)
 			end
+		elseif self.state == hash("pe_jumped") then
+			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(0, -190, 0))
+		elseif self.state == hash("pe_jumping") and go.get_world_position().y < SET.base_y then
+			self.state = hash("none")
+			set_collision(self, "stand")
+			play_animation(self, "teleport_land")
+			timer.delay(2, false, function() self.state = hash("ready") end)
 		end
 		if self.paused then
 			self.paused = false
@@ -234,8 +261,8 @@ function update(self, dt)
 		
 		if math.abs(go.get_world_position().x - go.get_world_position(self.enemy).x) < SET.fighters_min_distance then
 			local enemy_state = go.get(msg.url(nil, self.enemy, "fighter_control"), hash("state"))
-			if not (enemy_state == hash("jump") or enemy_state == hash("attack") or enemy_state == hash("bike")) and
-			not(self.state == hash("jump") or self.state == hash("attack") or self.state == hash("bike")) then
+			if not (enemy_state == hash("jump") or enemy_state == hash("attack") or enemy_state == hash("bike") or enemy_state == hash("pe_jumped")) and
+			not(self.state == hash("jump") or self.state == hash("attack") or self.state == hash("bike") or self.state == hash("pe_jumped")) then
 				go.set_position(go.get_world_position() + vmath.vector3(10, 0, 0) * -self.facing)
 			end
 		end
@@ -288,6 +315,17 @@ function on_message(self, message_id, message, sender)
 			add_action(self, hash("be_hooked"), SET.hook_delay)
 			add_action(self, hash("remove_stun"), SET.hook_delay + SET.hook_stun)
 			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
+		elseif message.move.name == hash("pe_jump") then
+			set_collision(self)
+			self.state = hash("pe_jumped")
+			play_animation(self, "pain_high")
+			reset_position(self)
+			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(0, -150, 0))
+			go.set(".", "euler.z", 90)
+			msg.post(self.enemy, hash("pe_jump_landed"))
+			self.frame_actions = {}
+			add_action(self, hash("remove_stun"), message.move.stun_time)
+			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 		else
 			if message.move.anim == "bike" then
 				msg.post(self.enemy, hash("bike_landed"))
@@ -317,6 +355,9 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("bike_landed") then
 		set_collision(self)
 		self.hitbox = nil
+	elseif message_id == hash("pe_jump_landed") then
+		self.hitbox = nil
+		self.state = hash("pe_jumping")
 	elseif message_id == hash("attack_pushback") then
 		local direction = (self.previous_position.x - go.get_world_position().x) * -self.facing
 		local magic_number = SET.jump_force.x / 14400
@@ -375,6 +416,11 @@ local function execute_move(self, move)
 		add_action(self, hash("teleport_start"), move.start)
 		add_action(self, hash("teleport"), move.start + move.duration)
 		add_action(self, hash("teleport_end"), 2 * move.start + move.duration)
+	elseif move.name == hash("pe_stomp") then
+		add_action(self, hash("quake"), move.quake_point)
+	elseif move.name == hash("pe_jump") then
+		add_action(self, hash("teleport_jump_start"), move.jump_frame)
+		add_action(self, hash("teleport_jump_mid"), move.teleport_frame)
 	end
 	if move.damage_point then
 		add_action(self, hash("damage_point"), move.damage_point)
@@ -432,9 +478,6 @@ function on_input(self, action_id, action)
 	end
 end
 
-function on_reload(self)
-	
-end
 
 function final(self)
 	go.delete("shadow")
