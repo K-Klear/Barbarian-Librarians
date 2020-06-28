@@ -285,7 +285,7 @@ local function end_round(self)
 	else
 		gui.set_text(node.winner, STR[hash("main_draw")][SET.lang])
 		gui.set_enabled(node.winner, true)
-		sound.play("sound#wins", nil, function()
+		sound.play("sound#draw", nil, function()
 			gui.set_enabled(node.winner, false)
 			timer.delay(SET.next_round_delay, false, start_round)
 		end)

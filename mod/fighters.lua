@@ -857,8 +857,9 @@ FIGHTER[hash("petr")] = {
 	speed_forwards = 4.5,
 	speed_backwards = 3,
 	sounds = {
-		pain_low = {"vo_pain_low_01", "vo_pain_low_02", "vo_pain_low_03", "vo_pain_low_04"},
-		pain_high = {"vo_pain_high_01", "vo_pain_high_02", "vo_pain_high_03"},
+		pain_low = {"pe_pain_low_01", "pe_pain_low_02", "pe_pain_low_03"},
+		pain_high = {"pe_pain_high_01", "pe_pain_high_02"},
+		spine_crush = {"spine_crush_01"}
 	},
 	moves = {
 
@@ -872,8 +873,9 @@ FIGHTER[hash("petr")] = {
 				hitbox = "#hitbox_jump",
 				hitbox_scale = 2,
 				hitbox_pos = vmath.vector3(0, -35, 0),
+				hit_sound = "spine_crush_01",
 				damage = 30,
-				stun_time = 150,
+				stun_time = 100,
 				playback_rate = 7/60,
 				jump_frame = 30,
 				teleport_frame = 75,

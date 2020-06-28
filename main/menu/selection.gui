@@ -3080,7 +3080,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main/mf_portrait_small"
+  texture: "main/pe_portrait_small"
   id: "icon_5"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3097,7 +3097,7 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.25
+  alpha: 1.0
   template_node_child: false
   size_mode: SIZE_MODE_AUTO
 }

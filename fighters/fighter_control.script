@@ -112,6 +112,7 @@ function update(self, dt)
 					if self.state == hash("victor") then
 						play_animation(self, "victory")
 					else
+						reset_position(self, 0.1)
 						self.state = hash("ready")
 					end
 				elseif val == hash("attack_recovery_duck") then
@@ -150,6 +151,7 @@ function update(self, dt)
 					play_animation(self, "pain_high")
 					go.set_position(go.get_world_position(self.enemy) + vmath.vector3(90 * go.get(msg.url(nil, self.enemy, "fighter_control"), hash("facing")), 0, 0))
 				elseif val == hash("remove_stun") then
+					reset_position(self, 0.3)
 					self.state = hash("ready")
 				elseif val == hash("bike_ride") then
 					self.state = hash("bike")
@@ -180,6 +182,7 @@ function update(self, dt)
 					if go.get_world_position(self.enemy).y == SET.base_y then
 						msg.post(self.enemy, hash("attack_landed"), {move = self.move, pos = go.get_world_position(self.enemy)})
 					end
+					sound.play("/sound#pe_stomp_01")
 				elseif val == hash("teleport_jump_start") then
 					set_collision(self, "jump_up")
 					msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(0, self.move.jump_force, 0), position = go.get_world_position()})
@@ -195,6 +198,31 @@ function update(self, dt)
 					self.hitbox = factory.create(self.move.hitbox, self.move.hitbox_pos, nil, nil, scale)
 					msg.post(self.hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
 					go.set_position(vmath.vector3(self.move.target, pos.y, pos.z) + self.move.hitbox_pos, self.hitbox)
+				elseif val == hash("jump_away") then
+					if self.state == hash("victor") then
+						play_animation(self, "victory")
+					else
+						reset_position(self, 0.1)
+						self.state = hash("ready")
+						local force_x, force_y, anim = SET.jump_force.x, SET.jump_force.y, "jump"
+						local pos = go.get_world_position().x
+						local dir = self.facing
+						if math.abs(pos - SET.min_x) > math.abs(pos - SET.max_x) then
+							dir = -dir
+						end
+						if dir == 1 then
+							force_x = force_x * self.facing
+							anim = "jump_front"
+							set_collision(self, "jump_rotate")
+						else
+							force_x = force_x * -self.facing
+							anim = "jump_back"
+							set_collision(self, "jump_rotate")
+						end
+						msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(force_x, force_y, 0), position = go.get_world_position()})
+						self.state = hash("jump")
+						play_animation(self, anim)
+					end
 				end
 			end
 		end
@@ -247,10 +275,16 @@ function update(self, dt)
 		elseif self.state == hash("pe_jumped") then
 			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(0, -190, 0))
 		elseif self.state == hash("pe_jumping") and go.get_world_position().y < SET.base_y then
+			msg.post("/cam#camera_script", hash("shake"), {shake = 55})
 			self.state = hash("none")
 			set_collision(self, "stand")
 			play_animation(self, "teleport_land")
-			timer.delay(2, false, function() self.state = hash("ready") end)
+			add_action(self, hash("jump_away"), self.move.stun_time)
+			if self.hitbox then
+				msg.post(self.hitbox, hash("die"))
+				self.hitbox = nil
+			end
+			self.move = nil
 		end
 		if self.paused then
 			self.paused = false
@@ -284,6 +318,10 @@ function on_message(self, message_id, message, sender)
 		end
 	elseif message_id == hash("contact_point_response") then
 		if message.other_group == hash("ground") and (self.state == hash("jump") or self.state == hash("attack")) then
+			if self.move and self.move.name == hash("pe_jump") then
+				msg.post("/cam#camera_script", hash("shake"), {shake = 55})
+			end
+			self.move = nil
 			self.state = hash("ready")
 			set_collision(self, "stand")
 			play_animation(self, "land", true)
@@ -391,6 +429,7 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("defeat") then
 		self.state = hash("dead")
 		self.frame_actions = {}
+		set_collision(self, "ragdoll")
 		msg.post(self.enemy, hash("victory"))
 	elseif message_id == hash("victory") then
 		if not (self.state == hash("dead")) then

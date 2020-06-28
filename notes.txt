@@ -1,14 +1,12 @@
 Stuff to do:
 
 - Allow keyboard navigation in the settings submenu
-- "Draw" voiceover
 - Decouple framerate from simulation
 - Add diacritics to the fonts
 - Optimize sprites
 - Moar sounds
 - Forced fall ragdoll
 	- Do this at the end of a round
-- Proper portraits on the selection screen
 - Find proper Bohouš jump punch
 - Add sounds to the credits
 - Hypertext in credits
@@ -80,4 +78,6 @@ Sounds:
 https://freesound.org/people/florianreichelt/sounds/460509/
 https://freesound.org/people/wormer2/sounds/415669/
 https://freesound.org/people/bottles/sounds/382313/
+https://freesound.org/people/Halleck/sounds/21915/
+https://freesound.org/people/richardemoore/sounds/177105/
 
