@@ -852,7 +852,7 @@ FIGHTER[hash("vojta")] = {
 
 FIGHTER[hash("petr")] = {
 	atlas = "petr",
-	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "jump_teleport"},
+	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "jump_teleport", "jump_charge"},
 	name = "Petr",
 	speed_forwards = 4.5,
 	speed_backwards = 3,
@@ -940,7 +940,22 @@ FIGHTER[hash("petr")] = {
 
 			-- SPECIAL ATTACKS
 
-
+			{
+				name = hash("pe_charge"),
+				keys_held = {},
+				keys_sequence = {hash("punch"), hash("forward"), hash("duck")},
+				state = hash("ready"),
+				anim = "smash",
+				playback_rate = 8/60,
+				hitbox = "#hitbox_jump",
+				hitbox_rotation = 0,
+				hitbox_scale = 2,
+				damage_point = 1,
+				damage_pos = vmath.vector3(40, 40, 0),
+				force = vmath.vector3(69000, 90000, 0),
+				damage = 16,
+				recovery_type = hash("attack_recovery")
+			},
 			
 			-- NORMAL ATTACKS
 			{

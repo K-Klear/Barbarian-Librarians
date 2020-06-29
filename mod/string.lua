@@ -40,6 +40,10 @@ return {
 	[hash("vo_smash")] = {"Smell the Coffee", "Ranní káva"},
 	[hash("vo_teleport")] = {"Defold Hack", "Hacknutí hry"},
 
+	[hash("pe_jump")] = {"Jump", "Zadupání do země"},
+	[hash("pe_stomp")] = {"Quake", "Zemětřesení"},
+	[hash("pe_charge")] = {"Charge", "Poskočení"},
+
 	[hash("main_fight")] = {"FIGHT", "FIGHT"},
 	[hash("main_round")] = {function(x) return "Round "..x end, function(x) return x..". kolo" end},
 	[hash("main_winner")] = {function(name) return name.." wins" end, function(name) return name.." zvítězil" end},

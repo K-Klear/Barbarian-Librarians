@@ -276,6 +276,7 @@ function update(self, dt)
 			go.set_position(go.get_world_position(self.enemy) + vmath.vector3(0, -190, 0))
 		elseif self.state == hash("pe_jumping") and go.get_world_position().y < SET.base_y then
 			msg.post("/cam#camera_script", hash("shake"), {shake = 55})
+			sound.play("/sound#pe_stomp_01")
 			self.state = hash("none")
 			set_collision(self, "stand")
 			play_animation(self, "teleport_land")
@@ -320,6 +321,7 @@ function on_message(self, message_id, message, sender)
 		if message.other_group == hash("ground") and (self.state == hash("jump") or self.state == hash("attack")) then
 			if self.move and self.move.name == hash("pe_jump") then
 				msg.post("/cam#camera_script", hash("shake"), {shake = 55})
+				sound.play("/sound#pe_stomp_01")
 			end
 			self.move = nil
 			self.state = hash("ready")
@@ -460,6 +462,11 @@ local function execute_move(self, move)
 	elseif move.name == hash("pe_jump") then
 		add_action(self, hash("teleport_jump_start"), move.jump_frame)
 		add_action(self, hash("teleport_jump_mid"), move.teleport_frame)
+	elseif move.name == hash("pe_charge") then
+		local force_x, force_y = SET.jump_force.x * self.facing, SET.jump_force.y
+		set_collision(self, "jump_charge")
+		msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(force_x * 1.5, force_y * 0.25, 0), position = go.get_world_position()})
+		self.state = hash("jump")
 	end
 	if move.damage_point then
 		add_action(self, hash("damage_point"), move.damage_point)
