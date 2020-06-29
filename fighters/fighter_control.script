@@ -335,6 +335,9 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 	elseif message_id == hash("attack_landed") then
+		if self.state == hash("pe_jumping") then
+			msg.post(self.enemy, hash("pe_jump_stun"), {time = self.move.stun_time, reset = true})
+		end
 		if not message.move.hit_sound then
 			sound.play("/sound#"..SFX.hit[math.random(#SFX.hit)])
 		else
@@ -348,6 +351,11 @@ function on_message(self, message_id, message, sender)
 		if message.move.shake then
 			msg.post("/cam#camera_script", hash("shake"), {shake = message.move.shake})
 		end
+		if self.hitbox then
+			msg.post(self.hitbox, hash("die"))
+			self.hitbox = nil
+		end
+		self.move = nil
 		if message.move.anim == "hook" then
 			set_collision(self, "stand")
 			self.state = hash("stun")
@@ -385,10 +393,6 @@ function on_message(self, message_id, message, sender)
 				self.frame_actions = {}
 				msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 			end
-			if self.hitbox then
-				msg.post(self.hitbox, hash("die"))
-				self.hitbox = nil
-			end
 		end
 	elseif message_id == hash("hook_landed") then
 		self.frame_actions = {}
@@ -404,11 +408,16 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("pe_jump_stun") then
 		self.state = hash("stun")
 		add_action(self, hash("remove_stun"), message.time)
+		if message.reset then
+			set_collision(self, "ragdoll")
+		end
 	elseif message_id == hash("attack_pushback") then
-		local direction = (self.previous_position.x - go.get_world_position().x) * -self.facing
-		local magic_number = SET.jump_force.x / 14400
-		local multiplier = (direction + magic_number) / magic_number
-		msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing * multiplier, 0, 0), position = message.pos})
+		if self.collision then
+			local direction = (self.previous_position.x - go.get_world_position().x) * -self.facing
+			local magic_number = SET.jump_force.x / 14400
+			local multiplier = (direction + magic_number) / magic_number
+			msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(message.move.force.x * -self.facing * multiplier, 0, 0), position = message.pos})
+		end
 		if self.hitbox then
 			msg.post(self.hitbox, hash("die"))
 			self.hitbox = nil

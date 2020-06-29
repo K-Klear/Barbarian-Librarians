@@ -1,3 +1,8 @@
+Changelog for v1.11
+
+- Working hyperlinks in the credits screen
+- Authors of used sounds credited
+
 Stuff to do:
 
 - Allow keyboard navigation in the settings submenu
@@ -21,6 +26,7 @@ Known bugs and stuff to fix:
 - clean-up the bike frames (redraw the wires, among other)
 - Lukáš mirror bike ride attack resolves without physics
 - Bike attacks can get erratic if spammed.
+- Implement msg.post("@system:", "exit", {code = 0}) to exit the game. Maybe. Maybe sys.exit(0) instead.
 
 Animation checklist:
 
@@ -69,15 +75,15 @@ License: http://creativecommons.org/licenses/by/4.0/
 Fonts:
 
 Librarian
-https://www.dafont.com/elementary-gothic-bookhand.font?text=LIBRARIAN
+https://www.dafont.com/elementary-gothic-bookhand.font
 
 Barbarian
-https://www.dafont.com/barbarian-ns.font?text=BARBARIANS
+https://www.dafont.com/barbarian-ns.font
 
 Sounds:
-https://freesound.org/people/florianreichelt/sounds/460509/
-https://freesound.org/people/wormer2/sounds/415669/
-https://freesound.org/people/bottles/sounds/382313/
-https://freesound.org/people/Halleck/sounds/21915/
-https://freesound.org/people/richardemoore/sounds/177105/
+https://freesound.org/people/florianreichelt/
+https://freesound.org/people/wormer2/
+https://freesound.org/people/bottles/
+https://freesound.org/people/Halleck/
+https://freesound.org/people/richardemoore/
 

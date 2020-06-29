@@ -5,10 +5,11 @@ return {
 	[hash("menu_credits")] = {"Credits", "Titulky"},
 	[hash("menu_close")] = {"close", "zpět"},
 	
-	[hash("credits_text")] = {"Game by Vojta Kynčl\n\nMusic by Kevin MacLeod:\n\nWelcome to the Show by Kevin MacLeod\nLink: https://incompetech.filmmusic.io/song/4614-welcome-to-the-show\nLicense: http://creativecommons.org/licenses/by/4.0/\n\nBeauty Flow by Kevin MacLeod\nLink: https://incompetech.filmmusic.io/song/5025-beauty-flow\nLicense: http://creativecommons.org/licenses/by/4.0/\n\nEDM Detection Mode by Kevin MacLeod\nLink: https://incompetech.filmmusic.io/song/3687-edm-detection-mode\nLicense: http://creativecommons.org/licenses/by/4.0/", 
-	"Naprogramoval Vojta Kynčl\n\nHudba Kevin MacLeod:\n\nWelcome to the Show - Kevin MacLeod\nLink: https://incompetech.filmmusic.io/song/4614-welcome-to-the-show\nLicence: http://creativecommons.org/licenses/by/4.0/\n\nBeauty Flow - Kevin MacLeod\nLink: https://incompetech.filmmusic.io/song/5025-beauty-flow\nLicence: http://creativecommons.org/licenses/by/4.0/\n\nEDM Detection Mode - Kevin MacLeod\nLink: https://incompetech.filmmusic.io/song/3687-edm-detection-mode\nLicence: http://creativecommons.org/licenses/by/4.0/"},
+	[hash("credits_text")] = {"Game by Vojta Kynčl\n\nMusic by Kevin MacLeod:\n\nWelcome to the Show by Kevin MacLeod\nLink:\nLicense:\n\nBeauty Flow by Kevin MacLeod\nLink:\nLicense:\n\nEDM Detection Mode by Kevin MacLeod\nLink:\nLicense:", 
+	"Naprogramoval Vojta Kynčl\n\nHudba Kevin MacLeod:\n\nWelcome to the Show - Kevin MacLeod\nLink:\nLicence:\n\nBeauty Flow - Kevin MacLeod\nLink:\nLicence:\n\nEDM Detection Mode - Kevin MacLeod\nLink:\nLicence:"},
 	[hash("credits_font_1")] = {"Elementary Gothic Bookhand font by Bill Roach", "Font Elementary Gothic Bookhand: Bill Roach"},
 	[hash("credits_font_2")] = {"Barbarian NS font by Anthony Robinson", "Font Barbarian NS: Anthony Robinson"},
+	[hash("credits_sound")] = {"With sounds by:", "Použité zvuky od:"},
 
 	[hash("settings_volume")] = {"Volume", "Hlasitost"},
 	[hash("settings_volume_labels")] = {

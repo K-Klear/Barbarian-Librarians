@@ -1,6 +1,6 @@
 local btn, dialog, sliders
 local focus = "intro"
-local focus_slider, focus_button
+local focus_slider, focus_button, focus_hyperlink
 
 local STATE = require("mod.state")
 local SET = require("mod.settings")
@@ -20,6 +20,7 @@ local function set_texts()
 	gui.set_text(btn.settings.close_settings, STR[hash("menu_close")][SET.lang])
 	gui.set_text(btn.credits.close_credits, STR[hash("menu_close")][SET.lang])
 	gui.set_text(gui.get_node("text_credits"), STR[hash("credits_text")][SET.lang])
+	gui.set_text(gui.get_node("text_credits_sound"), STR[hash("credits_sound")][SET.lang])
 	gui.set_text(gui.get_node("text_credits_font_1"), STR[hash("credits_font_1")][SET.lang])
 	gui.set_text(gui.get_node("text_credits_font_2"), STR[hash("credits_font_2")][SET.lang])
 	gui.set_text(gui.get_node("volume_label"), STR[hash("settings_volume")][SET.lang])
@@ -91,6 +92,23 @@ function init(self)
 				label = gui.get_node("damage_label_2")
 			},
 		}
+	}
+
+	hyperlink = {
+		link_music_01 = {node = gui.get_node("link_music_01"), link = "https://incompetech.filmmusic.io/song/4614-welcome-to-the-show"},
+		link_music_02 = {node = gui.get_node("link_music_02"), link = "https://incompetech.filmmusic.io/song/5025-beauty-flow"},
+		link_music_03 = {node = gui.get_node("link_music_03"), link = "https://incompetech.filmmusic.io/song/3687-edm-detection-mode"},
+		license_music_01 = {node = gui.get_node("license_music_01"), link = "http://creativecommons.org/licenses/by/4.0/"},
+		license_music_02 = {node = gui.get_node("license_music_02"), link = "http://creativecommons.org/licenses/by/4.0/"}, 
+		license_music_03 = {node = gui.get_node("license_music_03"), link =  "http://creativecommons.org/licenses/by/4.0/"},
+		link_defold = {node = gui.get_node("made_with_defold_tm"),  link = "https://defold.com/"},
+		font_lib = {node = gui.get_node("text_credits_font_1"), link = "https://www.dafont.com/elementary-gothic-bookhand.font"},
+		font_bar = {node = gui.get_node("text_credits_font_2"), link = "https://www.dafont.com/barbarian-ns.font"},
+		sound_01 = {node = gui.get_node("text_credits_sound_01"), link = "https://freesound.org/people/florianreichelt/"},
+		sound_02 = {node = gui.get_node("text_credits_sound_02"), link = "https://freesound.org/people/wormer2/"},
+		sound_03 = {node = gui.get_node("text_credits_sound_03"), link = "https://freesound.org/people/bottles/"},
+		sound_04 = {node = gui.get_node("text_credits_sound_04"), link = "https://freesound.org/people/Halleck/"},
+		sound_05 = {node = gui.get_node("text_credits_sound_05"), link = "https://freesound.org/people/richardemoore/"},
 	}
 	
 	dialog = {
@@ -235,6 +253,9 @@ function on_input(self, action_id, action)
 					button_pressed(key)
 				end
 			end
+			if focus == "credits" and focus_hyperlink then
+				sys.open_url(hyperlink[focus_hyperlink].link)
+			end
 		end
 	elseif action.pressed and (action_id == hash("p1_punch") or action_id == hash("p2_punch") or action_id == hash("p1_kick") or action_id == hash("p2_kick")) then
 		if focus == "intro" then
@@ -312,6 +333,18 @@ function on_input(self, action_id, action)
 						if focus_slider == key then
 							focus_slider = nil
 						end
+					end
+				end
+			end
+		elseif focus == "credits" then
+			for key, val in pairs(hyperlink) do
+				if gui.pick_node(val.node, action.x, action.y) then
+					gui.set_color(val.node, COL.highlight_hyperlink)
+					focus_hyperlink = key
+				else
+					gui.set_color(val.node, COL.default_hyperlink)
+					if focus_hyperlink == key then
+						focus_hyperlink = nil
 					end
 				end
 			end
