@@ -770,7 +770,7 @@ nodes {
 nodes {
   position {
     x: 640.0
-    y: 387.0
+    y: 357.0
     z: 0.0
     w: 1.0
   }
@@ -788,7 +788,7 @@ nodes {
   }
   size {
     x: 800.0
-    y: 400.0
+    y: 500.0
     z: 0.0
     w: 1.0
   }
@@ -824,7 +824,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 156.0
+    y: 200.0
     z: 0.0
     w: 1.0
   }
@@ -886,8 +886,8 @@ nodes {
 }
 nodes {
   position {
-    x: 4.0
-    y: -153.0
+    x: 150.0
+    y: -164.0
     z: 0.0
     w: 1.0
   }
@@ -917,7 +917,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "resume"
+  text: "Resume"
   font: "barbarians"
   id: "btn_resume"
   xanchor: XANCHOR_NONE
@@ -949,8 +949,71 @@ nodes {
 }
 nodes {
   position {
+    x: -150.0
+    y: -164.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "Quit Match"
+  font: "barbarians"
+  id: "btn_quit"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "pause_menu"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
     x: 277.0
-    y: 17.0
+    y: 61.0
     z: 0.0
     w: 1.0
   }
@@ -1013,7 +1076,7 @@ nodes {
 nodes {
   position {
     x: 229.0
-    y: -54.0
+    y: -10.0
     z: 0.0
     w: 1.0
   }
@@ -1068,7 +1131,7 @@ nodes {
 nodes {
   position {
     x: 310.0
-    y: -54.0
+    y: -10.0
     z: 0.0
     w: 1.0
   }
@@ -1123,7 +1186,7 @@ nodes {
 nodes {
   position {
     x: -274.0
-    y: 100.0
+    y: 144.0
     z: 0.0
     w: 1.0
   }
@@ -1186,7 +1249,7 @@ nodes {
 nodes {
   position {
     x: -269.0
-    y: -53.0
+    y: -9.0
     z: 0.0
     w: 1.0
   }
@@ -1296,7 +1359,7 @@ nodes {
 nodes {
   position {
     x: -320.0
-    y: -14.0
+    y: 30.0
     z: 0.0
     w: 1.0
   }
@@ -1359,7 +1422,7 @@ nodes {
 nodes {
   position {
     x: -269.0
-    y: -125.0
+    y: -81.0
     z: 0.0
     w: 1.0
   }
@@ -1469,7 +1532,7 @@ nodes {
 nodes {
   position {
     x: -320.0
-    y: -86.0
+    y: -42.0
     z: 0.0
     w: 1.0
   }
@@ -1532,7 +1595,7 @@ nodes {
 nodes {
   position {
     x: -269.0
-    y: 20.0
+    y: 64.0
     z: 0.0
     w: 1.0
   }
@@ -1642,7 +1705,7 @@ nodes {
 nodes {
   position {
     x: -320.0
-    y: 59.0
+    y: 103.0
     z: 0.0
     w: 1.0
   }
@@ -1705,7 +1768,7 @@ nodes {
 nodes {
   position {
     x: 5.0
-    y: 90.0
+    y: 134.0
     z: 0.0
     w: 1.0
   }
@@ -1769,7 +1832,7 @@ nodes {
 nodes {
   position {
     x: 1.0
-    y: -11.0
+    y: 33.0
     z: 0.0
     w: 1.0
   }
@@ -1879,7 +1942,7 @@ nodes {
 nodes {
   position {
     x: -50.0
-    y: 28.0
+    y: 72.0
     z: 0.0
     w: 1.0
   }
@@ -1942,7 +2005,7 @@ nodes {
 nodes {
   position {
     x: 1.0
-    y: -96.0
+    y: -52.0
     z: 0.0
     w: 1.0
   }
@@ -2052,7 +2115,7 @@ nodes {
 nodes {
   position {
     x: -50.0
-    y: -57.0
+    y: -13.0
     z: 0.0
     w: 1.0
   }

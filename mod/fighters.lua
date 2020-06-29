@@ -5,10 +5,10 @@ local FIGHTER = global_var
 
 FIGHTER[hash("lukas")] = {
 	atlas = "lukas",
-	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate"},
+	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "dead"},
 	name = "Lukas",
-	speed_forwards = 5,
-	speed_backwards = 3,
+	speed_forwards = 5.5,
+	speed_backwards = 3.8,
 	sounds = {
 		pain_low = {"lu_pain_low_01", "lu_pain_low_02"},
 		pain_high = {"lu_pain_high_01", "lu_pain_high_02"}
@@ -43,11 +43,12 @@ FIGHTER[hash("lukas")] = {
 				anim = "punch_duck_1",
 				hitbox = "#hitbox_long",
 				hitbox_rotation = -80,
+				hitbox_scale = 1.2,
 				damage_point = 2,
-				damage_pos = vmath.vector3(150, -70, 0),
+				damage_pos = vmath.vector3(134, -65, 0),
 				force = vmath.vector3(8500, 8200, 0),
 				damage = 2,
-				recovery = 17,
+				recovery = 28,
 				recovery_type = hash("attack_recovery_duck")
 			},
 
@@ -85,7 +86,8 @@ FIGHTER[hash("lukas")] = {
 				force = vmath.vector3(20000, 140000, 0),
 				damage = 20,
 				recovery = 112,
-				recovery_type = hash("attack_recovery")
+				recovery_type = hash("attack_recovery"),
+				shake = 10
 			},
 
 
@@ -166,11 +168,12 @@ FIGHTER[hash("lukas")] = {
 				state = hash("ready"),
 				anim = "kick_duck_2",
 				hitbox = "#hitbox_simple",
+				hitbox_scale = 2,
 				damage_point = 2,
-				damage_pos = vmath.vector3(170, -90, 0),
-				force = vmath.vector3(5000, 7000, 0),
+				damage_pos = vmath.vector3(164, -95, 0),
+				force = vmath.vector3(7000, 19000, 0),
 				damage = 3,
-				recovery = 30,
+				recovery = 33,
 				recovery_type = hash("attack_recovery_duck")
 			},
 			{
@@ -182,7 +185,7 @@ FIGHTER[hash("lukas")] = {
 				hitbox = "#hitbox_simple",
 				damage_point = 14,
 				damage_pos = vmath.vector3(170, -90, 0),
-				force = vmath.vector3(11000, 8000, 0),
+				force = vmath.vector3(9000, 23000, 0),
 				damage = 6,
 				recovery = 37,
 				recovery_type = hash("attack_recovery_duck")
@@ -193,7 +196,7 @@ FIGHTER[hash("lukas")] = {
 			{
 				name = hash("lu_ride"),
 				keys_held = {},
-				keys_sequence = {hash("kick"), hash("backward"), hash("forward"), hash("duck")},
+				keys_sequence = {hash("kick"), hash("forward"), hash("duck"), hash("backward")},
 				state = hash("ready"),
 				anim = "bike",
 				bike_ready = 85,
@@ -257,9 +260,9 @@ FIGHTER[hash("lukas")] = {
 }
 FIGHTER[hash("bohous")] = {
 	atlas = "bohous",
-	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate"},
+	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "dead"},
 	name = "Bohous",
-	speed_forwards = 5,
+	speed_forwards = 4.5,
 	speed_backwards = 3,
 	sounds = {
 		pain_low = {"bo_pain_low_01", "bo_pain_low_02", "bo_pain_low_03", "bo_pain_low_04"},
@@ -311,11 +314,11 @@ FIGHTER[hash("bohous")] = {
 				anim = "punch_duck_1",
 				hitbox = "#hitbox_long",
 				hitbox_rotation = -80,
-				damage_point = 2,
+				damage_point = 1,
 				damage_pos = vmath.vector3(150, 34, 0),
-				force = vmath.vector3(8000, 8000, 0),
-				damage = 3,
-				recovery = 20,
+				force = vmath.vector3(9000, 28000, 0),
+				damage = 2,
+				recovery = 32,
 				recovery_type = hash("attack_recovery_duck")
 			},
 			{
@@ -328,9 +331,9 @@ FIGHTER[hash("bohous")] = {
 				hitbox_rotation = 90,
 				damage_point = 5,
 				damage_pos = vmath.vector3(160, 31, 0),
-				force = vmath.vector3(9000, 11000, 0),
-				damage = 5,
-				recovery = 25,
+				force = vmath.vector3(14000, 31000, 0),
+				damage = 4,
+				recovery = 37,
 				recovery_type = hash("attack_recovery_duck")
 			},
 
@@ -369,7 +372,8 @@ FIGHTER[hash("bohous")] = {
 				force = vmath.vector3(100000, 70000, 0),
 				damage = 22,
 				recovery = 140,
-				recovery_type = hash("attack_recovery")
+				recovery_type = hash("attack_recovery"),
+				shake = 12
 			},
 			{
 				name = hash("bo_hook"),
@@ -462,11 +466,11 @@ FIGHTER[hash("bohous")] = {
 				state = hash("ready"),
 				anim = "kick_duck_2",
 				hitbox = "#hitbox_simple",
-				damage_point = 2,
+				damage_point = 3,
 				damage_pos = vmath.vector3(170, -90, 0),
-				force = vmath.vector3(5000, 7000, 0),
+				force = vmath.vector3(7000, 11000, 0),
 				damage = 3,
-				recovery = 30,
+				recovery = 40,
 				recovery_type = hash("attack_recovery_duck")
 			},
 			{
@@ -478,9 +482,9 @@ FIGHTER[hash("bohous")] = {
 				hitbox = "#hitbox_simple",
 				damage_point = 23,
 				damage_pos = vmath.vector3(170, -90, 0),
-				force = vmath.vector3(11000, 8000, 0),
-				damage = 7,
-				recovery = 35,
+				force = vmath.vector3(11000, 12000, 0),
+				damage = 6.5,
+				recovery = 45,
 				recovery_type = hash("attack_recovery_duck")
 			},
 
@@ -539,7 +543,7 @@ FIGHTER[hash("bohous")] = {
 
 FIGHTER[hash("vojta")] = {
 	atlas = "vojta",
-	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate"},
+	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "dead"},
 	name = "Vojta",
 	speed_forwards = 5,
 	speed_backwards = 3,
@@ -611,7 +615,7 @@ FIGHTER[hash("vojta")] = {
 				damage_pos = vmath.vector3(100, 0, 0),
 				force = vmath.vector3(8000, 8000, 0),
 				damage = 3,
-				recovery = 25,
+				recovery = 31,
 				recovery_type = hash("attack_recovery_duck")
 			},
 			{
@@ -626,7 +630,7 @@ FIGHTER[hash("vojta")] = {
 				damage_pos = vmath.vector3(100, 0, 0),
 				force = vmath.vector3(9000, 11000, 0),
 				damage = 5,
-				recovery = 45,
+				recovery = 47,
 				recovery_type = hash("attack_recovery_duck")
 			},
 
@@ -764,7 +768,7 @@ FIGHTER[hash("vojta")] = {
 				damage_pos = vmath.vector3(160, -80, 0),
 				force = vmath.vector3(14000, 18000, 0),
 				damage = 2.5,
-				recovery = 25,
+				recovery = 38,
 				recovery_type = hash("attack_recovery_duck")
 			},
 			{
@@ -795,7 +799,7 @@ FIGHTER[hash("vojta")] = {
 				damage_pos = vmath.vector3(160, -80, 0),
 				force = vmath.vector3(17000, 19000, 0),
 				damage = 6,
-				recovery = 35,
+				recovery = 40,
 				recovery_type = hash("attack_recovery_duck")
 			},
 
@@ -852,10 +856,10 @@ FIGHTER[hash("vojta")] = {
 
 FIGHTER[hash("petr")] = {
 	atlas = "petr",
-	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "jump_teleport", "jump_charge"},
+	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "jump_teleport", "jump_charge", "dead"},
 	name = "Petr",
-	speed_forwards = 4.5,
-	speed_backwards = 3,
+	speed_forwards = 4,
+	speed_backwards = 2.7,
 	sounds = {
 		pain_low = {"pe_pain_low_01", "pe_pain_low_02", "pe_pain_low_03"},
 		pain_high = {"pe_pain_high_01", "pe_pain_high_02"},
@@ -874,8 +878,9 @@ FIGHTER[hash("petr")] = {
 				hitbox_scale = 2,
 				hitbox_pos = vmath.vector3(0, -35, 0),
 				hit_sound = "spine_crush_01",
-				damage = 30,
-				stun_time = 100,
+				damage = 28,
+				recovery_time = 100,
+				stun_time = 150,
 				playback_rate = 7/60,
 				jump_frame = 30,
 				teleport_frame = 75,
@@ -917,7 +922,7 @@ FIGHTER[hash("petr")] = {
 				damage_pos = vmath.vector3(140, 0, 0),
 				force = vmath.vector3(8000, 15000, 0),
 				damage = 2,
-				recovery = 28,
+				recovery = 34,
 				recovery_type = hash("attack_recovery_duck")
 			},
 			{
@@ -933,7 +938,7 @@ FIGHTER[hash("petr")] = {
 				damage_pos = vmath.vector3(130, 0, 0),
 				force = vmath.vector3(10000, 19000, 0),
 				damage = 4,
-				recovery = 35,
+				recovery = 42,
 				recovery_type = hash("attack_recovery_duck")
 			},
 

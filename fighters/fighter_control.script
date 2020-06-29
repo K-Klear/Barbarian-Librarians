@@ -280,7 +280,8 @@ function update(self, dt)
 			self.state = hash("none")
 			set_collision(self, "stand")
 			play_animation(self, "teleport_land")
-			add_action(self, hash("jump_away"), self.move.stun_time)
+			add_action(self, hash("jump_away"), self.move.recovery_time)
+			msg.post(self.enemy, hash("pe_jump_stun"), {time = self.move.stun_time})
 			if self.hitbox then
 				msg.post(self.hitbox, hash("die"))
 				self.hitbox = nil
@@ -296,8 +297,8 @@ function update(self, dt)
 		
 		if math.abs(go.get_world_position().x - go.get_world_position(self.enemy).x) < SET.fighters_min_distance then
 			local enemy_state = go.get(msg.url(nil, self.enemy, "fighter_control"), hash("state"))
-			if not (enemy_state == hash("jump") or enemy_state == hash("attack") or enemy_state == hash("bike") or enemy_state == hash("pe_jumped")) and
-			not(self.state == hash("jump") or self.state == hash("attack") or self.state == hash("bike") or self.state == hash("pe_jumped")) then
+			if not (enemy_state == hash("jump") or enemy_state == hash("attack") or enemy_state == hash("bike") or enemy_state == hash("pe_jumped") or enemy_state == hash("stun") or enemy_state == hash("dead")) and
+			not(self.state == hash("jump") or self.state == hash("attack") or self.state == hash("bike") or self.state == hash("pe_jumped") or self.state == hash("stun") or self.state == hash("dead")) then
 				go.set_position(go.get_world_position() + vmath.vector3(10, 0, 0) * -self.facing)
 			end
 		end
@@ -344,6 +345,9 @@ function on_message(self, message_id, message, sender)
 		else
 			play_voice_line("pain_low", self)
 		end
+		if message.move.shake then
+			msg.post("/cam#camera_script", hash("shake"), {shake = message.move.shake})
+		end
 		if message.move.anim == "hook" then
 			set_collision(self, "stand")
 			self.state = hash("stun")
@@ -364,7 +368,6 @@ function on_message(self, message_id, message, sender)
 			go.set(".", "euler.z", 90)
 			msg.post(self.enemy, hash("pe_jump_landed"))
 			self.frame_actions = {}
-			add_action(self, hash("remove_stun"), message.move.stun_time)
 			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 		else
 			if message.move.anim == "bike" then
@@ -398,6 +401,9 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("pe_jump_landed") then
 		self.hitbox = nil
 		self.state = hash("pe_jumping")
+	elseif message_id == hash("pe_jump_stun") then
+		self.state = hash("stun")
+		add_action(self, hash("remove_stun"), message.time)
 	elseif message_id == hash("attack_pushback") then
 		local direction = (self.previous_position.x - go.get_world_position().x) * -self.facing
 		local magic_number = SET.jump_force.x / 14400
@@ -431,7 +437,8 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("defeat") then
 		self.state = hash("dead")
 		self.frame_actions = {}
-		set_collision(self, "ragdoll")
+		set_collision(self, "dead")
+		msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(40000 * -self.facing, -40000, 0), position = go.get_world_position()})
 		msg.post(self.enemy, hash("victory"))
 	elseif message_id == hash("victory") then
 		if not (self.state == hash("dead")) then

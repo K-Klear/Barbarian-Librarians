@@ -101,7 +101,8 @@ function init(self)
 	btn = {
 		czech = gui.get_node("flag_cz"),
 		english = gui.get_node("flag_uk"),
-		pause = gui.get_node("btn_resume")
+		pause = gui.get_node("btn_resume"),
+		quit = gui.get_node("btn_quit"),
 	}
 
 	sliders = {
@@ -145,6 +146,7 @@ end
 local function set_texts()
 	gui.set_text(node.pause_label, STR[hash("pause_title")][SET.lang])
 	gui.set_text(btn.pause, STR[hash("pause_resume")][SET.lang])
+	gui.set_text(btn.quit, STR[hash("pause_quit")][SET.lang])
 	gui.set_text(gui.get_node("volume_label"), STR[hash("settings_volume")][SET.lang])
 	for key, slider in pairs(sliders.volume) do
 		gui.set_text(slider.label, STR[hash("settings_volume_labels")][key][SET.lang](SET.volume[key] * 100))
@@ -183,11 +185,15 @@ local function button_pressed(key)
 			msg.post("bootstrap:/go", hash("unpause"))
 			gui.set_enabled(node.pause_menu, false)
 		end
+	elseif key == "quit" then
+		button_pressed("pause")
+		STATE.score = {0, 0}
+		msg.post("bootstrap:/go", hash("game_end"))
 	end
 end
 
 function on_input(self, action_id, action)
-	if focus_slider and action_id == hash("click") then
+	if focus_slider and action_id == hash("click") and not STATE.unpaused then
 		local slider, type
 		for key, val in pairs(sliders) do
 			if val[focus_slider] then
@@ -228,7 +234,7 @@ function on_input(self, action_id, action)
 		msg.post("@system:", "toggle_physics_debug")
 	elseif action_id == hash("escape") and action.pressed then
 		button_pressed("pause")
-	elseif action_id == hash("click") and action.pressed then
+	elseif action_id == hash("click") and action.pressed and not STATE.unpaused then
 		for key, val in pairs(btn) do
 			if gui.pick_node(val, action.x, action.y) then
 				button_pressed(key)

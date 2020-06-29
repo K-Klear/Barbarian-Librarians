@@ -36,13 +36,13 @@ return {
 	[hash("bo_smash")] = {"Analytical Psychology", "Analytická psychologie"},
 	[hash("bo_hook")] = {"Hook", "Hák"},
 
-	[hash("vo_spit")] = {"Coffee Spit", "Plivnutí kafe"},
+	[hash("vo_spit")] = {"Eww!", "Tfuj!"},
 	[hash("vo_smash")] = {"Smell the Coffee", "Ranní káva"},
 	[hash("vo_teleport")] = {"Defold Hack", "Hacknutí hry"},
 
-	[hash("pe_jump")] = {"Jump", "Zadupání do země"},
-	[hash("pe_stomp")] = {"Quake", "Zemětřesení"},
-	[hash("pe_charge")] = {"Charge", "Poskočení"},
+	[hash("pe_jump")] = {"Chiropractic", "Chiropraxe"},
+	[hash("pe_stomp")] = {"Libraryquake", "Knihotřesení"},
+	[hash("pe_charge")] = {"Belly Blast", "Břichoskok"},
 
 	[hash("main_fight")] = {"FIGHT", "FIGHT"},
 	[hash("main_round")] = {function(x) return "Round "..x end, function(x) return x..". kolo" end},
@@ -50,5 +50,6 @@ return {
 	[hash("main_draw")] = {"Draw", "Nerozhodně"},
 
 	[hash("pause_resume")] = {"Resume", "Pokračovat"},
+	[hash("pause_quit")] = {"Quit Match", "Ukončit"},
 	[hash("pause_title")] = {"Paused", "Pozastaveno"},
 }
