@@ -10,7 +10,6 @@ Stuff to do:
 - Find proper Bohouš jump punch
 - Add sounds to the credits
 - Hypertext in credits
-- Quit match in pause menu
 - Better random librarian graphics
 
 Known bugs and stuff to fix:
