@@ -2,19 +2,15 @@ Changelog for v1.11
 
 - Working hyperlinks in the credits screen
 - Authors of used sounds credited
+- Sprites optimized
 
 Stuff to do:
 
 - Allow keyboard navigation in the settings submenu
 - Decouple framerate from simulation
 - Add diacritics to the fonts
-- Optimize sprites
 - Moar sounds
-- Forced fall ragdoll
-	- Do this at the end of a round
 - Find proper Bohouš jump punch
-- Add sounds to the credits
-- Hypertext in credits
 - Better random librarian graphics
 
 Known bugs and stuff to fix:
