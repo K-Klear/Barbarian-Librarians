@@ -22,6 +22,7 @@ local animations = {
 	[hash("bohous")] = {stand = "bohous_stand", victory = "bohous_victory"},
 	[hash("petr")] = {stand = "petr_stand", victory = "petr_victory"},
 	[hash("vojta")] = {stand = "vojta_stand", victory = "vojta_victory"},
+	[hash("michael")] = {stand = "michael_stand", victory = "michael_victory"}
 }
 
 local function change_preview(self, player, fighter)
@@ -85,7 +86,7 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 	icons = {
 		{hash("bohous"), hash("vojta")},
-		{hash("random"), hash("empty")},
+		{hash("random"), hash("michael")},
 		{hash("lukas"), hash("petr")}
 	}
 	btn = {back = gui.get_node("back")}
@@ -109,10 +110,6 @@ function init(self)
 	gui.set_text(texts[2], STR[hash("selection_player_2")][SET.lang])
 	gui.set_text(gui.get_node("choose_fighter"), STR[hash("selection_choose_fighter")][SET.lang])
 	gui.set_text(gui.get_node("back"), STR[hash("selection_exit")][SET.lang])
-end
-
-function on_message(self, message_id, message, sender)
-	
 end
 
 local function check_selection(self)

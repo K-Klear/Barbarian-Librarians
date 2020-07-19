@@ -1115,4 +1115,363 @@ FIGHTER[hash("petr")] = {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FIGHTER[hash("michael")] = {
+	atlas = "michael",
+	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "dead"},
+	name = "Michael",
+	speed_forwards = 5,
+	speed_backwards = 3,
+	sounds = {
+		pain_low = {"vo_pain_low_01", "vo_pain_low_02", "vo_pain_low_03", "vo_pain_low_04"},
+		pain_high = {"vo_pain_high_01", "vo_pain_high_02", "vo_pain_high_03"},
+		coffee_splash = {"vo_coffee_splash_01"}
+	},
+	moves = {
+		[hash("jump")] = {
+			{
+				name = hash("pe_jump"),
+				keys_held = {},
+				keys_sequence = {hash("jump"), hash("duck")},
+				state = hash("ready"),
+				anim = "teleport_jump",
+				hitbox = "#hitbox_jump",
+				hitbox_scale = 2,
+				hitbox_pos = vmath.vector3(0, -35, 0),
+				hit_sound = "spine_crush_01",
+				damage = 28,
+				recovery_time = 100,
+				stun_time = 150,
+				playback_rate = 7/60,
+				jump_frame = 30,
+				teleport_frame = 75,
+				jump_force = 350000,
+				recovery_type = hash("attack_recovery")
+			},
+		},
+
+		[hash("punch")] = {
+
+			-- JUMPING ATTACKS
+			{
+				keys_held = {},
+				keys_sequence = {},
+				state = hash("jump"),
+				anim = "punch_jump",
+				hitbox = "#hitbox_jump",
+				hitbox_rotation = 0,
+				hitbox_scale = 1.5,
+				damage_point = 1,
+				damage_pos = vmath.vector3(166, -80, 0),
+				force = vmath.vector3(8400, 20000, 0),
+				damage = 10,
+				recovery = nil
+			},
+
+
+			-- CROUCHED ATTACKS
+
+			{
+				keys_held = {hash("duck"), "backward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "punch_duck_slow",
+				playback_rate = 8/60,
+				hitbox = "#hitbox_long",
+				hitbox_rotation = -81,
+				hitbox_scale = 1.5,
+				damage_point = 25,
+				damage_pos = vmath.vector3(130, -60, 0),
+				force = vmath.vector3(33000, 9500, 0),
+				damage = 5,
+				recovery = 50,
+				recovery_type = hash("attack_recovery_duck")
+			},
+			{
+				keys_held = {hash("duck"), "forward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "punch_duck_fast",
+				hitbox = "#hitbox_long",
+				hitbox_rotation = -90,
+				hitbox_scale = 1.5,
+				damage_point = 6,
+				damage_pos = vmath.vector3(130, -60, 0),
+				force = vmath.vector3(15000, 6000, 0),
+				damage = 2.5,
+				recovery = 26,
+				recovery_type = hash("attack_recovery_duck")
+			},
+			{
+				keys_held = {hash("duck")},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "punch_duck_medium",
+				playback_rate = 12/60,
+				hitbox = "#hitbox_long",
+				hitbox_rotation = -81,
+				hitbox_scale = 1.5,
+				damage_point = 18,
+				damage_pos = vmath.vector3(130, -60, 0),
+				force = vmath.vector3(30000, 7500, 0),
+				damage = 4,
+				recovery = 40,
+				recovery_type = hash("attack_recovery_duck")
+			},
+
+			-- FAST PUNCH
+
+			{
+				keys_held = {"forward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "punch_fast",
+				hitbox = "#hitbox_long",
+				hitbox_rotation = 90,
+				hitbox_scale = 2,
+				damage_point = 2,
+				damage_pos = vmath.vector3(57, 152, 0),
+				force = vmath.vector3(10000, 12000, 0),
+				damage = 6.5,
+				recovery = 40,
+				recovery_type = hash("attack_recovery")
+			},
+
+
+			-- SPECIAL ATTACKS
+			{
+				name = hash("vo_spit"),
+				keys_held = {},
+				keys_sequence = {hash("punch"), hash("forward"), hash("backward")},
+				state = hash("ready"),
+				anim = "spit",
+				playback_rate = 8/60,
+				hitbox = "#hitbox_spit",
+				hitbox_scale = 1.5,
+				speed = 7.5,
+				damage_point = 60,
+				damage_pos = vmath.vector3(160, 140, 0),
+				hit_sound = "vo_spit_hit",
+				force = vmath.vector3(14700, 5000, 0),
+				damage = 9,
+				recovery = 140,
+				recovery_type = hash("attack_recovery")
+			},
+
+			{
+				name = hash("vo_smash"),
+				keys_held = {},
+				keys_sequence = {hash("punch"), hash("backward"), hash("duck"), hash("forward")},
+				state = hash("ready"),
+				anim = "throw",
+				playback_rate = 5/60,
+				hitbox = "#hitbox_coffee",
+				hitbox_rotation = -65,
+				hitbox_scale = 1.5,
+				hitbox_life = 30,
+				hitbox_anim = 0.2,
+				damage_point = 48,
+				damage_pos = vmath.vector3(330, 60, 0),
+				damage_sound = "coffee_splash",
+				hit_sound = "vo_coffee_hit",
+				force = vmath.vector3(21000, 15000, 0),
+				damage = 22,
+				recovery = 130,
+				recovery_type = hash("attack_recovery")
+			},
+
+
+
+			-- NORMAL ATTACKS
+
+			{
+				keys_held = {"backward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "punch_slow",
+				playback_rate = 8/60,
+				hitbox = "#hitbox_long",
+				hitbox_rotation = -85,
+				hitbox_scale = 1.5,
+				damage_point = 32,
+				damage_pos = vmath.vector3(100, 173, 0),
+				force = vmath.vector3(12000, 9000, 0),
+				damage = 12,
+				recovery = 55,
+				recovery_type = hash("attack_recovery")
+			},
+
+			{
+				keys_held = {},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "punch_medium",
+				playback_rate = 7/60,
+				hitbox = "#hitbox_long",
+				hitbox_rotation = -70,
+				hitbox_scale = 1.5,
+				damage_point = 17,
+				damage_pos = vmath.vector3(125, 160, 0),
+				force = vmath.vector3(8000, 12000, 0),
+				damage = 6,
+				recovery = 45,
+				recovery_type = hash("attack_recovery")
+			},
+		},
+
+		[hash("kick")] = {
+
+
+			-- JUMPING KICKS
+			{
+				keys_held = {},
+				keys_sequence = {},
+				state = hash("jump"),
+				anim = "kick_jump",
+				hitbox = "#hitbox_jump",
+				hitbox_scale = 2,
+				damage_point = 1,
+				damage_pos = vmath.vector3(150, -70, 0),
+				force = vmath.vector3(43000, 10000, 0),
+				damage = 9,
+				recovery = nil
+			},
+
+
+			-- CROUCHED KICKS
+			{
+				keys_held = {hash("duck"), "forward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "kick_duck_fast",
+				hitbox = "#hitbox_long",
+				hitbox_rotation = -80,
+				hitbox_scale = 2,
+				damage_point = 1,
+				damage_pos = vmath.vector3(130, -100, 0),
+				force = vmath.vector3(14000, 25000, 0),
+				damage = 2,
+				recovery = 31,
+				recovery_type = hash("attack_recovery_duck")
+			},
+			{
+				keys_held = {hash("duck"), "backward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "kick_duck_slow",
+				playback_rate = 8/60,
+				hitbox = "#hitbox_simple",
+				hitbox_scale = 3,
+				damage_point = 30,
+				damage_pos = vmath.vector3(250, 10, 0),
+				force = vmath.vector3(48000, 46000, 0),
+				damage = 7.5,
+				recovery = 78,
+				recovery_type = hash("attack_recovery")
+			},
+			{
+				keys_held = {hash("duck")},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "kick_duck_medium",
+				playback_rate = 12/60,
+				hitbox = "#hitbox_simple",
+				--hitbox_rotation = 0,
+				hitbox_scale = 4,
+				damage_point = 20,
+				damage_pos = vmath.vector3(160, -100, 0),
+				force = vmath.vector3(28000, 22000, 0),
+				damage = 4,
+				recovery = 40,
+				recovery_type = hash("attack_recovery_duck")
+			},
+
+
+
+			-- NORMAL KICKS
+			{
+				keys_held = {"backward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "kick_medium",
+				playback_rate = 6/60,
+				hitbox = "#hitbox_simple",
+				hitbox_scale = 2.5,
+				damage_point = 42,
+				damage_pos = vmath.vector3(250, 90, 0),
+				force = vmath.vector3(12300, 95000, 0),
+				damage = 12,
+				recovery = 78,
+				recovery_type = hash("attack_recovery")
+			},
+			{
+				keys_held = {"forward"},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "kick_fast",
+				hitbox = "#hitbox_simple",
+				hitbox_scale = 5,
+				hitbox_rotation = 32,
+				damage_point = 2,
+				damage_pos = vmath.vector3(130, 0, 0),
+				force = vmath.vector3(28000, 12000, 0),
+				damage = 3,
+				recovery = 58,
+				recovery_type = hash("attack_recovery")
+			},
+			{
+				keys_held = {},
+				keys_sequence = {},
+				state = hash("ready"),
+				anim = "kick_slow",
+				playback_rate = 14/60,
+				hitbox = "#hitbox_long",
+				hitbox_scale = 2.5,
+				hitbox_rotation = 110,
+				damage_point = 24,
+				damage_pos = vmath.vector3(220, 60, 0),
+				force = vmath.vector3(28000, 18000, 0),
+				damage = 9.5,
+				recovery = 76,
+				recovery_type = hash("attack_recovery")
+			},
+		}
+	}
+}
+
+
+
+
+
+
+
 return FIGHTER
