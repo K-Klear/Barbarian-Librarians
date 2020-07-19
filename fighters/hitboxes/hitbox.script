@@ -15,14 +15,17 @@ function update(self, dt)
 			else
 				go.set_position(vmath.vector3(pos.x + (self.move.speed * self.facing), pos.y, pos.z))
 			end
-		elseif self.move.hitbox == "#hitbox_book" or self.move.hitbox == "#hitbox_helmet" then
+		elseif self.move.hitbox == "#hitbox_book" or self.move.hitbox == "#hitbox_helmet" or self.move.hitbox == "#hitbox_remedios" then
 			local pos = go.get_position()
 			if pos.x < 0 or pos.x > 1300 then
 				go.delete()
 			end
-		elseif self.move.hitbox == "#hitbox_coffee" then
+		elseif self.move.hitbox_life then
 			self.life = (self.life or 0) + 1
-			if self.life > self.move.hitbox_life then
+			if self.life > (self.move.hitbox_life_fire or 1/0) then
+				particlefx.stop("#fire")
+			end
+			if self.life > self.move.hitbox_life and not self.timer then
 				go.delete()
 			end
 		end
@@ -35,10 +38,30 @@ function on_message(self, message_id, message, sender)
 		if self.move.hitbox  == "#hitbox_jump" and not (self.move.name == hash("pe_jump")) then
 			msg.post(self.go, hash("attack_pushback"), {move = self.move, pos = go.get_world_position()})
 		end
-		if self.move.hitbox == "#hitbox_coffee" then
+		if self.move.hitbox_life then
 			msg.post("#co", "disable")
 		else
 			go.delete()
+		end
+		if self.move.name == hash("mf_spit") then
+			local function burn_damage(self)
+				msg.post(self.enemy, hash("burn_damage"), {move = self.move})
+				self.burn_counter = self.burn_counter - 1
+				if self.burn_counter < 1 or go.get(msg.url(nil, self.enemy, "fighter_control"), "state") == hash("dead") then
+					timer.cancel(self.timer)
+					go.animate(msg.url(nil, self.fire_effect, "sprite"), "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INSINE, 0.5, 0, function() go.delete(self.fire_effect) end)
+					sound.stop("/sound#fire")
+					go.delete(true)
+				end
+			end
+			self.burn_counter = self.move.burn_time
+			self.timer = timer.delay(self.move.burn_freq, true, burn_damage)
+			self.fire_effect = factory.create("#fire_effect", vmath.vector3(0, 60, 0.5), nil, nil, vmath.vector3(4, 4, 4))
+			sound.play("/sound#fire")
+			go.set_parent(self.fire_effect, self.enemy)
+			local effect_url = msg.url(nil, self.fire_effect, "sprite")
+			go.set(effect_url, "tint.w", 0)
+			go.animate(effect_url, "tint.w", go.PLAYBACK_ONCE_FORWARD, 0.57, go.EASING_INSINE, 0.8)
 		end
 	elseif message_id == hash("setup") then
 		self.go = message.myself
@@ -64,8 +87,14 @@ function on_message(self, message_id, message, sender)
 			sprite.set_hflip("#sprite", self.facing == -1)
 			local force = vmath.vector3(36000 * self.facing, 15300, 0)
 			msg.post("#co_physics", hash("apply_force"), {force = force, position = go.get_world_position()})
+		elseif self.move.hitbox == "#hitbox_remedios" then
+			sprite.set_hflip("#sprite", self.facing == -1)
+			local force = vmath.vector3(1500 * self.facing, 3000, 0)
+			msg.post("#co_physics", hash("apply_force"), {force = force, position = go.get_world_position()})
 		elseif self.move.hitbox == "#hitbox_jump" then
 			go.set_parent(go.get_id(), self.go, true)
+		elseif self.move.hitbox == "#hitbox_fire" then
+			particlefx.play("#fire")
 		end
 	elseif message_id == hash("die") then
 		go.delete()

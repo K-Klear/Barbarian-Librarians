@@ -390,7 +390,9 @@ FIGHTER[hash("bohous")] = {
 				force = vmath.vector3(1, 1, 0),
 				damage = 4,
 				recovery = 80,
-				recovery_type = hash("attack_recovery")
+				recovery_type = hash("attack_recovery"),
+				disable = true,
+				disable_time = 2.5
 			},
 			
 
@@ -1154,31 +1156,9 @@ FIGHTER[hash("michael")] = {
 	sounds = {
 		pain_low = {"vo_pain_low_01", "vo_pain_low_02", "vo_pain_low_03", "vo_pain_low_04"},
 		pain_high = {"vo_pain_high_01", "vo_pain_high_02", "vo_pain_high_03"},
-		coffee_splash = {"vo_coffee_splash_01"}
+		mf_spit = {"mf_spit"}
 	},
 	moves = {
-		[hash("jump")] = {
-			{
-				name = hash("pe_jump"),
-				keys_held = {},
-				keys_sequence = {hash("jump"), hash("duck")},
-				state = hash("ready"),
-				anim = "teleport_jump",
-				hitbox = "#hitbox_jump",
-				hitbox_scale = 2,
-				hitbox_pos = vmath.vector3(0, -35, 0),
-				hit_sound = "spine_crush_01",
-				damage = 28,
-				recovery_time = 100,
-				stun_time = 150,
-				playback_rate = 7/60,
-				jump_frame = 30,
-				teleport_frame = 75,
-				jump_force = 350000,
-				recovery_type = hash("attack_recovery")
-			},
-		},
-
 		[hash("punch")] = {
 
 			-- JUMPING ATTACKS
@@ -1269,46 +1249,48 @@ FIGHTER[hash("michael")] = {
 
 			-- SPECIAL ATTACKS
 			{
-				name = hash("vo_spit"),
-				keys_held = {},
-				keys_sequence = {hash("punch"), hash("forward"), hash("backward")},
-				state = hash("ready"),
-				anim = "spit",
-				playback_rate = 8/60,
-				hitbox = "#hitbox_spit",
-				hitbox_scale = 1.5,
-				speed = 7.5,
-				damage_point = 60,
-				damage_pos = vmath.vector3(160, 140, 0),
-				hit_sound = "vo_spit_hit",
-				force = vmath.vector3(14700, 5000, 0),
-				damage = 9,
-				recovery = 140,
-				recovery_type = hash("attack_recovery")
-			},
-
-			{
-				name = hash("vo_smash"),
+				name = hash("mf_spit"),
 				keys_held = {},
 				keys_sequence = {hash("punch"), hash("backward"), hash("duck"), hash("forward")},
 				state = hash("ready"),
-				anim = "throw",
+				anim = "spit",
 				playback_rate = 5/60,
-				hitbox = "#hitbox_coffee",
-				hitbox_rotation = -65,
-				hitbox_scale = 1.5,
-				hitbox_life = 30,
-				hitbox_anim = 0.2,
-				damage_point = 48,
+				hitbox = "#hitbox_fire",
+				hitbox_life = 82,
+				hitbox_life_fire = 55,
+				damage_point_fire = 48,
 				damage_pos = vmath.vector3(330, 60, 0),
-				damage_sound = "coffee_splash",
+				damage_sound = "mf_spit",
 				hit_sound = "vo_coffee_hit",
-				force = vmath.vector3(21000, 15000, 0),
-				damage = 22,
+				force = vmath.vector3(11000, 10000, 0),
+				damage = 7,
+				dps = 0.5,
+				burn_time = 22,
+				burn_freq = 0.2,
 				recovery = 130,
 				recovery_type = hash("attack_recovery")
 			},
-
+			
+			{
+				name = hash("mf_smash"),
+				keys_held = {},
+				keys_sequence = {hash("punch"), hash("forward"), hash("forward")},
+				state = hash("ready"),
+				anim = "smash",
+				playback_rate = 6.9/60,
+				hitbox = "#hitbox_simple",
+				hitbox_rotation = 0,
+				hitbox_scale = 3,
+				hit_sound = "mf_hammer_hit",
+				damage_point = 68,
+				damage_pos = vmath.vector3(165, 110, 0),
+				force = vmath.vector3(9000, -170000, 0),
+				damage = 16,
+				stun = 100,
+				recovery = 122,
+				recovery_type = hash("attack_recovery"),
+				shake = 3
+			},
 
 
 			-- NORMAL ATTACKS
@@ -1389,10 +1371,11 @@ FIGHTER[hash("michael")] = {
 				state = hash("ready"),
 				anim = "kick_duck_slow",
 				playback_rate = 8/60,
-				hitbox = "#hitbox_simple",
+				hitbox = "#hitbox_long",
 				hitbox_scale = 3,
-				damage_point = 30,
-				damage_pos = vmath.vector3(250, 10, 0),
+				hitbox_rotation = 90,
+				damage_point = 29,
+				damage_pos = vmath.vector3(210, 10, 0),
 				force = vmath.vector3(48000, 46000, 0),
 				damage = 7.5,
 				recovery = 78,
@@ -1415,6 +1398,26 @@ FIGHTER[hash("michael")] = {
 				recovery_type = hash("attack_recovery_duck")
 			},
 
+			-- SPECIAL KICKS
+
+			{
+				name = hash("mf_throw"),
+				keys_held = {},
+				keys_sequence = {hash("kick"), hash("backward"), hash("duck"), hash("forward")},
+				state = hash("ready"),
+				anim = "throw",
+				playback_rate = 7/60,
+				hitbox = "#hitbox_remedios",
+				hitbox_scale = 2,
+				damage_point = 55,
+				damage_pos = vmath.vector3(225, 150, 0),
+				force = vmath.vector3(28000, 12000, 0),
+				damage = 25,
+				recovery = 120,
+				recovery_type = hash("attack_recovery"),
+				disable = true
+			},
+
 
 
 			-- NORMAL KICKS
@@ -1424,10 +1427,11 @@ FIGHTER[hash("michael")] = {
 				state = hash("ready"),
 				anim = "kick_medium",
 				playback_rate = 6/60,
-				hitbox = "#hitbox_simple",
-				hitbox_scale = 2.5,
+				hitbox = "#hitbox_long",
+				hitbox_rotation = 99,
+				hitbox_scale = 3.5,
 				damage_point = 42,
-				damage_pos = vmath.vector3(250, 90, 0),
+				damage_pos = vmath.vector3(180, 70, 0),
 				force = vmath.vector3(12300, 95000, 0),
 				damage = 12,
 				recovery = 78,

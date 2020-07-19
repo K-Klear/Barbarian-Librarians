@@ -1,13 +1,16 @@
-Changelog for v1.11
+Changelog for v1.20
 
 - Working hyperlinks in the credits screen
 - Authors of used sounds credited
 - Sprites optimized
+- Infinite hook combo removed
+- Version number displayed in main menu (as long as I don't forget to increment it)
+
+- Added Michael!
 
 Stuff to do:
 
 - Allow keyboard navigation in the settings submenu
-- Decouple framerate from simulation
 - Add diacritics to the fonts
 - Moar sounds
 - Find proper Bohouš jump punch
@@ -15,6 +18,7 @@ Stuff to do:
 
 Known bugs and stuff to fix:
 
+- Players killed by fire keep their current animation
 - Victory star appears for both players when a round is drawn, though it's fixed as the next round starts
 - There was that one time when my ragdoll ended up standing on its head
 - Bohouš's jump frames needs to be better centred
@@ -83,3 +87,15 @@ https://freesound.org/people/bottles/
 https://freesound.org/people/Halleck/
 https://freesound.org/people/richardemoore/
 
+https://freesound.org/people/Zabuhailo/sounds/146960/
+https://freesound.org/people/InspectorJ/sounds/415209/
+https://freesound.org/people/FST180081/sounds/441812/
+https://freesound.org/people/TRNGLE/sounds/362652/
+https://freesound.org/people/steffcaffrey/sounds/479271/
+https://freesound.org/people/Nic3_one/sounds/166542/
+https://freesound.org/people/tc630/sounds/47835/
+
+
+Graphics:
+
+https://opengameart.org/content/animated-fire

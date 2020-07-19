@@ -1,0 +1,121 @@
+local STATE = require("mod.state")
+local SET = require("mod.settings")
+
+local function run_away(self)
+	
+	msg.post("#co", hash("disable"))
+	self.state = hash("away")
+	sprite.play_flipbook("#sprite", hash("walk"))
+	local pos = go.get_world_position().x
+	if math.abs(pos - SET.min_x) > math.abs(pos - SET.max_x) then
+		self.facing = -self.facing
+		sprite.set_hflip("#sprite", self.facing == -1)
+	end
+end
+
+local function sit(self)
+	sprite.play_flipbook("#sprite", "sit")
+	self.state = hash("sit")
+	msg.post("#co_physics", hash("disable"))
+	msg.post("#co", hash("enable"))
+end
+
+local function lick(self)
+	self.state = hash("lick")
+	sprite.play_flipbook("#sprite", hash("lick"))
+	self.lick_time = self.boredom - math.random(60, 380)
+	msg.post("#co", hash("disable"))
+end
+
+local function attack(self, target)
+	msg.post("#co", hash("disable"))
+	local probability = 0.8
+	if target == self.enemy then
+		probability = 0.15
+	end
+	if math.random() < probability then
+		run_away(self)
+		if math.random() > 0.8 then
+			sound.play("#evil_0"..math.random(2))
+		else
+			sound.play("#good_0"..math.random(2))
+		end
+	else
+		sound.play("#evil_0"..math.random(2))
+		self.state = hash("attack")
+		go.set_parent(go.get_id(), target, true)
+		sprite.play_flipbook("#sprite", hash("attack"))
+		go.set(".", "euler.z", 0 + (self.facing * 45))
+		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0, 95, 0.5), go.EASING_LINEAR, 0.15, 0, function()
+			timer.delay(0.15, false, function()
+				msg.post(target, hash("attack_landed"), {move = self.move, pos = go.get_world_position()})
+				timer.delay(0.6, false, function()
+					go.set_parent(go.get_id())
+					go.set_scale(vmath.vector3(2, 2, 2))
+					go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.3)
+					run_away(self)
+					go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, SET.base_y, go.EASING_INSINE, 0.3)
+				end
+				)
+			end)
+		end)
+	end
+end
+
+function update(self, dt)
+	if STATE.unpaused then
+		if self.state == hash("away") then
+			local pos = go.get_world_position()
+			go.set(".", "position.x", pos.x + 10 * self.facing)
+			if pos.x < 0 or pos.x > 1300 then
+				msg.post(self.go, hash("move_reloaded"), {move = self.move})
+				go.delete()
+			end
+		elseif not (self.state == hash("attack")) then
+			self.boredom = self.boredom - 1
+			if self.boredom < 1 then
+				run_away(self)
+			end
+			if self.state == hash("sit") then
+				if math.random() > 0.999 then
+					lick(self)
+				end
+			elseif self.state == hash("lick") then
+				if self.boredom < self.lick_time then
+					sit(self)
+				end
+			end
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") then
+		if self.state == hash("sit") then
+			local target = self.enemy
+			if message.other_id == self.go then
+				target = self.go
+			end
+			attack(self, target)
+		end
+	elseif message_id == hash("collision_response") then
+		if self.state == hash("init") and message.other_group == hash("ground") then
+			sprite.play_flipbook("#sprite", "land", sit)
+		end
+	elseif message_id == hash("setup") then
+		sound.play("#good_0"..math.random(2))
+		self.state = hash("init")
+		msg.post("#co", hash("disable"))
+		self.boredom = math.random(120, 3624)
+		go.set(".", "position.z", -0.2)
+		self.go = message.myself
+		self.enemy = message.enemy
+		self.move = message.move
+		self.facing = message.facing
+		sprite.set_hflip("#sprite", self.facing == -1)
+		local force = vmath.vector3(1500 * self.facing, 3000, 0)
+		msg.post("#co_physics", hash("apply_force"), {force = force, position = go.get_world_position()})
+	elseif message_id == hash("die") then
+		run_away(self)
+	end
+end

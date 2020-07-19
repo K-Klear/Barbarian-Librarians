@@ -1,6 +1,6 @@
 components {
   id: "hitbox"
-  component: "/fighters/hitbox.script"
+  component: "/fighters/hitboxes/hitbox.script"
   position {
     x: 0.0
     y: 0.0
@@ -40,13 +40,33 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 12.5\n"
-  "  data: 12.5\n"
+  "  data: 72.805\n"
+  "  data: 68.27\n"
   "  data: 12.5\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"
   "locked_rotation: false\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+embedded_components {
+  id: "sprite"
+  type: "sprite"
+  data: "tile_set: \"/fighters/vojta.atlas\"\n"
+  "default_animation: \"coffee_projectile\"\n"
+  "material: \"/builtins/materials/sprite.material\"\n"
+  "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {
     x: 0.0

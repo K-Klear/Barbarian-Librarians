@@ -45,6 +45,10 @@ return {
 	[hash("pe_stomp")] = {"Libraryquake", "Knihotřesení"},
 	[hash("pe_charge")] = {"Belly Blast", "Břichoskok"},
 
+	[hash("mf_spit")] = {"Firestarter", "Ohňostroj"},
+	[hash("mf_smash")] = {"Hammer time!", "Kladivo"},
+	[hash("mf_throw")] = {"Remedios", "Remedios, trhej!"},
+
 	[hash("main_fight")] = {"FIGHT", "FIGHT"},
 	[hash("main_round")] = {function(x) return "Round "..x end, function(x) return x..". kolo" end},
 	[hash("main_winner")] = {function(name) return name.." wins" end, function(name) return name.." zvítězil" end},

@@ -138,6 +138,17 @@ function update(self, dt)
 					if self.move.damage_sound then
 						play_voice_line(self.move.damage_sound, self, true)
 					end
+				elseif val == hash("fire_damage_point") then
+					box = "#hitbox_fire_left"
+					if self.facing > 0 then
+						box = "#hitbox_fire_right"
+					end
+					if self.move.damage_sound then
+						play_voice_line(self.move.damage_sound, self, true)
+					end
+					local hitbox = factory.create(box, nil, nil, nil, vmath.vector3(0.5, 0.5, 0.5))
+					msg.post(hitbox, hash("setup"), {myself = go.get_id(), enemy = self.enemy, move = self.move, facing = self.facing})
+					go.set_position(go.get_world_position(), hitbox)
 				elseif val == hash("victory_pose") then
 					play_animation(self, "victory")
 					set_collision(self, "stand")
@@ -367,6 +378,14 @@ function on_message(self, message_id, message, sender)
 			add_action(self, hash("be_hooked"), SET.hook_delay)
 			add_action(self, hash("remove_stun"), SET.hook_delay + SET.hook_stun)
 			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
+		elseif message.move.name == hash("mf_smash") and not (self.state == hash("ragdoll") or self.state == hash("jump")) then
+			set_collision(self, "stand")
+			self.state = hash("stun")
+			play_animation(self, "pain_high")
+			reset_position(self)
+			self.frame_actions = {}
+			add_action(self, hash("remove_stun"), message.move.stun)
+			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 		elseif message.move.name == hash("pe_jump") then
 			set_collision(self)
 			self.state = hash("pe_jumped")
@@ -394,6 +413,18 @@ function on_message(self, message_id, message, sender)
 				msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.damage})
 			end
 		end
+	elseif message_id == hash("burn_damage") then
+		play_voice_line("pain_low", self)
+		local tint = vmath.vector4()
+		local factor = 0.97
+		tint.x = go.get("#sprite", "tint.x") * factor
+		tint.y = go.get("#sprite", "tint.y") * factor
+		tint.z = go.get("#sprite", "tint.z") * factor
+		tint.w = go.get("#sprite", "tint.w")
+		go.set("#sprite", "tint", tint)
+		if not (self.state == hash("dead")) then
+			msg.post("/main#gui", hash("damage_dealt"), {player = self.controls, amount = message.move.dps})
+		end
 	elseif message_id == hash("hook_landed") then
 		self.frame_actions = {}
 		self.state = hash("hooking")
@@ -411,6 +442,8 @@ function on_message(self, message_id, message, sender)
 		if message.reset then
 			set_collision(self, "ragdoll")
 		end
+	elseif message_id == hash("move_reloaded") then
+		self[message.move.name] = nil
 	elseif message_id == hash("attack_pushback") then
 		if self.collision then
 			local direction = (self.previous_position.x - go.get_world_position().x) * -self.facing
@@ -461,34 +494,43 @@ function on_message(self, message_id, message, sender)
 end
 
 local function execute_move(self, move)
-	check_facing(self)
-	self.state = hash("attack")
-	self.move = move
-	play_animation(self, move.anim, false, move.playback_rate)
-	if move.anim == "uppercut" then	-- WIP
-		set_collision(self, "stand")
-	elseif move.anim == "bike" then
-		add_action(self, hash("bike_ride"), move.bike_ready)
-	elseif move.anim == "teleport" then
-		add_action(self, hash("teleport_start"), move.start)
-		add_action(self, hash("teleport"), move.start + move.duration)
-		add_action(self, hash("teleport_end"), 2 * move.start + move.duration)
-	elseif move.name == hash("pe_stomp") then
-		add_action(self, hash("quake"), move.quake_point)
-	elseif move.name == hash("pe_jump") then
-		add_action(self, hash("teleport_jump_start"), move.jump_frame)
-		add_action(self, hash("teleport_jump_mid"), move.teleport_frame)
-	elseif move.name == hash("pe_charge") then
-		local force_x, force_y = SET.jump_force.x * self.facing, SET.jump_force.y
-		set_collision(self, "jump_charge")
-		msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(force_x * 1.5, force_y * 0.25, 0), position = go.get_world_position()})
-		self.state = hash("jump")
-	end
-	if move.damage_point then
-		add_action(self, hash("damage_point"), move.damage_point)
-	end
-	if move.recovery then
-		add_action(self, move.recovery_type, move.recovery)
+	if not self[move.name] then
+		if move.disable then
+			self[move.name] = true
+		end
+		check_facing(self)
+		self.state = hash("attack")
+		self.move = move
+		play_animation(self, move.anim, false, move.playback_rate)
+		if move.anim == "uppercut" then	-- WIP
+			set_collision(self, "stand")
+		elseif move.name == hash("bo_hook") then
+			timer.delay(move.disable_time, false, function() self[hash("bo_hook")] = nil end)
+		elseif move.anim == "bike" then
+			add_action(self, hash("bike_ride"), move.bike_ready)
+		elseif move.anim == "teleport" then
+			add_action(self, hash("teleport_start"), move.start)
+			add_action(self, hash("teleport"), move.start + move.duration)
+			add_action(self, hash("teleport_end"), 2 * move.start + move.duration)
+		elseif move.name == hash("pe_stomp") then
+			add_action(self, hash("quake"), move.quake_point)
+		elseif move.name == hash("pe_jump") then
+			add_action(self, hash("teleport_jump_start"), move.jump_frame)
+			add_action(self, hash("teleport_jump_mid"), move.teleport_frame)
+		elseif move.name == hash("pe_charge") then
+			local force_x, force_y = SET.jump_force.x * self.facing, SET.jump_force.y
+			set_collision(self, "jump_charge")
+			msg.post("#"..self.collision, "apply_force", {force = vmath.vector3(force_x * 1.5, force_y * 0.25, 0), position = go.get_world_position()})
+			self.state = hash("jump")
+		elseif move.name == hash("mf_spit") then
+			add_action(self, hash("fire_damage_point"), move.damage_point_fire)
+		end
+		if move.damage_point then
+			add_action(self, hash("damage_point"), move.damage_point)
+		end
+		if move.recovery then
+			add_action(self, move.recovery_type, move.recovery)
+		end
 	end
 end
 

@@ -1,6 +1,6 @@
 components {
   id: "hitbox"
-  component: "/fighters/hitbox.script"
+  component: "/fighters/hitboxes/hitbox.script"
   position {
     x: 0.0
     y: 0.0

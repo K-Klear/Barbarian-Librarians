@@ -1,9 +1,24 @@
 components {
   id: "hitbox"
-  component: "/fighters/hitbox.script"
+  component: "/fighters/hitboxes/hitbox.script"
   position {
     x: 0.0
     y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+components {
+  id: "fire"
+  component: "/fighters/hitboxes/fire.particlefx"
+  position {
+    x: 211.0
+    y: 288.0
     z: 0.0
   }
   rotation {
@@ -27,21 +42,21 @@ embedded_components {
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
   "    position {\n"
-  "      x: 0.0\n"
-  "      y: 0.0\n"
+  "      x: 491.0\n"
+  "      y: 251.0\n"
   "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
   "      x: 0.0\n"
   "      y: 0.0\n"
-  "      z: 0.0\n"
-  "      w: 1.0\n"
+  "      z: 0.9978703\n"
+  "      w: 0.06522897\n"
   "    }\n"
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 72.805\n"
-  "  data: 68.27\n"
+  "  data: 220.7265\n"
+  "  data: 110.0\n"
   "  data: 12.5\n"
   "}\n"
   "linear_damping: 0.0\n"
@@ -61,12 +76,10 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "sprite"
-  type: "sprite"
-  data: "tile_set: \"/fighters/vojta.atlas\"\n"
-  "default_animation: \"coffee_projectile\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
-  "blend_mode: BLEND_MODE_ALPHA\n"
+  id: "fire_effect"
+  type: "factory"
+  data: "prototype: \"/fighters/hitboxes/fire_effect.go\"\n"
+  "load_dynamically: false\n"
   ""
   position {
     x: 0.0

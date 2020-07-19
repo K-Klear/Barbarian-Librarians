@@ -387,7 +387,7 @@ embedded_instances {
   "embedded_components {\n"
   "  id: \"hitbox_coffee\"\n"
   "  type: \"factory\"\n"
-  "  data: \"prototype: \\\"/fighters/hitbox_coffee.go\\\"\\n"
+  "  data: \"prototype: \\\"/fighters/hitboxes/hitbox_coffee.go\\\"\\n"
   "load_dynamically: false\\n"
   "\"\n"
   "  position {\n"

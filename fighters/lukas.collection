@@ -387,7 +387,7 @@ embedded_instances {
   "embedded_components {\n"
   "  id: \"hitbox_helmet\"\n"
   "  type: \"factory\"\n"
-  "  data: \"prototype: \\\"/fighters/hitbox_helmet.go\\\"\\n"
+  "  data: \"prototype: \\\"/fighters/hitboxes/hitbox_helmet.go\\\"\\n"
   "load_dynamically: false\\n"
   "\"\n"
   "  position {\n"
