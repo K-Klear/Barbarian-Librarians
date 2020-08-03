@@ -128,7 +128,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "good_01"
+  id: "meow_01"
   type: "sound"
   data: "sound: \"/assets/sound/sfx/re_meow_01.ogg\"\n"
   "looping: 0\n"
@@ -150,53 +150,9 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "evil_02"
+  id: "meow_02"
   type: "sound"
   data: "sound: \"/assets/sound/sfx/re_meow_02.ogg\"\n"
-  "looping: 0\n"
-  "group: \"sound\"\n"
-  "gain: 1.0\n"
-  "pan: 0.0\n"
-  "speed: 1.0\n"
-  ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
-  id: "good_02"
-  type: "sound"
-  data: "sound: \"/assets/sound/sfx/re_meow_03.ogg\"\n"
-  "looping: 0\n"
-  "group: \"sound\"\n"
-  "gain: 1.0\n"
-  "pan: 0.0\n"
-  "speed: 1.0\n"
-  ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
-  id: "evil_01"
-  type: "sound"
-  data: "sound: \"/assets/sound/sfx/re_hiss_01.ogg\"\n"
   "looping: 0\n"
   "group: \"sound\"\n"
   "gain: 1.0\n"

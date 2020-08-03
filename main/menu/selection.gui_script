@@ -219,7 +219,7 @@ function on_input(self, action_id, action)
 						else
 							gui.play_flipbook(preview[player], animations[selection[player]].victory)
 						end
-						sound.play("#"..FIGHTER[selection[player]].name)
+						sound.play("#"..FIGHTER[selection[player]].atlas)
 						STATE.fighter[player] = selection[player]
 						for _, _moves in ipairs(moves[player]) do
 							gui.set_enabled(_moves.name, false)

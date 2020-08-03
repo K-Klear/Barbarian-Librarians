@@ -8,10 +8,13 @@ Changelog for v1.20
 
 - Added Michael!
 
+v1.21
+- Fixed diacritics!
+- Small balance changes
+
 Stuff to do:
 
 - Allow keyboard navigation in the settings submenu
-- Add diacritics to the fonts
 - Moar sounds
 - Find proper Bohouš jump punch
 - Better random librarian graphics

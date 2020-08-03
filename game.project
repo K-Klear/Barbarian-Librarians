@@ -1,6 +1,6 @@
 [project]
 title = Librarian Barbarians
-version = 1.20
+version = 1.21
 
 [bootstrap]
 main_collection = /main/bootstrap.collectionc

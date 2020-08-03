@@ -35,13 +35,9 @@ local function attack(self, target)
 	end
 	if math.random() < probability then
 		run_away(self)
-		if math.random() > 0.8 then
-			sound.play("#evil_0"..math.random(2))
-		else
-			sound.play("#good_0"..math.random(2))
-		end
+		sound.play("#meow_0"..math.random(2))
 	else
-		sound.play("#evil_0"..math.random(2))
+		sound.play("#meow_0"..math.random(2))
 		self.state = hash("attack")
 		go.set_parent(go.get_id(), target, true)
 		sprite.play_flipbook("#sprite", hash("attack"))
@@ -103,7 +99,7 @@ function on_message(self, message_id, message, sender)
 			sprite.play_flipbook("#sprite", "land", sit)
 		end
 	elseif message_id == hash("setup") then
-		sound.play("#good_0"..math.random(2))
+		sound.play("#meow_0"..math.random(2))
 		self.state = hash("init")
 		msg.post("#co", hash("disable"))
 		self.boredom = math.random(120, 3624)

@@ -6,7 +6,7 @@ local FIGHTER = global_var
 FIGHTER[hash("lukas")] = {
 	atlas = "lukas",
 	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "dead"},
-	name = "Lukas",
+	name = "Lukáš",
 	speed_forwards = 5.5,
 	speed_backwards = 3.8,
 	sounds = {
@@ -117,11 +117,11 @@ FIGHTER[hash("lukas")] = {
 				hitbox = "#hitbox_long",
 				hitbox_rotation = -70,
 				hitbox_scale = 1.5,
-				damage_point = 1,
+				damage_point = 4,
 				damage_pos = vmath.vector3(187, 142, 0),
 				force = vmath.vector3(7000, 11000, 0),
-				damage = 3,
-				recovery = 16,
+				damage = 2,
+				recovery = 28,
 				recovery_type = hash("attack_recovery")
 			},
 			{
@@ -233,11 +233,11 @@ FIGHTER[hash("lukas")] = {
 				anim = "kick_2",
 				hitbox = "#hitbox_simple",
 				hitbox_scale = 3,
-				damage_point = 1,
+				damage_point = 6.5,
 				damage_pos = vmath.vector3(197, -38, 0),
-				force = vmath.vector3(2000, 30000, 0),
-				damage = 2,
-				recovery = 16,
+				force = vmath.vector3(5000, 30000, 0),
+				damage = 1.5,
+				recovery = 26,
 				recovery_type = hash("attack_recovery")
 			},
 			{
@@ -261,7 +261,7 @@ FIGHTER[hash("lukas")] = {
 FIGHTER[hash("bohous")] = {
 	atlas = "bohous",
 	hitbox_list = {"stand", "duck", "ragdoll", "jump_up", "jump_rotate", "dead"},
-	name = "Bohous",
+	name = "Bohouš",
 	speed_forwards = 4.5,
 	speed_backwards = 3,
 	sounds = {
@@ -515,11 +515,11 @@ FIGHTER[hash("bohous")] = {
 				anim = "kick_2",
 				hitbox = "#hitbox_simple",
 				hitbox_scale = 2,
-				damage_point = 1,
+				damage_point = 4,
 				damage_pos = vmath.vector3(91, 38, 0),
 				force = vmath.vector3(2000, 30000, 0),
 				damage = 2,
-				recovery = 16,
+				recovery = 21,
 				recovery_type = hash("attack_recovery")
 			},
 			{
@@ -989,11 +989,11 @@ FIGHTER[hash("petr")] = {
 				hitbox = "#hitbox_long",
 				hitbox_rotation = -70,
 				hitbox_scale = 1.5,
-				damage_point = 1,
+				damage_point = 5,
 				damage_pos = vmath.vector3(115, 152, 0),
 				force = vmath.vector3(7000, 9000, 0),
-				damage = 4,
-				recovery = 16,
+				damage = 2.5,
+				recovery = 17,
 				recovery_type = hash("attack_recovery")
 			},
 			{
@@ -1412,7 +1412,7 @@ FIGHTER[hash("michael")] = {
 				damage_point = 55,
 				damage_pos = vmath.vector3(225, 150, 0),
 				force = vmath.vector3(28000, 12000, 0),
-				damage = 25,
+				damage = 20,
 				recovery = 120,
 				recovery_type = hash("attack_recovery"),
 				disable = true
